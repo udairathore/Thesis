@@ -4,8 +4,8 @@
 module feeder (
 	clk,										//clock transition for fsm 
 	rst,										//used to reset the whole fsm
-	valid_write,								//determines when to write and when not to write --> probably based on write full??
-	start,										//probably use it to determine when is the first time you are writing after reset, does not change once started
+	valid_write,								
+	start,										
 	data_in,
 	data_out,
 	counter_write,
