@@ -351,7 +351,7 @@ module feeder (
 										end else if (verical_ctr == 1) begin
 											if (((horizontal_ctr == 0) || ((output_verical_ctr == (o_dimension-1)) && (((In_cols%2) != 0) || (stride == 2'b01)))) && (padding == 1'b1)) begin
 												if ((output_verical_ctr == (o_dimension-1))  && (((In_cols%2) != 0) || (stride == 2'b01))) begin
-													temp_read_index = read_index;
+													temp_read_index = (horizontal_ctr == (o_dimension-1)) ? temp_read_index : read_index;
 												end else begin
 													temp_read_index = (stride_flag == 0) ? ((row_beg3-1) + (batch_ctr * chans_per_mem)):((row_beg2-1) + (batch_ctr * chans_per_mem));
 												end
@@ -370,7 +370,7 @@ module feeder (
 											horizontal_read_count = horizontal_read_count + 1;
 										end else if (verical_ctr == 2) begin
 											horizontal_ctr = (batch_ctr == (`batch_size - 1)) ? (horizontal_ctr + 1) : (horizontal_ctr);
-											// lm_counter goes here --> if lm_counter < LM then lm_counter ++; horizontal_counter = 0; 
+											// lm_counter goes here --> if lm_cou;nter < LM then lm_counter ++; horizontal_counter = 0; 
 
 											if (horizontal_ctr < (horizontal_o_dimension)) begin	
 												if (((output_verical_ctr == 0)) && (padding == 1'b1)) begin
@@ -386,12 +386,17 @@ module feeder (
 												end else if ((output_verical_ctr == (o_dimension-1)) && (padding == 1'b1) && (padding_flag == 1)) begin
 													if (batch_ctr < (`batch_size-1)) begin
 														batch_ctr = batch_ctr + 1; 
-														read_index = (((temp_read_index - (read_row_beg)) - ((feed_row-1) - chans_per_mem)) - (batch_offset * (k_dimension - 1)));	
+														if (horizontal_ctr == 0) begin
+															read_index = 0; 
+															temp_read_index = ((temp_read_index - (read_row_beg)) - chans_per_mem) - (batch_offset * (k_dimension - 2));
+														end else begin 
+															read_index = (horizontal_ctr == (o_dimension-1)) ? ((((temp_read_index - (read_row_beg)) - (chans_per_mem-1)) - (batch_offset * (k_dimension - 2)))) : ((((temp_read_index - (read_row_beg)) - ((feed_row-1) - chans_per_mem)) - (batch_offset * (k_dimension - 1)))); 
+														end	
 													end else begin
 														batch_ctr = 0; 
 														read_index = temp_read_index - (read_row_beg) - ((chans_per_mem * (stride_multiplier)) -1) - (batch_offset * stride_multiplier);
 													end
-													padding_flag = 0;
+													padding_flag = (horizontal_ctr == 0) ? 1 : 0;
 												end else begin 
 													if (batch_ctr < (`batch_size-1)) begin
 														batch_ctr = batch_ctr + 1;
@@ -486,7 +491,7 @@ module feeder (
 													padding_flag = 1;
 												end else begin
 													if((padding_flag ==1) && (padding == 1'b1)) begin
-														read_index = ((read_index + read_row_beg) - (feed_row-1)) - (batch_offset * (k_dimension - 2));
+														read_index = ((temp_read_index + read_row_beg) - ((feed_row-1)-chans_per_mem)) - (batch_offset * (k_dimension - 2));
 														padding_flag = 0;
 													end else begin
 														read_index = ((read_index + read_row_beg) - (feed_row-1) - (batch_offset * (k_dimension - 1)));
@@ -495,7 +500,7 @@ module feeder (
 											end else begin
 												if (((horizontal_ctr == 0) || ((output_verical_ctr == (o_dimension-1)) && (((In_cols%2) != 0) || (stride == 2'b01)))) && (padding == 1'b1)) begin
 													if ((output_verical_ctr == o_dimension-1) && ((In_cols % 2) != 0)) begin
-														temp_read_index = read_index;
+														temp_read_index = (horizontal_ctr == (o_dimension-1)) ? temp_read_index : read_index;
 													end else begin
 														temp_read_index = (row_beg0 -1) + (batch_ctr * chans_per_mem);
 													end	
@@ -563,14 +568,19 @@ module feeder (
 														end else begin 
 															batch_ctr = 0; 
 															read_index = ((temp_read_index + (read_row_beg*3)) - ((chans_per_mem * (stride_multiplier)) -1)) - (batch_offset * stride_multiplier);
-															//read_index = 0;
 														end	
-														//read_index = 0;
 														padding_flag = (horizontal_ctr == 0) ? 1 : 0;
 													end else begin 
 														if (batch_ctr < (`batch_size-1)) begin
 															batch_ctr = batch_ctr + 1;
-															read_index = ((read_index + (read_row_beg + read_row_beg)) - ((feed_row-1) - chans_per_mem)) - (batch_offset * (k_dimension - 1));
+															if (horizontal_ctr == 0) begin 
+																temp_read_index = (((read_index + (read_row_beg + read_row_beg))- (chans_per_mem)) - (batch_offset * (k_dimension - 2)));
+																read_index = 0;
+																padding_flag = 1; 
+															end else begin 
+																read_index = (horizontal_ctr == (o_dimension-1)) ? (((temp_read_index + (read_row_beg + read_row_beg)) - (chans_per_mem-1)) - (batch_offset * (k_dimension - 2))) : ((read_index + (read_row_beg + read_row_beg)) - ((feed_row-1) - chans_per_mem)) - (batch_offset * (k_dimension - 1));
+																padding_flag = (horizontal_ctr == 0) ? 1 : 0; 
+															end
 														end else begin
 															batch_ctr = 0;
 															read_index <= ((read_index + (read_row_beg + read_row_beg)) - ((chans_per_mem * (stride_multiplier)) -1)) - (batch_offset * stride_multiplier);
