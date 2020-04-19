@@ -31,7 +31,7 @@ stride = 1
 i_dimension = 32
 i_rows = 32
 i_cols = 32
-i_chans = 3
+i_chans = 4
 
 i_z_rows = i_rows + 2
 i_z_cols = i_cols + 2
@@ -40,7 +40,7 @@ i_z_chans = i_chans
 k_dimension = 3
 k_rows = 3
 k_cols = 3
-k_chans = 3
+k_chans = 4
 
 # FOR Stride more than 1 :
 o_dimension = math.floor((i_dimension + (2 * padding) - k_dimension)/stride) + 1
@@ -242,39 +242,47 @@ for o_row in range(o_rows):
         convolution_pointers[pointers_idx] = pointers[i]
         i += 1
     # second outer loop to loop through the columns in output_tensor
-    for o_col in range(o_cols):
-        # temp_list is list that stores the values plucked from the 1D stream
-        temp_list_index = 0
-        temp_list = [0] * (k_cols * k_rows * k_chans)
-        temp_list_2 = [0] * (k_cols * k_rows * k_chans)
-        # inner loop 1 to loop through the rows in input_tensor corresponding to kernel row length
-        for rows in range(k_rows):
-            # one_d_index (k_chans * stride) determines the stride, change value of stride to change the stride.
-            one_d_index = o_col * (k_chans*stride)
-            one_d_index = one_d_index + convolution_pointers[rows]
-            print(one_d_index)
-            # second inner loop to loop through the (cols*channels) i.e. 1 complete row of the input_tensor
-            for cols_chans_index in range((i_chans*k_cols)):
-                temp_list[temp_list_index] = one_d_stream[one_d_index]
-                temp_list_2[temp_list_index] = one_d_stream2[one_d_index]
-                temp_list_index += 1
-                one_d_index += 1
-        acc = 0
-        for j in range((k_chans*k_rows*k_cols)):
-            acc += temp_list[j]*kernel_one_d_stream[j]
-            temp_list2.append(temp_list[j])
-        output_one_d_stream.append(acc)
-        output_three_d_stream[o_row][o_col] = acc
+    LM = 1
+    for lm_counter in range(0,LM):
+        for o_col in range(o_cols):
+            # temp_list is list that stores the values plucked from the 1D stream
+            temp_list_index = 0
+            temp_list = [0] * (k_cols * k_rows * k_chans)
+            temp_list_2 = [0] * (k_cols * k_rows * k_chans)
+            # inner loop 1 to loop through the rows in input_tensor corresponding to kernel row length
+            for rows in range(k_rows):
+                # one_d_index (k_chans * stride) determines the stride, change value of stride to change the stride.
+                one_d_index = o_col * (k_chans*stride)
+                one_d_index = one_d_index + convolution_pointers[rows]
+                print(one_d_index)
+                # second inner loop to loop through the (cols*channels) i.e. 1 complete row of the input_tensor
+                for cols_chans_index in range((i_chans*k_cols)):
+                    temp_list[temp_list_index] = one_d_stream[one_d_index]
+                    temp_list_2[temp_list_index] = one_d_stream2[one_d_index]
+                    temp_list_index += 1
+                    one_d_index += 1
+            acc = 0
+            TM = 2
+            for tm_counter in range(TM):
+                #acc = 0
+                for j in range((k_chans*k_rows*k_cols)):
+                    if tm_counter == 0:
+                        acc += temp_list[j]*kernel_one_d_stream[j]
+                    temp_list2.append(temp_list[j])
+                output_one_d_stream.append(acc)
+                output_three_d_stream[o_row][o_col] = acc
 
-        acc2 = 0
-        for j in range((k_chans*k_rows*k_cols)):
-            acc2 += temp_list_2[j]*kernel_one_d_stream[j]
-            temp_list2.append(temp_list_2[j])
-        output_one_d_stream2.append(acc2)
-        output_three_d_stream2[o_row][o_col] = acc2
-        print(temp_list)
-        print(temp_list_2)
-        #temp_list2.append(temp_list)
+            acc2 = 0
+            for tm_counter in range(TM):
+                for j in range((k_chans*k_rows*k_cols)):
+                    if tm_counter == 0:
+                        acc2 += temp_list_2[j]*kernel_one_d_stream[j]
+                    temp_list2.append(temp_list_2[j])
+                output_one_d_stream2.append(acc2)
+                output_three_d_stream2[o_row][o_col] = acc2
+            print(temp_list)
+            print(temp_list_2)
+                #temp_list2.append(temp_list)
 
 hex_list3 = [hex(temp_list2[x]) for x in range(len(temp_list2))]
 listToStr3 = ' '.join(map(str, hex_list3))
