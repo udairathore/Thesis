@@ -28,10 +28,10 @@ output_file_5 = open("myfile4.txt", "w")
 padding = 1
 stride = 1
 
-i_dimension = 32
-i_rows = 32
-i_cols = 32
-i_chans = 4
+i_dimension = 16
+i_rows = 16
+i_cols = 16
+i_chans = 3
 
 i_z_rows = i_rows + 2
 i_z_cols = i_cols + 2
@@ -40,7 +40,7 @@ i_z_chans = i_chans
 k_dimension = 3
 k_rows = 3
 k_cols = 3
-k_chans = 4
+k_chans = 3
 
 # FOR Stride more than 1 :
 o_dimension = math.floor((i_dimension + (2 * padding) - k_dimension)/stride) + 1
@@ -242,7 +242,7 @@ for o_row in range(o_rows):
         convolution_pointers[pointers_idx] = pointers[i]
         i += 1
     # second outer loop to loop through the columns in output_tensor
-    LM = 1
+    LM = 3
     for lm_counter in range(0,LM):
         for o_col in range(o_cols):
             # temp_list is list that stores the values plucked from the 1D stream
@@ -262,7 +262,7 @@ for o_row in range(o_rows):
                     temp_list_index += 1
                     one_d_index += 1
             acc = 0
-            TM = 2
+            TM = 4
             for tm_counter in range(TM):
                 #acc = 0
                 for j in range((k_chans*k_rows*k_cols)):
