@@ -27,8 +27,8 @@ module feeder #(M=2,N=2) (
 	parameter N_ARR = N;            //2   
 	parameter LK = `K_MAT/`K_TL;	//Tiling for Batch 
 	parameter LN = `N_MAT/`N_TL;	//Tiling for input channel 
-	parameter LM = `M_MAT/`M_TL; 	// outer reuse of (N_TL x K_TL) tile in B
-	parameter TM = `M_TL/N_ARR; 	// inner reuse of (N_TL x 1) tile in B
+	parameter LM = 3;//`M_MAT/`M_TL; 	// outer reuse of (N_TL x K_TL) tile in B
+	parameter TM = 4;//`M_TL/N_ARR; 	// inner reuse of (N_TL x 1) tile in B
 	parameter TN = `N_TL/M_ARR; 	// number of partial dot-products (innermost loop)
 	parameter TK = `K_TL; 			// reuse of (M_TL x N_TL) tile in A (columns of tile in B)
 
@@ -83,10 +83,10 @@ module feeder #(M=2,N=2) (
 
 
 ////////////////////////////////////////Logic and Assign////////////////////////////////////////
-	
-	logic [ADDR_WIDTH-1:0] prev_read_index; 
-	logic [DATA_WIDTH-1:0] prev_temp_read_index; 
-	logic [DATA_WIDTH-1:0] kernel_reuse_ctr = 0;												//tm_counter 
+
+///////////////////////////////////////Counter Definitions///////////////////////////////////////	
+
+	logic [DATA_WIDTH-1:0] kernel_reuse_ctr = 0;							//tm_counter 
 	logic [DATA_WIDTH-1:0] batch_ctr = 0;									//tk_counter
 	logic [DATA_WIDTH-1:0] lm_counter = 0;									//lm_counter for entire ROW reuse
 
@@ -95,18 +95,18 @@ module feeder #(M=2,N=2) (
 	logic [ADDR_WIDTH-1:0] verical_ctr; 									
 	logic [DATA_WIDTH : 0] horizontal_read_count = 0;
 	logic [ADDR_WIDTH-1 : 0] output_verical_ctr = 0;
-	logic stride_flag = 1'b1;												// HAS TO BE SET TO 1 for stride 
-	logic valid_read; 
 
+	logic [1:0] row_reuse;
+	logic [ADDR_WIDTH - 1:0] read_index; 
+	assign rd_idx = read_index;												//Read counter 
 
+	logic [ADDR_WIDTH -1:0] row_index;
+	assign counter_write = row_index;										//Write Counter
 
-	logic [ADDR_WIDTH-1:0] batch_offset;
-	assign batch_offset = ((BATCH_SIZE - 1)* chans_per_mem);
-
-
-
-
-
+	logic [ADDR_WIDTH-1 : 0 ] temp_read_index; 							
+	logic [ADDR_WIDTH-1:0] prev_read_index; 
+	logic [DATA_WIDTH-1:0] prev_temp_read_index; 
+	
 	logic [ADDR_WIDTH-1 : 0] horizontal_o_dimension;
 	assign horizontal_o_dimension = (k_dimension == 1) ? 1 : o_dimension;  
 
@@ -119,10 +119,15 @@ module feeder #(M=2,N=2) (
 	logic [1:0] stride_multiplier;
 	assign stride_multiplier = (stride==2'b01) ? 2'b10 : 2'b01; 			//very important 
 
- 
+ 	logic write_full;
+	assign ram_full = write_full;											//for output 
 
+///////////////////////////////////////////FLAG DEFINITIONS////////////////////////////////////////////////////////////
+	logic stride_flag = 1'b1;												// HAS TO BE SET TO 1 for any stride initially
+	logic valid_read; 
+	logic padding_flag =0;
 	logic padding = 1'b1;
-
+//////////////////////////////////////////////POINTER DEFINITIONS////////////////////////////////////////////////////
 	logic[ADDR_WIDTH-1: 0] read_row_beg;
 	logic[ADDR_WIDTH-1: 0] row_beg0;
 	logic[ADDR_WIDTH-1: 0] row_beg1;																					//pointer to the begining of row 1
@@ -137,10 +142,6 @@ module feeder #(M=2,N=2) (
 	assign last = last_idx;	
 	assign read_row_beg = (padding == 1'b0) ? row_beg1 : (row_beg1 - (chans_per_mem)); 									//for padding the counter increment changes based on padding
 
-
-	logic padding_flag =0;
-	logic [ADDR_WIDTH-1 : 0 ] temp_read_index; 											//for output 
-
 	logic [ADDR_WIDTH-1 : 0] total_horizontal_read;
 	assign total_horizontal_read = ((((k_dimension * k_dimension * chans_per_mem * o_dimension)*`batch_size)*TM) - 1);
 
@@ -150,22 +151,17 @@ module feeder #(M=2,N=2) (
 	logic[ADDR_WIDTH-1:0] feed_row;
 	assign feed_row = (k_dimension != 1) ? (k_dimension * chans_per_mem) : (In_cols * chans_per_mem);
 
-	logic write_full;
-	assign ram_full = write_full;											//for output 
+	logic [ADDR_WIDTH-1:0] batch_offset;
+	assign batch_offset = ((BATCH_SIZE - 1)* chans_per_mem);
 
-	logic [ADDR_WIDTH -1:0] row_index;
-	assign counter_write = row_index;										//For output 
-
-	logic [1:0] row_reuse;
-
+////////////////////////////////////////////////STATES///////////////////////////////////////////////////////////////////
 	logic [1:0] state;
 	assign state_current = state; 											//for output	
 	logic [1:0] next_state;
 
 	logic [1:0] read_state;
 	logic [1:0] next_read_state; 
-	logic [ADDR_WIDTH - 1:0] read_index; 
-	assign rd_idx = read_index;												//for output 
+
 
 
 ////////////////////////////////////////FSM state definition for writing////////////////////////////////////////
@@ -320,13 +316,16 @@ module feeder #(M=2,N=2) (
 // output
 	always_ff @(posedge clk) begin : out_transition_read
 		if(rst) begin
-			valid_read <= 0;
-			verical_ctr <= 0;
-			horizontal_ctr <=0;
-			row_ctr <=0;
+			valid_read = 0;
+			verical_ctr = 0;
+			horizontal_ctr =0;
+			row_ctr =0;
 			output_verical_ctr = 0;
 			read_index = 0;
 			horizontal_read_count = 0;
+			kernel_reuse_ctr = 0;
+			batch_ctr = 0; 
+			lm_counter = 0; 
 		end else begin
 			case(read_state)
 				IDLE_READ	:	begin
@@ -339,9 +338,9 @@ module feeder #(M=2,N=2) (
 								end
 
 				REUSE_READ	:	if (output_verical_ctr < o_dimension) begin
-									if (((horizontal_read_count == stride_write) || (horizontal_read_count == ((total_horizontal_read - read_row_beg) - 1))) && (write_full == 1) && (k_dimension != 1)) begin
+									if ((((horizontal_read_count == stride_write) || (horizontal_read_count == ((total_horizontal_read - read_row_beg) - 1))) && (write_full == 1) && (k_dimension != 1)) && (lm_counter == (LM-1))) begin
 										write_full = 0;
-									end else if (((horizontal_read_count >= 0) && (horizontal_read_count < (read_row_beg * 2))) && (k_dimension == 1)) begin
+									end else if ((((horizontal_read_count >= 0) && (horizontal_read_count < (read_row_beg * 2))) && (k_dimension == 1)) && (lm_counter == (LM-1))) begin
 										write_full = 0;
 									end
 									if (row_ctr < (feed_row-1)) begin 										
@@ -366,7 +365,7 @@ module feeder #(M=2,N=2) (
 									end else if (row_reuse == 2) begin
 										if (verical_ctr == 0) begin
 											if ((horizontal_ctr== 0) && (padding == 1'b1)) begin
-												temp_read_index = (stride_flag == 0) ? ((row_beg2-1) + (batch_ctr * chans_per_mem)):((row_beg1-1) + (batch_ctr * chans_per_mem));
+												temp_read_index = (stride_flag == 0) ? ((row_beg2-1) + (batch_ctr * chans_per_mem)) : ((row_beg1-1) + (batch_ctr * chans_per_mem));
 												padding_flag = 1;
 												read_index = 0;
 											end else begin 
@@ -406,7 +405,6 @@ module feeder #(M=2,N=2) (
 											horizontal_read_count = horizontal_read_count + 1;
 										end else if (verical_ctr == 2) begin
 											horizontal_ctr = ((batch_ctr == (`batch_size - 1)) && (kernel_reuse_ctr == (TM-1))) ? (horizontal_ctr + 1) : (horizontal_ctr);
-											// lm_counter goes here --> if lm_cou;nter < LM then lm_counter ++; horizontal_counter = 0; 
 											if (kernel_reuse_ctr < (TM-1)) begin 
 												kernel_reuse_ctr = kernel_reuse_ctr + 1; 
 												if ((output_verical_ctr == 0) || (horizontal_ctr == 0)) begin 
@@ -472,7 +470,7 @@ module feeder #(M=2,N=2) (
 												verical_ctr = 0;
 												row_ctr = 0;
 												horizontal_read_count = horizontal_read_count + 1;
-											end else if (stride == 2'b01 && stride_flag) begin
+											end else if ((stride == 2'b01) && (((lm_counter == (LM-1)) && stride_flag) || ((lm_counter < (LM-1)) && !(stride_flag)))) begin
 												if (padding == 1'b1) begin
 													temp_read_index = row_beg1-1;
 													prev_temp_read_index = temp_read_index; 
@@ -482,12 +480,18 @@ module feeder #(M=2,N=2) (
 													read_index = row_beg1;
 													prev_read_index = read_index;
 												end
+												if (lm_counter < (LM-1)) begin
+													lm_counter = lm_counter + 1; 
+													//,stride_flag = 1; 
+												end else begin
+													lm_counter = 0; 
+													stride_flag = 0; 
+													output_verical_ctr = output_verical_ctr + 1; 
+												end
 												horizontal_ctr = 0;
-												output_verical_ctr = output_verical_ctr + 1;
 												horizontal_read_count = 0;
 												row_ctr = 0;
 												verical_ctr = 0;
-												stride_flag = 0;
 												batch_ctr = 0; 
 												kernel_reuse_ctr = 0; 
 											end else begin
@@ -500,12 +504,18 @@ module feeder #(M=2,N=2) (
 													read_index = (k_dimension != 1) ? (row_beg0) : (row_beg3);
 													prev_read_index = read_index; 
 												end
+												if (lm_counter < (LM-1)) begin
+													lm_counter = lm_counter + 1; 
+													//stride_flag = 1; 
+												end else begin
+													lm_counter = 0; 
+													stride_flag = 1; 
+													output_verical_ctr = output_verical_ctr + 1; 
+												end
 												horizontal_ctr = 0;
-												output_verical_ctr = output_verical_ctr + 1;
 												horizontal_read_count = 0;
 												row_ctr = 0;
 												verical_ctr = (k_dimension != 1) ? (0) : (1);
-												stride_flag = 1;
 												batch_ctr = 0;  
 												kernel_reuse_ctr = 0; 
 											end
@@ -679,7 +689,7 @@ module feeder #(M=2,N=2) (
 													row_ctr = 0;
 													horizontal_read_count = horizontal_read_count + 1;
 												end
-											end else if (stride == 2'b01 && stride_flag) begin
+											end else if ((stride == 2'b01) && (((lm_counter == (LM-1)) && stride_flag) || ((lm_counter < (LM-1)) && !(stride_flag)))) begin
 												if(padding == 1'b1) begin
 													temp_read_index = row_beg3-1;
 													prev_temp_read_index = temp_read_index; 
@@ -689,14 +699,20 @@ module feeder #(M=2,N=2) (
 													read_index = row_beg3;
 													prev_read_index = read_index; 
 												end
+												if (lm_counter < (LM-1)) begin
+													lm_counter = lm_counter + 1; 
+													//,stride_flag = 1; 
+												end else begin
+													lm_counter = 0; 
+													stride_flag = 0; 
+													output_verical_ctr = output_verical_ctr + 1; 
+												end
 												horizontal_ctr = 0;
-												output_verical_ctr = output_verical_ctr + 1;
 												horizontal_read_count = 0;
 												row_ctr = 0;
 												verical_ctr = 0;
-												stride_flag = 0;
 												batch_ctr = 0; 
-												kernel_reuse_ctr = 0; 
+												kernel_reuse_ctr = 0;  
 											end else begin
 												if(padding == 1'b1) begin
 												 	temp_read_index = row_beg2-1;
@@ -704,7 +720,6 @@ module feeder #(M=2,N=2) (
 													read_index = 0;
 													padding_flag = 1;
 												end else begin
-													//read_index = (k_dimension != 1) ? (row_beg2) : (row_beg3);
 													if (k_dimension == 1) begin
 														read_index = (output_verical_ctr == 0) ? (row_beg3) : (row_beg1);
 													end else begin
@@ -712,14 +727,20 @@ module feeder #(M=2,N=2) (
 														prev_read_index = read_index; 
 													end
 												end
+												if (lm_counter < (LM-1)) begin
+													lm_counter = lm_counter + 1; 
+													//stride_flag = 1; 
+												end else begin
+													lm_counter = 0; 
+													stride_flag = 1; 
+													output_verical_ctr = output_verical_ctr + 1; 
+												end
 												horizontal_ctr = 0;
-												output_verical_ctr = output_verical_ctr + 1;
 												horizontal_read_count = 0;
 												row_ctr = 0;
 												verical_ctr = (k_dimension != 1) ? (0) : (1);
-												stride_flag = 1;
-												batch_ctr = 0; 	
-												kernel_reuse_ctr = 0; 										
+												batch_ctr = 0;  
+												kernel_reuse_ctr = 0;  										
 											end
 										end
 									end
@@ -733,6 +754,7 @@ module feeder #(M=2,N=2) (
 									verical_ctr = 0;
 									batch_ctr = 0;
 									kernel_reuse_ctr = 0; 
+									lm_counter = 0; 
 								end
 
 			endcase
