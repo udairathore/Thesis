@@ -17,13 +17,13 @@ module accumulator #(DATA_WIDTH=8, CTRL_WIDTH=9) (
 	logic valid_in, last;
 	logic [CTRL_WIDTH-1:0] ctrl_sr;
 
-	delay #(CTRL_WIDTH, `RAM_READ_LATENCY+2) ctrl_sreg(clk, ctrl, ctrl_sr); // 4 = PE_LATENCY (from ctrl) = RAM_RD + MUL cycle + Acc cycle
+	delay #(CTRL_WIDTH, `RAM_READ_LATENCY+1) ctrl_sreg(clk, ctrl, ctrl_sr); // 4 = PE_LATENCY (from ctrl) = RAM_RD + MUL cycle + Acc cycle
 
 
 
 	assign valid_in = ctrl_sr[0];
 	assign first = ctrl_sr[8];
-	assign last = ctrl_sr[7];
+	assign last = ctrl_sr[8];
 	assign temp = first ? {DATA_WIDTH{1'b0}} : result;
 	
 	always_ff @(posedge clk) begin : acc
@@ -34,7 +34,7 @@ module accumulator #(DATA_WIDTH=8, CTRL_WIDTH=9) (
 		end
 	end
 
-	always_ff @(posedge clk) begin : vld
+	always_ff @(last) begin : vld
 		valid_out <= last;							//for when to know the acc is done doing one entire kernel 
 	end
 	

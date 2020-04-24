@@ -134,7 +134,7 @@ module systolic_tb_v2;
     $dumpvars;
     fp = $fopen($sformatf("OUTPUT.txt"));
 
-    stride = 2'b01;
+    stride = 2'b10;
     chans_per_mem = (`chans_per_mem/`stream_width);
     In_cols = `In_cols;
     k_dimension = `K_rows;

@@ -3,8 +3,8 @@
 // -------------------------------
 
 // 1. Padded - Matrix Dimensions
-`define In_rows			3		//TAKE INTO ACCOUNT PADDING!!! --> DONT BE DUMB AGAIN! 
-`define In_cols			3
+`define In_rows			16		//TAKE INTO ACCOUNT PADDING!!! --> DONT BE DUMB AGAIN! 
+`define In_cols			16
 `define K_rows			3
 `define K_cols			3
 `define chans			2
@@ -12,7 +12,7 @@
 //`define stride 			1
 `define padding 		1
 //`define o_dimension		((`In_rows + (2 * `padding) - `K_rows)/`stride) + 1	
-`define o_dimension 	3
+`define o_dimension 	8
 `define stream_width    2
 `define batch_size  	1
 
