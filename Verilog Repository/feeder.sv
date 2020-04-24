@@ -1,5 +1,6 @@
 `include "dp_ram.sv"
 `include "defs.sv"
+`include "utils.sv"
 
 module feeder #(M=2,N=2) (
 	clk,										//clock transition for fsm 
@@ -26,12 +27,12 @@ module feeder #(M=2,N=2) (
 ////////////////////////////////////// computation parameters ///////////////////////////////
 	parameter M_ARR = M;			//2
 	parameter N_ARR = N;            //2   
-	parameter LK = `K_MAT/`K_TL;	//Tiling for Batch 
-	parameter LN = `N_MAT/`N_TL;	//Tiling for input channel 
-	parameter LM = `M_MAT/`M_TL; 	// outer reuse of (N_TL x K_TL) tile in B
-	parameter TM = `M_TL/N_ARR; 	// inner reuse of (N_TL x 1) tile in B
-	parameter TN = `N_TL/M_ARR; 	// number of partial dot-products (innermost loop)
-	parameter TK = `K_TL; 			// reuse of (M_TL x N_TL) tile in A (columns of tile in B)
+	parameter LK = 1;//`K_MAT/`K_TL;	//Tiling for Batch 
+	parameter LN = 1;//`N_MAT/`N_TL;	//Tiling for input channel 
+	parameter LM = 1;//`M_MAT/`M_TL; 	// outer reuse of (N_TL x K_TL) tile in B
+	parameter TM = 1;//`M_TL/N_ARR; 	// inner reuse of (N_TL x 1) tile in B
+	parameter TN = 1;//`N_TL/M_ARR; 	// number of partial dot-products (innermost loop)
+	parameter TK = 1;//`K_TL; 			// reuse of (M_TL x N_TL) tile in A (columns of tile in B)
 
 
 
@@ -52,7 +53,7 @@ module feeder #(M=2,N=2) (
 ////////////////////////////////////////PARAMETERS////////////////////////////////////////
 
 	parameter ADDR_WIDTH = 16;
-	parameter DATA_WIDTH = 16;
+	parameter DATA_WIDTH = 8 * `stream_width;
  ////////////////////////////////////////FSM STATES////////////////////////////////////////
 	parameter NO_USE = 2'b00; 
 	parameter IDLE_WRITE = 2'b01;
@@ -60,7 +61,6 @@ module feeder #(M=2,N=2) (
 	parameter REUSE_WRITE = 2'b11;	
 	parameter IDLE_READ = 1'b0;
 	parameter REUSE_READ = 1'b1; 
-	parameter BATCH_SIZE = 2; 
 ////////////////////////////////////////PORT DEFINITIONS////////////////////////////////////////
 
 	input [DATA_WIDTH - 1 : 0] data_in;
@@ -80,13 +80,16 @@ module feeder #(M=2,N=2) (
 	output [ADDR_WIDTH-1:0] last; 
 	output [ADDR_WIDTH-1 : 0] rd_idx;
 	output In_finish;
-	output [DATA_WIDTH - 1: 0] data_out;
+	
+	output logic [`B_WIDTH -1:0] data_out [0:M-1];
 	output logic [7:0] loop_ctrl;
 
 
 
 
 ///////////////////////////////////////Counter Definitions///////////////////////////////////////	
+
+	logic [DATA_WIDTH - 1: 0] buffer_data_out_0;
 
 	logic [DATA_WIDTH-1:0] kernel_reuse_ctr = 0;							//tm_counter 
 	logic [DATA_WIDTH-1:0] batch_ctr = 0;									//tk_counter
@@ -136,7 +139,7 @@ module feeder #(M=2,N=2) (
 	logic[ADDR_WIDTH-1: 0] row_beg3; 																					//pointer to the begining of row 3
 	logic[ADDR_WIDTH-1: 0] last_idx;																					//pointer to last index that needs to be written/read to/from
 	assign row_beg0 = (padding == 1'b0) ? 0 : (chans_per_mem);
-	assign row_beg1 = (padding == 1'b0) ? (In_cols * chans_per_mem * BATCH_SIZE) : ((In_cols * chans_per_mem*`batch_size)+(chans_per_mem));
+	assign row_beg1 = (padding == 1'b0) ? (In_cols * chans_per_mem * `batch_size) : ((In_cols * chans_per_mem*`batch_size)+(chans_per_mem));
 	assign row_beg2 = (padding == 1'b0) ? (row_beg1 + row_beg1) : (((row_beg1-(chans_per_mem)) + (row_beg1))); 
 	assign row_beg3 = (padding == 1'b0) ? (row_beg2 + row_beg1) : (((row_beg2-(chans_per_mem)) + row_beg1));
 	assign last_idx = (padding == 1'b0) ? ((row_beg3 + row_beg1) - 1) : ((((row_beg3-(chans_per_mem)) + row_beg1) - 1));
@@ -153,7 +156,7 @@ module feeder #(M=2,N=2) (
 	assign feed_row = (k_dimension != 1) ? (k_dimension * chans_per_mem) : (In_cols * chans_per_mem);
 
 	logic [ADDR_WIDTH-1:0] batch_offset;
-	assign batch_offset = ((BATCH_SIZE - 1)* chans_per_mem);
+	assign batch_offset = ((`batch_size - 1)* chans_per_mem);
 
 ////////////////////////////////////////////////STATES///////////////////////////////////////////////////////////////////
 	logic [1:0] state;
@@ -167,7 +170,7 @@ module feeder #(M=2,N=2) (
 logic tn_first, tn_last, tk_first, tk_last, tm_first, tm_last, tl_first, tl_last;
 
 //horizontal_ctr and output_vericle_counter
-	assign tn_first = ((row_ctr == 0) && (verical_ctr == 0)); 
+	assign tn_first = ((row_ctr == 0) && (verical_ctr == 0) && (valid_read)); 
 	assign tn_last = ((row_ctr == feed_row-1) && (verical_ctr == 2));
 	assign tk_first = (batch_ctr == 0);
 	assign tk_last = (batch_ctr == (`batch_size-1)) && tn_last;							
@@ -266,7 +269,7 @@ logic tn_first, tn_last, tk_first, tk_last, tm_first, tm_last, tl_first, tl_last
 									row_index = row_index + 1;
 								end	
 				NO_USE  	:	begin
-									row_index = 0;
+									row_index = (padding == 1) ? row_beg1 : 0;
 									row_reuse = 0;
 									write_full = 0; 
 								end
@@ -368,7 +371,7 @@ logic tn_first, tn_last, tk_first, tk_last, tm_first, tm_last, tl_first, tl_last
 												read_index = 0;
 												padding_flag = 1;
 											end else begin
-												read_index = (((row_ctr + 1) % (chans_per_mem)) == 0) ? ((read_index + batch_offset) + 1) : (read_index + 1);
+												read_index = ((((row_ctr + 1) % (chans_per_mem)) == 0) && (`batch_size > 1)) ? ((read_index + batch_offset) + 1) : (read_index + 1);
 												/*if (((row_ctr + 1) % (chans_per_mem)) == 0) begin
 													if (k_dimension != 1) begin
 														read_index = ((read_index + batch_offset) + 1);
@@ -812,7 +815,19 @@ sync_dp_ram #(DATA_WIDTH, ADDR_WIDTH) mem (
 	.we_b(), 
 	.clk(clk),
 	.q_a(), 	
-	.q_b(data_out)
+	.q_b(buffer_data_out_0)
 );
+
+logic [`B_WIDTH-1:0] buffer_data_out_1 [0:M-1];
+
+genvar i;
+	generate
+		for (i=0; i<M; i++) begin
+			assign buffer_data_out_1[i] = buffer_data_out_0[(i+1)*`B_WIDTH -1:i*`B_WIDTH];
+		end
+	endgenerate
+
+	// wavefront out
+	wavefront_multi #(`B_WIDTH, M) wave_feeder(clk, buffer_data_out_1, data_out);
 
 endmodule : feeder

@@ -1,6 +1,6 @@
 `include "defs.sv"
 
-module sync_dp_ram (
+module sync_dp_ram  #(DATA_WIDTH=16, ADDR_WIDTH=8, MEM_INIT="C:/Users/Admin/Desktop/Verilog Projects/Memory_Data/zero.mem") (
 	data_a, 
 	data_b,
 	addr_a, 
@@ -13,8 +13,8 @@ module sync_dp_ram (
 	q_b
 );
 
-	parameter DATA_WIDTH = 8 ;
-	parameter ADDR_WIDTH = 8 ;
+	//parameter DATA_WIDTH = 16;
+	//parameter ADDR_WIDTH = 16;
 	parameter TOTAL_SPACE = (((`In_rows * (`chans_per_mem/`stream_width) * `RAM_DEPTH_ROWS)+(`chans_per_mem/`stream_width))*`batch_size);
 	parameter RAM_DEPTH = TOTAL_SPACE ;
 	
@@ -28,6 +28,17 @@ module sync_dp_ram (
 
 	// Declare the RAM variable
 	reg [DATA_WIDTH - 1 :0] ram[RAM_DEPTH - 1 : 0];	
+
+	initial begin
+		for (int i=0; i<RAM_DEPTH; i++) begin
+			ram[i] = 0;
+		end
+	end
+
+	initial begin
+	   	$readmemh(MEM_INIT, ram);
+	end
+
 	// Port A
  	always @ (posedge clk)
 	begin

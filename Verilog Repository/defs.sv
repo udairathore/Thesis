@@ -4,17 +4,17 @@
 
 // 1. Padded - Matrix Dimensions
 `define In_rows			3		//TAKE INTO ACCOUNT PADDING!!! --> DONT BE DUMB AGAIN! 
-`define In_cols			6
+`define In_cols			3
 `define K_rows			3
 `define K_cols			3
-`define chans			4
-`define chans_per_mem	4		
+`define chans			1
+`define chans_per_mem	1		
 //`define stride 			1
 `define padding 		1
 //`define o_dimension		((`In_rows + (2 * `padding) - `K_rows)/`stride) + 1	
 `define o_dimension 	3
 `define stream_width    1
-`define batch_size  	2
+`define batch_size  	1
 
 
 
@@ -36,7 +36,7 @@
 `define A_WIDTH 8
 `define B_WIDTH 8
 `define C_WIDTH 32
-`define CTRL_WIDTH 4
+`define CTRL_WIDTH 8
 
 // 4. PE computation
 `define A_WORDS 1
@@ -66,6 +66,6 @@
 `define FEEDER_CTRL_LOOP_OUTER 3
 
 // 10. path directory to data
-//`define DATA_PATH "/home/sean/projects/fast_mm/src/test/data"
+`define DATA_PATH "C:/Users/Admin/Desktop/Verilog Projects/Memory_Data/"
 //`define DATA_PATH "/home/sean/brown/src/test/data"
 
