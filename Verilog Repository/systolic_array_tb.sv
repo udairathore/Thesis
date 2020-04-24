@@ -182,7 +182,7 @@ module systolic_tb_v2;
 
   always @(posedge clk)
   begin
-    if ((start_read == 0) && (valid_pe_output[0])) begin
+    if ((start_read == 0) && (valid_pe_output[(N-1)])) begin
       $finish;
     end
   end

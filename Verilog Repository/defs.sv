@@ -7,13 +7,13 @@
 `define In_cols			16
 `define K_rows			3
 `define K_cols			3
-`define chans			2
-`define chans_per_mem	2		
+`define chans			4
+`define chans_per_mem	4		
 //`define stride 			1
 `define padding 		1
 //`define o_dimension		((`In_rows + (2 * `padding) - `K_rows)/`stride) + 1	
 `define o_dimension 	8
-`define stream_width    2
+`define stream_width    4
 `define batch_size  	1
 
 
@@ -29,8 +29,8 @@
 `define K_TL 2
 
 // 2. Systolic Array dimensions
-`define M_ARR 2			// --> for the input channels 
-`define N_ARR 1			//channels for the feeder
+`define M_ARR 4			// --> for the input channels 
+`define N_ARR 4			//channels for the feeder
 
 // 3. Data path params
 `define A_WIDTH 8
