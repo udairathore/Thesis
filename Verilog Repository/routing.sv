@@ -1,7 +1,7 @@
 `include "defs.sv"
 
 
-module rtr_systolic_general #(I_WIDTH=8, W_WIDTH=8, P_WIDTH=20, CTRL_WIDTH=1) (
+module rtr_systolic_general #(I_WIDTH=8, W_WIDTH=8, P_WIDTH=20, CTRL_WIDTH=9) (
 	input clk,
 	// global
 	input [CTRL_WIDTH-1:0] global_ctrl_in,

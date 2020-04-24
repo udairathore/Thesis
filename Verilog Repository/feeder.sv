@@ -82,7 +82,7 @@ module feeder #(M=2,N=2) (
 	output In_finish;
 	
 	output logic [`B_WIDTH -1:0] data_out [0:M-1];
-	output logic [7:0] loop_ctrl;
+	output logic [8:0] loop_ctrl;
 
 
 
@@ -167,8 +167,14 @@ module feeder #(M=2,N=2) (
 	logic [1:0] next_read_state; 
 	
 ////////////////////////////////////////////////CONTROL///////////////////////////////////////////////////////////////////
-logic tn_first, tn_last, tk_first, tk_last, tm_first, tm_last, tl_first, tl_last;
+logic tn_first, tn_last, tk_first, tk_last, tm_first, tm_last, tl_first, tl_last, start_read, read_ready;
 
+	always @(posedge clk) 
+	begin
+		if (ram_full) begin
+			read_ready = 1; 
+		end
+	end
 //horizontal_ctr and output_vericle_counter
 	assign tn_first = ((row_ctr == 0) && (verical_ctr == 0) && (valid_read)); 
 	assign tn_last = ((row_ctr == feed_row-1) && (verical_ctr == 2));
@@ -177,9 +183,10 @@ logic tn_first, tn_last, tk_first, tk_last, tm_first, tm_last, tl_first, tl_last
 	assign tm_first = (kernel_reuse_ctr == 0);						
 	assign tm_last = (kernel_reuse_ctr == TM-1) && tk_last;							
 	assign lm_first = (lm_counter == 0); 												
-	assign lm_last = (lm_counter == LM-1) && tm_last;									 
+	assign lm_last = (lm_counter == LM-1) && tm_last;
+	assign start_read = (read_ready && valid_read);									 
 	assign loop_ctrl = {tn_first, tn_last, tk_first, tk_last,
-						tm_first, tm_last, lm_first, lm_last};
+						tm_first, tm_last, lm_first, lm_last, start_read};
 
 
 ////////////////////////////////////////FSM state definition for writing////////////////////////////////////////

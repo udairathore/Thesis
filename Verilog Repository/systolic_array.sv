@@ -1,6 +1,7 @@
 `include "defs.sv" 
 `include "utils.sv"
 `include "routing.sv"
+`include "pe.sv"
 
 
 /*
@@ -17,7 +18,7 @@ module systolic #(M=2, N=2) (
 
 	output logic [`C_WIDTH-1:0] psum [0:N-1],
 
-	input [`CTRL_WIDTH-1:0] wctrl [0:N-1][0:M-1],
+	input wctrl [0:N-1][0:M-1],
 	input [`A_WIDTH-1:0] weights [0:N-1][0:M-1],
 
 	output logic valid_out [0:N-1]
@@ -50,7 +51,7 @@ module systolic #(M=2, N=2) (
 
 		// top feeder
 		for (j=0; j<N; j=j+1) begin : col_feeder
-			assign global_psum[0][j] = `C_WIDTH'b0;
+			assign global_psum[0][j] = `C_WIDTH'b0;					//This is the bias input or the first partial sum --> if no bias should be 0. 
 		end
 
 		// mesh network
@@ -71,7 +72,7 @@ module systolic #(M=2, N=2) (
 					.local_psum_in(local_pout[i][j])				
 				);
 
-				pe_ws #(`B_WIDTH, `C_WIDTH, `CTRL_WIDTH, $sformatf("%spe_%0d%0d.txt",`DATA_PATH, i,j)) pe(
+				pe_ws #(`B_WIDTH, `C_WIDTH, `CTRL_WIDTH, $sformatf("%spe_%0d%0d.mem",`DATA_PATH, i,j)) pe(
 					.clk(clk),
 					.rst(rst),
 					.ctrl(local_ctrl[i][j]),
@@ -86,12 +87,9 @@ module systolic #(M=2, N=2) (
 		end
 
 		// bottom drain
-		for (j=0; j<N; j=j+1) begin : col_drain
-			assign psum[j] = global_psum[M][j]; // output
-		end
-
+		
 		// Accumulator
-		/*
+		
 		assign global_ctrl[M][0] = wave_ctrl[M];
 		for (j=0; j<N; j=j+1) begin : col_accumulator
 
@@ -111,7 +109,7 @@ module systolic #(M=2, N=2) (
 				.valid_out(valid_out[j])
 			);
 		
-		end*/
+		end
 	endgenerate
 
 

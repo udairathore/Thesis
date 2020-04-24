@@ -3,9 +3,9 @@
 module kernel_mac #(OP_WIDTH=8, ACC_WIDTH=20, LANES=1) (
 	input clk, // not used here
 	input rst, // not used here
-	input [0:LANES-1][OP_WIDTH-1:0] weights,
-	input [0:LANES-1][OP_WIDTH-1:0] iacts,
-	input [0:LANES-1][ACC_WIDTH-1:0] psums,
+	input [0:LANES-1][OP_WIDTH-1:0] weights,					//Weights in memory 
+	input [0:LANES-1][OP_WIDTH-1:0] iacts,						//Input Tensor 	
+	input [0:LANES-1][ACC_WIDTH-1:0] psums,						//Bias/Partial Sum from other PE coming in
 	output logic [0:LANES-1][ACC_WIDTH-1:0] outputs
 	);
 

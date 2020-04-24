@@ -1,41 +1,27 @@
-`timescale 1 ns/10 ps
-
-`include "systolic_array.sv"
-`include "defs.sv"
+//`include "dp_ram.sv"
 `include "feeder.sv"
+`include "defs.sv"
+`include "pe.sv"
+`include "accumulator.sv"
+`include "utils.sv"
+//`include "defs.sv"
 
-module systolic_tb_v2;
 
-  // must match "make_mem.py" arguments
-  //parameter B_ROWS = 4;
-  //parameter B_COLS = 4;
-  //parameter WORDS_PER_PACKET = 2;
-  //parameter PACKET_SIZE = `OPWIDTH*WORDS_PER_PACKET;
-  //parameter NUM_PACKETS = (B_ROWS*B_COLS/WORDS_PER_PACKET);
-  //parameter M_DIM = `M_ARR;
-  //parameter N_DIM = `N_ARR;
+module pe_tb;
+
   parameter DATA_WIDTH = 8;
   parameter ADDR_WIDTH = 16;
+  //CHANGE HERE -->
+  parameter TOTAL_WRITE = (`In_rows * `In_cols * (`chans_per_mem/`stream_width)* `batch_size); 
   parameter M = `M_ARR; 
   parameter N = `N_ARR; 
-  parameter TOTAL_WRITE = (`In_rows * `In_cols * (`chans_per_mem/`stream_width)* `batch_size); 
-
-
- /* initial begin
-    $display("Packet Size: %0d bits (%0d x %0d-bit words per packet)", PACKET_SIZE, WORDS_PER_PACKET, `OPWIDTH);
-    $display("Array Dimensions: %0dx%0d", M_DIM, N_DIM);
-    $display("Stream B Dimensions: %0dx%0d", B_ROWS, B_COLS);
-  end*/
 
   // clock declaration
   logic clk = 0;
   logic rst = 0;
 
   // clock generation
-  always #2 clk++;
-
-
-  //CHANGE HERE -->
+  always #1 clk++;
 
 
   ///////////FEEDER PORTS//////////////
@@ -65,7 +51,7 @@ module systolic_tb_v2;
   integer fp;
 
 
-  feeder #(M, N) fed ( clk,          //clock transition for fsm 
+  feeder #(1,1) fed ( clk,          //clock transition for fsm 
     rst,          //used to reset the whole fsm
     valid_write,      //determines when to write and when not to write --> probably based on write full??
     start,          //probably use it to determine when is the first time you are writing after reset, does not change once started
@@ -89,44 +75,65 @@ module systolic_tb_v2;
     );
 
 
+  
+/////////////////////////PE DEFS//////////////////////////////////////
   //weight NOC
-  logic wctrl [0:N-1][0:M-1];
-  genvar l, k; 
-    for (k =0; k<M; k=k+1) begin
-      for (l=0; l<N; l=l+1) begin
-        assign wctrl[l][k] = 1'b0;         
-      end
-    end
-
-  logic [`C_WIDTH-1:0] psum [N];
-  logic valid_pe_output [0:N-1];
-  // design under test
-  systolic #(M, N) array (
-    .clk(clk), 
-    .rst(rst), 
-    .ctrl(loop_ctrl), 
-    .iact(data_out), 
-    .psum(psum),
-    .wctrl(wctrl),
-    .valid_out(valid_pe_output)
-    );
+  logic wctrl;
+  assign wctrl = 0;
 
 
+  // psum NOC
+  logic [20-1:0] psum_in;
+  logic [20-1:0] psum_out; 
 
-  //LOAD FEEDER AND ASSIGN DATA IN CORRECTLY
+  assign psum_in = {20{1'b0}};
+pe_ws #(8, 20, 9, $sformatf("%spe_00.mem",`DATA_PATH)) pe_tst (
+  .clk(clk),
+  .rst(rst), 
+
+  // ctrl NOC
+  .ctrl(loop_ctrl),
+  
+  // input NOC
+  .iact(data_out[0]),
+
+  //weight NOC
+  .wctrl(wctrl),
+
+  // psum NOC
+  .psum_in(psum_in),
+  .psum_out(psum_out) 
+  
+  );
+  
+
+  logic [20-1:0] pe_output; 
+  logic valid_pe_output; 
+  
+accumulator #(20, 9) acc_tst (
+  .clk(clk),
+  .rst(rst),
+  .ctrl(loop_ctrl),
+  .psum(psum_out),
+  .data_out(pe_output),
+  .valid_out(valid_pe_output)
+  );
+
+
   initial begin
     $display("loading feeders");
     $readmemh($sformatf(`DATA_PATH, "Bmem_no_batch.txt"), feeder);
+
   end
 
   logic [(DATA_WIDTH * `stream_width)-1: 0] tempB = 0;
+
   genvar u;
   for (u=0; u<`stream_width; u++) begin
     assign data_in[(u+1)*`B_WIDTH -1:u*`B_WIDTH] = tempB[(`stream_width-u)*`B_WIDTH -1:(`stream_width-u-1)*`B_WIDTH];
   end
 
-
- // test generation
+  // test generation
   initial begin
 
     // dump files
@@ -182,7 +189,7 @@ module systolic_tb_v2;
 
   always @(posedge clk)
   begin
-    if ((start_read == 0) && (valid_pe_output[0])) begin
+    if ((start_read == 0) && (valid_pe_output)) begin
       $finish;
     end
   end

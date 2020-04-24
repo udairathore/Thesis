@@ -1,9 +1,8 @@
 `include "defs.sv" 
 //`include "mem/core.sv"
 `include "mac.sv"
-`include "dp_ram.sv"
 
-module pe_ws #(OP_WIDTH=8, ACC_WIDTH=20, CTRL_WIDTH=8, MEM_INIT="zero.txt") (
+module pe_ws #(OP_WIDTH=8, ACC_WIDTH=20, CTRL_WIDTH=9, MEM_INIT="zero.txt") (
 	input clk,
 	input rst, 
 
@@ -33,7 +32,7 @@ module pe_ws #(OP_WIDTH=8, ACC_WIDTH=20, CTRL_WIDTH=8, MEM_INIT="zero.txt") (
 	logic read_valid, read_reset, write_valid;
 
 	assign read_valid = ctrl[0];
-	assign read_reset = ctrl[1];
+	assign read_reset = ctrl[7];
 	assign write_valid = wctrl;
 	
 	always_ff @(posedge clk) begin : read_incr
@@ -65,7 +64,7 @@ module pe_ws #(OP_WIDTH=8, ACC_WIDTH=20, CTRL_WIDTH=8, MEM_INIT="zero.txt") (
 		.data_a(),
 		.q_a(),
 		.addr_a(),
-		.we_a(),
+		.we_a(write_valid),
 		// port B
 		.data_b(),
 		.q_b(wdata),

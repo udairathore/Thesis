@@ -10,9 +10,8 @@ module in_ram_write_tb;
   parameter ADDR_WIDTH = 16;
   //CHANGE HERE -->
   parameter TOTAL_WRITE = (`In_rows * `In_cols * (`chans_per_mem/`stream_width)* `batch_size); 
-  parameter READ_LAST = (`K_cols * `K_rows * (`chans_per_mem/`stream_width) * `o_dimension * `o_dimension) * `batch_size;
-  parameter M =1; 
-  parameter N =1; 
+  parameter M = `M_ARR; 
+  parameter N = `N_ARR; 
 
   // clock declaration
   logic clk = 0;
@@ -21,6 +20,8 @@ module in_ram_write_tb;
   // clock generation
   always #1 clk++;
 
+
+  ///////////FEEDER PORTS//////////////
   logic [(DATA_WIDTH*`stream_width)-1: 0] data_in;
   logic [ADDR_WIDTH-1: 0] addr;
   logic valid_write, start;
@@ -38,15 +39,13 @@ module in_ram_write_tb;
   logic [ADDR_WIDTH-1:0] In_cols;
   logic [ADDR_WIDTH-1:0] o_dimension;
   logic [ADDR_WIDTH-1:0] k_dimension;
+  logic [ADDR_WIDTH-1:0] rd_idx;
+  integer total_write = 0;
+  logic [8:0] loop_ctrl;
   logic last_out; 
   integer i = 0;
   integer j = 0; 
-  integer k = 0;
-  integer x = 0;
   integer fp;
-  logic [ADDR_WIDTH-1:0] rd_idx;
-  integer total_write = 0;
-  logic [7:0] loop_ctrl;
 
 
   feeder #(1,1) fed ( clk,          //clock transition for fsm 
@@ -95,12 +94,10 @@ module in_ram_write_tb;
     fp = $fopen($sformatf("OUTPUT.txt"));
 
     stride = 2'b01;
-    //AND HERE -->
-    chans_per_mem = (1/`stream_width);
-
-    In_cols = 3;
-    k_dimension = 3;
-    o_dimension = 3;
+    chans_per_mem = (`chans_per_mem/`stream_width);
+    In_cols = `In_cols;
+    k_dimension = `K_rows;
+    o_dimension = `o_dimension;
     total_write = (In_cols * In_cols * chans_per_mem)*`batch_size; 
     rst <= 0;
     start <= 0;
