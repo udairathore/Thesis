@@ -2,7 +2,7 @@
 `include "utils.sv"
 `include "routing.sv"
 `include "pe.sv"
-
+`include "drain.sv"
 
 /*
 # Systolic array of MxN PEs, weight stationary, wavefront
@@ -16,12 +16,12 @@ module systolic #(M=2, N=2) (
 	input [`CTRL_WIDTH-1:0] ctrl,
 	input [`B_WIDTH-1:0] iact [0:M-1],
 
-	output logic [`C_WIDTH-1:0] psum [0:N-1],
+	output logic [`C_STREAM_WIDTH-1:0] data_out,
 
 	input wctrl [0:N-1][0:M-1],
 	input [`A_WIDTH-1:0] weights [0:N-1][0:M-1],
 
-	output logic valid_out [0:N-1]
+	output logic valid_out //[0:N-1]
 
 	);
 
@@ -89,7 +89,8 @@ module systolic #(M=2, N=2) (
 		// bottom drain
 		
 		// Accumulator
-		
+		logic [`C_WIDTH-1:0] psum [0:N-1];
+		logic systolic_valid_out [0:N-1];
 		assign global_ctrl[M][0] = wave_ctrl[M];
 		for (j=0; j<N; j=j+1) begin : col_accumulator
 
@@ -106,11 +107,19 @@ module systolic #(M=2, N=2) (
 				.ctrl(local_ctrl[M][j]),
 				.psum(global_psum[M][j]),
 				.data_out(psum[j]),
-				.valid_out(valid_out[j])
+				.valid_out(systolic_valid_out[j])
 			);
 		
 		end
 	endgenerate
 
+ drain #(M, N) drain(
+	.clk(clk),
+	.rst(rst),
+	.valid_in(systolic_valid_out[0]),
+	.data_in(psum),
+	.data_out(data_out),
+	.valid_out(valid_out)
+	);
 
 endmodule

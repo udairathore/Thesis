@@ -32,7 +32,7 @@ module pe_ws #(OP_WIDTH=8, ACC_WIDTH=20, CTRL_WIDTH=9, MEM_INIT="zero.txt") (
 	logic read_valid, read_reset, write_valid;
 
 	assign read_valid = ctrl[0];
-	assign read_reset = ctrl[7];
+	assign read_reset = (ctrl[7] && ctrl[3]);
 	assign write_valid = wctrl;
 	
 	always_ff @(posedge clk) begin : read_incr

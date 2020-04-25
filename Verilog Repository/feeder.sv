@@ -30,7 +30,7 @@ module feeder #(M=2,N=2) (
 	parameter LK = 1;//`K_MAT/`K_TL;	//Tiling for Batch 
 	parameter LN = 1;//`N_MAT/`N_TL;	//Tiling for input channel 
 	parameter LM = 1;//`M_MAT/`M_TL; 	// outer reuse of (N_TL x K_TL) tile in B
-	parameter TM = 1;//`M_TL/N_ARR; 	// inner reuse of (N_TL x 1) tile in B
+	parameter TM = `M_TL/N_ARR; 		 // inner reuse of (N_TL x 1) tile in B
 	parameter TN = 1;//`N_TL/M_ARR; 	// number of partial dot-products (innermost loop)
 	parameter TK = 1;//`K_TL; 			// reuse of (M_TL x N_TL) tile in A (columns of tile in B)
 

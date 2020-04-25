@@ -3,8 +3,8 @@
 // -------------------------------
 
 // 1. Padded - Matrix Dimensions
-`define In_rows			16		//TAKE INTO ACCOUNT PADDING!!! --> DONT BE DUMB AGAIN! 
-`define In_cols			16
+`define In_rows			3		//TAKE INTO ACCOUNT PADDING!!! --> DONT BE DUMB AGAIN! 
+`define In_cols			3
 `define K_rows			3
 `define K_cols			3
 `define chans			4
@@ -12,8 +12,8 @@
 //`define stride 			1
 `define padding 		1
 //`define o_dimension		((`In_rows + (2 * `padding) - `K_rows)/`stride) + 1	
-`define o_dimension 	8
-`define stream_width    4
+`define o_dimension 	2
+`define stream_width    2
 `define batch_size  	1
 
 
@@ -24,13 +24,13 @@
 `define K_MAT 6					//Batch Size --> For convolution Batchsize*H*W --> K_MAT is the key loop
 
 // 2. Tile sizes
-`define M_TL 4
-`define N_TL 4
-`define K_TL 2
+`define M_TL 4					//output channels in 1 tile
+`define N_TL 4					//input channels in 1 tile 
+`define K_TL 1
 
 // 2. Systolic Array dimensions
-`define M_ARR 4			// --> for the input channels 
-`define N_ARR 4			//channels for the feeder
+`define M_ARR 2			// --> for the input channels 
+`define N_ARR 2			//channels for the feeder
 
 // 3. Data path params
 `define A_WIDTH 8

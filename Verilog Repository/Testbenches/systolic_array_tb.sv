@@ -63,6 +63,7 @@ module systolic_tb_v2;
   integer i = 0;
   integer j = 0; 
   integer fp;
+  integer fp2;
 
 
   feeder #(M, N) fed ( clk,          //clock transition for fsm 
@@ -98,20 +99,26 @@ module systolic_tb_v2;
       end
     end
 
-  logic [`C_WIDTH-1:0] psum [N];
-  logic valid_pe_output [0:N-1];
+  logic [`C_STREAM_WIDTH-1:0] psum;
+  logic valid_pe_output;
   // design under test
   systolic #(M, N) array (
     .clk(clk), 
     .rst(rst), 
     .ctrl(loop_ctrl), 
     .iact(data_out), 
-    .psum(psum),
+    .data_out(psum),
     .wctrl(wctrl),
     .valid_out(valid_pe_output)
     );
 
 
+  always @( posedge clk) 
+  begin
+    if (valid_pe_output) begin
+      $fwriteh(fp2, "%0H ", output_data);
+    end
+  end
 
   //LOAD FEEDER AND ASSIGN DATA IN CORRECTLY
   initial begin
@@ -120,9 +127,14 @@ module systolic_tb_v2;
   end
 
   logic [(DATA_WIDTH * `stream_width)-1: 0] tempB = 0;
+   logic [`C_STREAM_WIDTH-1:0] output_data;
   genvar u;
   for (u=0; u<`stream_width; u++) begin
     assign data_in[(u+1)*`B_WIDTH -1:u*`B_WIDTH] = tempB[(`stream_width-u)*`B_WIDTH -1:(`stream_width-u-1)*`B_WIDTH];
+  end
+  genvar v;
+  for (v=0; v<`stream_width; v++) begin
+    assign output_data[(v+1)*`C_WIDTH -1:v*`C_WIDTH] = psum[(`stream_width-v)*`C_WIDTH -1:(`stream_width-v-1)*`C_WIDTH];
   end
 
 
@@ -133,6 +145,7 @@ module systolic_tb_v2;
     $dumpfile("dump.vcd"); 
     $dumpvars;
     fp = $fopen($sformatf("OUTPUT.txt"));
+    fp2 = $fopen($sformatf("OUTPUT_systolic.txt"));
 
     stride = 2'b10;
     chans_per_mem = (`chans_per_mem/`stream_width);
@@ -182,7 +195,7 @@ module systolic_tb_v2;
 
   always @(posedge clk)
   begin
-    if ((start_read == 0) && (valid_pe_output[(N-1)])) begin
+    if ((start_read == 0) && (valid_pe_output)) begin
       $finish;
     end
   end
