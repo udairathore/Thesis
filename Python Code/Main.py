@@ -15,23 +15,70 @@ import pickle
 from torch import nn
 
 
+
+
+data_folder = "C:/Users/Admin/Desktop/Verilog Projects/Memory_Data/"
+
+
+
+
+
 output_file = open("myfile2.txt", "w")
 output_file_2 = open("OUTPUT_COMPARE.txt", "w")
-output_file_3 = open("myfile3.txt", "w")
+output_file_3 = open(data_folder + "Bmem_no_batch.txt", "w")
 output_file_4 = open("OUTPUT_COMPARE_HEX.txt", "w")
-output_file_5 = open("myfile4.txt", "w")
+output_file_5 = open(data_folder +"Bmem.txt", "w")
+output_file_8 = open("OUTPUT_COMPARE_NO_BATCH.txt", "w")
+
+
+###########################PE's################################
+
+output_file_6 = open(data_folder + "pe_00.mem", "w")
+output_file_7 = open(data_folder + "pe_10.mem", "w")
+output_file_9 = open(data_folder + "pe_20.mem", "w")
+output_file_10 = open(data_folder + "pe_30.mem", "w")
+output_file_11 = open(data_folder + "pe_01.mem", "w")
+output_file_12 = open(data_folder + "pe_11.mem", "w")
+output_file_13 = open(data_folder + "pe_21.mem", "w")
+output_file_14 = open(data_folder + "pe_31.mem", "w")
+output_file_15 = open(data_folder + "pe_02.mem", "w")
+output_file_16 = open(data_folder + "pe_12.mem", "w")
+output_file_17 = open(data_folder + "pe_22.mem", "w")
+output_file_18 = open(data_folder + "pe_32.mem", "w")
+output_file_19 = open(data_folder + "pe_03.mem", "w")
+output_file_20 = open(data_folder + "pe_13.mem", "w")
+output_file_21 = open(data_folder + "pe_23.mem", "w")
+output_file_22 = open(data_folder + "pe_33.mem", "w")
+
+
+
 # define height, width and depth(channels) of input tensor, kernel and output tensor respectively
 # pointers is a list of pointers that would point to the end of a W*Ic block in memory
 # padding = n --> (nxn padding)
 # stride = n --> (nxn stride)
 
+#Simulation Parameters
+
+batch_size = 2 #K_TL
+
+M = 8
+N = 16
+output_chans = 384
+C_width = 5
+
+LM = 1
+TM = 1  # (output_chans / N)
+
 padding = 1
 stride = 1
 
-i_dimension = 3
-i_rows = 3
-i_cols = 3
-i_chans = 4
+stream_width = M
+C_stream_width = N
+
+i_dimension = 13
+i_rows = 13
+i_cols = 13
+i_chans = 256
 
 i_z_rows = i_rows + 2
 i_z_cols = i_cols + 2
@@ -40,10 +87,10 @@ i_z_chans = i_chans
 k_dimension = 3
 k_rows = 3
 k_cols = 3
-k_chans = 4
+k_chans = 256
 
-# FOR Stride more than 1 :
 o_dimension = math.floor((i_dimension + (2 * padding) - k_dimension)/stride) + 1
+
 # FOR STRIDE = 1:
 #o_dimension = i_dimension + (2* (math.floor(k_dimension/2))) - (k_dimension - 1)
 print(o_dimension)
@@ -82,8 +129,37 @@ pprint.pprint(zero_padding_input_tensor2)
 
 
 # use three_d_generator to generate 3D unique kernel
-kernel =  three_d_generator(k_rows, k_cols, k_chans)
+kernel_tensor = []
+kernel_tensor2 = []
+for kt in range(output_chans):
+    kernel = three_d_generator(k_rows, k_cols, k_chans)
+    kernel_tensor2.append(kernel)
+    kernel_one_d_stream = one_d_gen(kernel, k_rows, k_cols, k_chans)
+    pointer_index = k_rows * k_cols * k_chans
+    for i in range(pointer_index, len(kernel_one_d_stream)):
+        kernel_one_d_stream.pop()
+    kernel_tensor.append(kernel_one_d_stream)
 
+print(f'kernel_tensor : {kernel_tensor}')
+print(f'kernel_tensor LENGTH : {len(kernel_tensor)}')
+print(f'kernel_tensor[last][0] : {kernel_tensor[0][len(kernel_one_d_stream)-1]}')
+print(f'kernel_tensor[0][1] : {kernel_tensor[0][1]}')
+print(f'kernel_tensor[0][2] : {kernel_tensor[0][2]}')
+print(f'kernel_tensor[1][0] : {kernel_tensor[1][0]}')
+print(f'kernel_tensor[1][1] : {kernel_tensor[1][1]}')
+
+'''
+kernel =  three_d_generator(k_rows, k_cols, k_chans)
+kernel2 =  three_d_generator(k_rows, k_cols, k_chans)
+kernel3 =  three_d_generator(k_rows, k_cols, k_chans)
+kernel4 =  three_d_generator(k_rows, k_cols, k_chans)
+
+
+kernel_one_d_stream = one_d_gen(kernel, k_rows, k_cols, k_chans)
+kernel_one_d_stream2 = one_d_gen(kernel2, k_rows, k_cols, k_chans)
+kernel_one_d_stream3 = one_d_gen(kernel3, k_rows, k_cols, k_chans)
+kernel_one_d_stream4 = one_d_gen(kernel4, k_rows, k_cols, k_chans)
+'''
 # use kernel_three_d_generator to generate 2D kernel and copy to 3 channels
 # twoD_kernel = []
 # kernel, twoD_kernel = kernel_three_d_generator(k_rows, k_cols, k_chans)\
@@ -168,11 +244,30 @@ for i in range((len(input_tensor_one_d) + len(input_tensor_one_d2))):
 
 print(f'interleaved : {interleaved_one_d_stream}')
 
+words_per_packet = 2
+x=0
+y = 0
+hexlist = []
+for y in range(len(interleaved_one_d_stream)):
+    hex_value = hex(interleaved_one_d_stream[y]).split('0x')[1]
+    if (len(hex_value) == 1):
+        hex_value = "0"+hex_value
+    hexlist.append(hex_value)
+#hexlist = [(hex(interleaved_one_d_stream[x])).split('0x')[1] for x in range(len(interleaved_one_d_stream))]
 
-x=0;
-hexlist = [hex(interleaved_one_d_stream[x]) for x in range(len(interleaved_one_d_stream))]
-print(hexlist)
-listToStr = ' '.join(map(str, hexlist))
+listToStr = ''
+x = 0
+print(f'hexlist[0] : {hexlist[0]}')
+for x in range(0, len(hexlist), 1):
+    if ((x+1) % stream_width) == 0:
+        listToStr = listToStr + hexlist[x] + ' '
+    else:
+        listToStr = listToStr + hexlist[x]
+
+
+
+print(f'hexlist: {hexlist}')
+# listToStr = ' '.join(map(str, hexlist))
 output_file_5.write(listToStr)
 output_file_5.close()
 ##################################################################################
@@ -181,7 +276,7 @@ output_file_5.close()
 #one_d_stream = one_d_gen(input_tensor, i_rows, i_cols, i_chans)
 #####################################################################################
 one_d_stream_2 = one_d_gen(input_tensor, i_rows, i_cols, i_chans)
-kernel_one_d_stream = one_d_gen(kernel, k_rows, k_cols, k_chans)
+
 
 # get the pointers from end of one_d_stream of data and store in pointers list
 
@@ -190,25 +285,38 @@ kernel_one_d_stream = one_d_gen(kernel, k_rows, k_cols, k_chans)
 pointer_index = k_rows*k_cols*k_chans
 for i in range(pointer_index, len(kernel_one_d_stream)):
     kernel_one_d_stream.pop()
+    kernel_one_d_stream2.pop()
+    kernel_one_d_stream3.pop()
+    kernel_one_d_stream4.pop()
 
 ##########################################
 # #pickle.dump(one_d_stream, output_file)
 
-x=0;
-hexlist = [hex(one_d_stream[x]) for x in range(len(one_d_stream))]
-print(hexlist)
-listToStr = ' '.join(map(str, hexlist))
-output_file.write(listToStr)
-output_file.close()
-x=0;
-hexlist2 = [hex(one_d_stream_2[x]) for x in range(len(one_d_stream_2))]
-print(hexlist2)
-listToStr = ' '.join(map(str, hexlist2))
-output_file_3.write(listToStr)
+y = 0
+hexlist_B_no_batch = []
+for y in range(len(input_tensor_one_d)):
+    hex_value_2 = hex(input_tensor_one_d[y]).split('0x')[1]
+    if (len(hex_value_2) == 1):
+        hex_value_2 = "0"+hex_value_2
+    hexlist_B_no_batch.append(hex_value_2)
+
+
+listToStr_no_batch = ''
+x = 0
+
+for x in range(0, len(hexlist_B_no_batch), 1):
+    if ((x+1) % stream_width) == 0:
+        listToStr_no_batch = listToStr_no_batch + hexlist_B_no_batch[x] + ' '
+    else:
+        listToStr_no_batch = listToStr_no_batch + hexlist_B_no_batch[x]
+
+
+
+
+print(f'hexlist_NO_BATCH: {hexlist_B_no_batch}')
+# listToStr = ' '.join(map(str, hexlist))
+output_file_3.write(listToStr_no_batch)
 output_file_3.close()
-
-
-
 
 
 
@@ -220,11 +328,56 @@ output_file_3.close()
 print(f'1D Kernel: {kernel_one_d_stream}')
 print(f"1D Stream : {one_d_stream} \n Pointers : {pointers}")
 
+##############################################################################
+i = 0
+
+hexlist3 = [(hex(kernel_one_d_stream[x])) for x in range(len(kernel_one_d_stream))]
+print(f"Kernel Hex: {hexlist3}")
+for j in range(0, len(kernel_tensor), N):
+    for i in range(0, len(kernel_one_d_stream), M):
+        for n in range(N):
+            for m in range(M):
+                name = "pe_{}{}.mem".format(m,n)
+                with open(data_folder + name, "a+") as pe:
+                    hex_value = hex(kernel_tensor[j+n][i+m]).split('0x')[1]
+                    if (len(hex_value) == 1):
+                        hex_value = "0" + hex_value
+                    hex_value = hex_value + " "
+                    pe.write(hex_value)
+    '''
+            name = "pe_{}1.mem".format(m)
+            with open(data_folder + name, "a+") as pe:
+                hex_value = hex(kernel_one_d_stream2[i + m]).split('0x')[1]
+                if (len(hex_value) == 1):
+                    hex_value = "0" + hex_value
+                hex_value = hex_value + " "
+                pe.write(hex_value)
+    
+            name = "pe_{}2.mem".format(m)
+            with open(data_folder + name, "a+") as pe:
+                hex_value = hex(kernel_one_d_stream3[i + m]).split('0x')[1]
+                if (len(hex_value) == 1):
+                    hex_value = "0" + hex_value
+                hex_value = hex_value + " "
+                pe.write(hex_value)
+    
+            name = "pe_{}3.mem".format(m)
+            with open(data_folder + name, "a+") as pe:
+                hex_value = hex(kernel_one_d_stream4[i + m]).split('0x')[1]
+                if (len(hex_value) == 1):
+                    hex_value = "0" + hex_value
+                hex_value = hex_value + " "
+                pe.write(hex_value)
+'''
+
+
+
 # Begin Fun stuff
 # one_d_index keeps a track of the index of the one_d_stream. Possibly the most important variable.
 one_d_index = 0
 temp_list2 = []
 temp_list3 = []
+temp_list4 =[]
 # convolution_pointers determines the next block to be pointed to.
 convolution_pointers = [0] * k_rows
 # output_one_d_stream stores the output after multiplication and addition.
@@ -242,7 +395,7 @@ for o_row in range(o_rows):
         convolution_pointers[pointers_idx] = pointers[i]
         i += 1
     # second outer loop to loop through the columns in output_tensor
-    LM = 2
+
     for lm_counter in range(0,LM):
         for o_col in range(o_cols):
             # temp_list is list that stores the values plucked from the 1D stream
@@ -262,14 +415,16 @@ for o_row in range(o_rows):
                     temp_list_index += 1
                     one_d_index += 1
             acc = 0
-            TM = 2
+
             acc2 = 0
             for tm_counter in range(TM):
                 #acc = 0
                 for j in range((k_chans*k_rows*k_cols)):
                     if tm_counter == 0:
                         acc += temp_list[j]*kernel_one_d_stream[j]
+                    temp_list4.append(temp_list[j])
                     temp_list2.append(temp_list[j])
+
                 output_one_d_stream.append(acc)
                 output_three_d_stream[o_row][o_col] = acc
                 for j in range((k_chans*k_rows*k_cols)):
@@ -281,11 +436,18 @@ for o_row in range(o_rows):
             print(temp_list)
             print(temp_list_2)
                 #temp_list2.append(temp_list)
+print(f'temp_list3 : {temp_list4}')
+print(f'tempList2: {temp_list2}')
+listToStr_output_no_batch = ' '.join(map(str, temp_list4))
+print(f'listToStr {listToStr_output_no_batch}')
+output_file_8.write(listToStr_output_no_batch)
+output_file_8 .close()
 
 hex_list3 = [hex(temp_list2[x]) for x in range(len(temp_list2))]
 listToStr3 = ' '.join(map(str, hex_list3))
 output_file_4.write(listToStr3)
 output_file_4.close()
+
 listToStr2 = ' '.join(map(str, temp_list2))
 output_file_2.write(listToStr2)
 output_file_2.close()
@@ -307,17 +469,103 @@ tor_input_2 = tor_input.unsqueeze(0)
 #print(tor_input_2)
 tor_kernel = torch.IntTensor(kernel)
 tor_kernel2 = tor_kernel.unsqueeze(0)
+'''
+tor_kernel_1 = torch.IntTensor(kernel2)
+tor_kernel2_1 = tor_kernel_1.unsqueeze(0)
 
+tor_kernel_2 = torch.IntTensor(kernel3)
+tor_kernel2_2 = tor_kernel_2.unsqueeze(0)
+
+tor_kernel_3 = torch.IntTensor(kernel4)
+tor_kernel2_3 = tor_kernel_3.unsqueeze(0)
+'''
 tor_input2 = torch.IntTensor(input_tensor2)
 tor_input2_2 = tor_input2.unsqueeze(0)
+output_flatten = []
+for oc in range(output_chans):
+    tor_kernel_1 = torch.IntTensor(kernel_tensor2[oc])
+    tor_kernel2_1 = tor_kernel_1.unsqueeze(0)
+    mul3 = torch.nn.functional.conv2d(tor_input_2, tor_kernel2_1, padding=(padding, padding), stride=(stride, stride))
+    print(f'for loop conv2d output BATCH1 {oc} : \n{mul3}')
+    i = 0
+    j = 0
+    for i in range(o_dimension):
+        for j in range(o_dimension):
+            output_flatten.append(mul3[0][0][i][j])
+if batch_size > 1:
+    for oc in range(output_chans):
+        tor_kernel_1 = torch.IntTensor(kernel_tensor2[oc])
+        tor_kernel2_1 = tor_kernel_1.unsqueeze(0)
+        mul4 = torch.nn.functional.conv2d(tor_input2_2, tor_kernel2_1, padding=(padding, padding), stride=(stride, stride))
+        print(f'for loop conv2d output BATCH2 {oc} : \n{mul4}')
+        i = 0
+        j = 0
+        for i in range(o_dimension):
+            for j in range(o_dimension):
+                output_flatten.append(mul4[0][0][i][j])
+
+
+
+
+output_reshape = []
+
+i = 0
+offset = 0
+for i in range((o_dimension * o_dimension)):
+    for j in range(offset, len(output_flatten), (o_dimension * o_dimension)):
+        output_reshape.append(output_flatten[j])
+    offset = offset + 1
+print(output_flatten)
+print(output_reshape)
+
+
+y = 0
+hexlist_batchless_output = []
+
+for y in range(len(output_reshape)):
+    hex_value_2 = hex(output_reshape[y]).split('0x')[1]
+    if (len(hex_value_2) == (C_width - 1)):
+        hex_value_2 = "0"+hex_value_2
+    hexlist_batchless_output.append(hex_value_2)
+
+
+listToStr_batchless_output = ''
+x = 0
+
+for x in range(0, len(hexlist_batchless_output), 1):
+    if ((x+1) % C_stream_width) == 0:
+        listToStr_batchless_output = listToStr_batchless_output + hexlist_batchless_output[x] + ' '
+    else:
+        listToStr_batchless_output = listToStr_batchless_output + hexlist_batchless_output[x]
+
+
+
+output_file_batchless_output = open("convolution_batchless_compare.txt", "w")
+print(f'batchless output: {hexlist_batchless_output}')
+print(f'batchless output: {listToStr_batchless_output}')
+# listToStr = ' '.join(map(str, hexlist))
+output_file_batchless_output.write(listToStr_batchless_output)
+output_file_batchless_output.close()
+
+
 
 print(tor_input_2.size())
 print(tor_kernel2.size())
 mul1 = torch.nn.functional.conv2d(tor_input_2, tor_kernel2, padding=(padding,padding), stride=(stride,stride))
 mul2 = torch.nn.functional.conv2d(tor_input2_2, tor_kernel2, padding=(padding,padding), stride=(stride,stride))
+'''
+mul3 = torch.nn.functional.conv2d(tor_input_2, tor_kernel2_1, padding=(padding,padding), stride=(stride,stride))
+mul4 = torch.nn.functional.conv2d(tor_input_2, tor_kernel2_2, padding=(padding,padding), stride=(stride,stride))
+mul5 = torch.nn.functional.conv2d(tor_input_2, tor_kernel2_3, padding=(padding,padding), stride=(stride,stride))
+'''
+
+
 #mul1 = torch.nn.functional.conv2d(tor_input_2, tor_kernel2, padding=(1,1), stride=(stride,stride))
 print(f'torch conv2d output :\n{mul1}')
-print(f'torch conv2d output 2 : \n{mul2}')
+print(f'mul1[0][0] {hex(mul1[0][0][0][0])}')
+print(f'mul1[0][1] {mul1[0][0][0][1]}')
+print(f'mul1[1][0] {mul1[0][0][1][0]}')
+print(f'torch conv2d output 1 batch 2 : \n{mul2}')
 
 '''
 print("OUTPUT TENSOR : ")

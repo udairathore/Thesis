@@ -21,7 +21,8 @@ module feeder #(M=2,N=2) (
 	In_finish,
 	k_dimension,
 	o_dimension,
-	loop_ctrl
+	loop_ctrl,
+	total_read
 	);
 
 ////////////////////////////////////// computation parameters ///////////////////////////////
@@ -32,7 +33,7 @@ module feeder #(M=2,N=2) (
 	parameter LM = 1;//`M_MAT/`M_TL; 	// outer reuse of (N_TL x K_TL) tile in B
 	parameter TM = `M_TL/N_ARR; 		 // inner reuse of (N_TL x 1) tile in B
 	parameter TN = 1;//`N_TL/M_ARR; 	// number of partial dot-products (innermost loop)
-	parameter TK = 1;//`K_TL; 			// reuse of (M_TL x N_TL) tile in A (columns of tile in B)
+	parameter TK = `K_TL;   			// reuse of (M_TL x N_TL) tile in A (columns of tile in B)
 
 
 
@@ -84,11 +85,13 @@ module feeder #(M=2,N=2) (
 	output logic [`B_WIDTH -1:0] data_out [0:M-1];
 	output logic [8:0] loop_ctrl;
 
-
+	output [63:0] total_read;
 
 
 ///////////////////////////////////////Counter Definitions///////////////////////////////////////	
 
+	logic [63:0] read_counter; 
+	assign total_read = read_counter; 
 	logic [DATA_WIDTH - 1: 0] buffer_data_out_0;
 
 	logic [DATA_WIDTH-1:0] kernel_reuse_ctr = 0;							//tm_counter 
@@ -350,7 +353,8 @@ logic tn_first, tn_last, tk_first, tk_last, tm_first, tm_last, tl_first, tl_last
 			horizontal_read_count = 0;
 			kernel_reuse_ctr = 0;
 			batch_ctr = 0; 
-			lm_counter = 0; 
+			lm_counter = 0;
+			read_counter = 0; 
 		end else begin
 			case(read_state)
 				IDLE_READ	:	begin
@@ -540,6 +544,7 @@ logic tn_first, tn_last, tk_first, tk_last, tm_first, tm_last, tl_first, tl_last
 													output_verical_ctr = output_verical_ctr + 1; 
 												end
 												horizontal_ctr = 0;
+												read_counter = read_counter + horizontal_read_count;
 												horizontal_read_count = 0;
 												row_ctr = 0;
 												verical_ctr = 0;
@@ -564,6 +569,7 @@ logic tn_first, tn_last, tk_first, tk_last, tm_first, tm_last, tl_first, tl_last
 													output_verical_ctr = output_verical_ctr + 1; 
 												end
 												horizontal_ctr = 0;
+												read_counter = read_counter + horizontal_read_count;
 												horizontal_read_count = 0;
 												row_ctr = 0;
 												verical_ctr = (k_dimension != 1) ? (0) : (1);
@@ -760,6 +766,7 @@ logic tn_first, tn_last, tk_first, tk_last, tm_first, tm_last, tl_first, tl_last
 													output_verical_ctr = output_verical_ctr + 1; 
 												end
 												horizontal_ctr = 0;
+												read_counter = read_counter + horizontal_read_count;
 												horizontal_read_count = 0;
 												row_ctr = 0;
 												verical_ctr = 0;
@@ -788,6 +795,7 @@ logic tn_first, tn_last, tk_first, tk_last, tm_first, tm_last, tl_first, tl_last
 													output_verical_ctr = output_verical_ctr + 1; 
 												end
 												horizontal_ctr = 0;
+												read_counter = read_counter + horizontal_read_count;
 												horizontal_read_count = 0;
 												row_ctr = 0;
 												verical_ctr = (k_dimension != 1) ? (0) : (1);
@@ -803,6 +811,7 @@ logic tn_first, tn_last, tk_first, tk_last, tm_first, tm_last, tl_first, tl_last
 									row_ctr = 0;
 									horizontal_ctr = 0;
 									horizontal_read_count = 0;
+									read_counter = 0;
 									verical_ctr = 0;
 									batch_ctr = 0;
 									kernel_reuse_ctr = 0; 

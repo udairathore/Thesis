@@ -29,18 +29,31 @@ module pe_ws #(OP_WIDTH=8, ACC_WIDTH=20, CTRL_WIDTH=9, MEM_INIT="zero.txt") (
 	logic [OP_WIDTH-1:0] wdata;
 	logic [ADDR_WIDTH-1:0] wr_pointer;
 	logic [ADDR_WIDTH-1:0] rd_pointer;
+	logic [ADDR_WIDTH-1:0] rd_offset; 
+
 	logic read_valid, read_reset, write_valid;
+	logic tk_last, tm_last; 
 
 	assign read_valid = ctrl[0];
-	assign read_reset = (ctrl[7] && ctrl[3]);
+	//assign read_reset = ((ctrl[7] && !ctrl[3]) || ctrl[5] || ctrl[3]);
 	assign write_valid = wctrl;
-	
+	assign read_reset = (ctrl[7] && !ctrl[3] && !ctrl[5]); //tn_last
+	assign tk_last = (ctrl[5] && !ctrl[3]);
+	assign tm_last = ctrl[3]; 
+
 	always_ff @(posedge clk) begin : read_incr
 		if(rst) begin
 			rd_pointer <= 0;
+			rd_offset <= 0;
 		end else if (read_valid) begin
-			if (read_reset) begin
-				rd_pointer <= 0;
+			if (tk_last) begin
+				rd_pointer = rd_pointer + 1;
+				rd_offset = rd_pointer; 
+			end else if (tm_last) begin
+				rd_pointer <= 0; 
+				rd_offset <= 0;
+			end else if (read_reset) begin
+				rd_pointer <= rd_offset;
 			end else begin
 				rd_pointer <= rd_pointer + 1;
 			end
