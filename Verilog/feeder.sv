@@ -2,7 +2,7 @@
 `include "defs.sv"
 `include "utils.sv"
 
-module feeder #(M=2,N=2) (
+module feeder #(M=8,N=16) (
 	clk,										//clock transition for fsm 
 	rst,										//used to reset the whole fsm
 	valid_write,								
@@ -53,7 +53,7 @@ module feeder #(M=2,N=2) (
 
 ////////////////////////////////////////PARAMETERS////////////////////////////////////////
 
-	parameter ADDR_WIDTH = 16;
+	parameter ADDR_WIDTH = 10; //16;
 	parameter DATA_WIDTH = 8 * `stream_width;
  ////////////////////////////////////////FSM STATES////////////////////////////////////////
 	parameter NO_USE = 2'b00; 
@@ -273,8 +273,8 @@ logic tn_first, tn_last, tk_first, tk_last, tm_first, tm_last, tl_first, tl_last
 									write_full = 1;  									//write full goes to one when I've finished writing what i have intended to write. 
 									row_index = row_beg3;								//set write pointer to begining of the 4th row for reuse write 
 									row_reuse = 2; 										//2nd row is going to be reused for STRIDE-2!!!
-									valid_read = 1;
-									read_index = 0; 
+									//valid_read = 1;
+									//read_index = 0; 
 								end else if (!write_full) begin
 									row_index = row_index + 1;
 								end	
@@ -822,7 +822,7 @@ logic tn_first, tn_last, tk_first, tk_last, tm_first, tm_last, tl_first, tl_last
 		end
 	end
 ////////////////////////////////////////Connections to dual port RAM////////////////////////////////////////
-sync_dp_ram #(DATA_WIDTH, ADDR_WIDTH) mem (
+(* DONT_TOUCH = "yes" *) sync_dp_ram #(DATA_WIDTH, ADDR_WIDTH) mem ( 
 	.data_a(data_in), 
 	.data_b(),
 	.addr_a(row_index), 
