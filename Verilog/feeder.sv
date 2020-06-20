@@ -94,13 +94,13 @@ module feeder #(M=8,N=16) (
 	assign total_read = read_counter; 
 	logic [DATA_WIDTH - 1: 0] buffer_data_out_0;
 
-	logic [DATA_WIDTH-1:0] kernel_reuse_ctr = 0;							//tm_counter 
-	logic [DATA_WIDTH-1:0] batch_ctr = 0;									//tk_counter
-	logic [DATA_WIDTH-1:0] lm_counter = 0;									//lm_counter for entire ROW reuse
+	logic [ADDR_WIDTH-1:0] kernel_reuse_ctr = 0;							//tm_counter 
+	logic [ADDR_WIDTH-1:0] batch_ctr = 0;									//tk_counter
+	logic [ADDR_WIDTH-1:0] lm_counter = 0;									//lm_counter for entire ROW reuse
 	logic [ADDR_WIDTH-1:0] horizontal_ctr;									//"t_kernel_counter"									
 	logic [ADDR_WIDTH-1:0] row_ctr;											//tn_counter (?)
 	logic [ADDR_WIDTH-1:0] verical_ctr; 									
-	logic [DATA_WIDTH : 0] horizontal_read_count = 0;
+	logic [ADDR_WIDTH : 0] horizontal_read_count = 0;
 	logic [ADDR_WIDTH-1 : 0] output_verical_ctr = 0;
 	logic [1:0] row_reuse;
 
