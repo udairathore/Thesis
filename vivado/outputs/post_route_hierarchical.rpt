@@ -1,7 +1,7 @@
 Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
-| Date         : Fri Jun 19 23:44:37 2020
+| Date         : Sun Jun 21 02:48:57 2020
 | Host         : tuna running 64-bit Ubuntu 16.04.6 LTS
 | Command      : report_utilization -hierarchical -file ./outputs/post_route_hierarchical.rpt
 | Design       : feeder
@@ -21,8 +21,8 @@ Table of Contents
 +---------------------+-----------------------+------------+------------+---------+------+-----+--------+--------+------+--------------+
 |       Instance      |         Module        | Total LUTs | Logic LUTs | LUTRAMs | SRLs | FFs | RAMB36 | RAMB18 | URAM | DSP48 Blocks |
 +---------------------+-----------------------+------------+------------+---------+------+-----+--------+--------+------+--------------+
-| feeder              |                 (top) |        224 |        192 |       0 |   32 | 193 |      2 |      0 |    0 |            1 |
-|   (feeder)          |                 (top) |        192 |        192 |       0 |    0 |  17 |      0 |      0 |    0 |            1 |
+| feeder              |                 (top) |       2107 |       2075 |       0 |   32 | 373 |      2 |      0 |    0 |            5 |
+|   (feeder)          |                 (top) |       2075 |       2075 |       0 |    0 | 197 |      0 |      0 |    0 |            5 |
 |   mem               |           sync_dp_ram |          0 |          0 |       0 |    0 |  64 |      2 |      0 |    0 |            0 |
 |   wave_feeder       |       wavefront_multi |         32 |          0 |       0 |   32 | 112 |      0 |      0 |    0 |            0 |
 |     channel[1].sreg | delay__parameterized0 |          0 |          0 |       0 |    0 |   8 |      0 |      0 |    0 |            0 |

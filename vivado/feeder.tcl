@@ -25,8 +25,8 @@ if {$device == "Pynq-Z1"} {
 	set DEVICE "xczu28dr-ffvg1517-2-e"
 }
 
-
-create_project -in_memory -part $DEVICE
+create_project project_1 ./project -force -part $DEVICE
+#create_project -in_memory -part $DEVICE
 #set_property target_language Verilog [current_project]
 
 # import source files
@@ -34,11 +34,13 @@ add_files -norecurse $topSource
 source ./reportTiming.tcl
 
 
-synth_design -top $topMod -part $DEVICE -generic {M=8 N=16} -include_dirs {"../Verilog" "../Verilog/Memory"}
+synth_design -verbose -top $topMod -part $DEVICE -generic {M=8 N=16} -no_lc -keep_equivalent_registers -resource_sharing off -flatten_hierarchy none -include_dirs {"../Verilog" "../Verilog/Memory"}
 report_utilization -file "${::outputDir}/post_synth_utilisation.rpt"
 
 #set_property DOA_REG 1 [get_cells -regexp {mem/ram_reg_bram_*} ]
 #set_property DOB_REG 1 [get_cells -regexp {mem/ram_reg_bram_*} ] 
+
+
 set_property DOA_REG 1 [get_cells -hierarchical -filter { PRIMITIVE_TYPE =~ *.bram.*}]
 set_property DOB_REG 1 [get_cells -hierarchical -filter { PRIMITIVE_TYPE =~ *.bram.*}]
 
@@ -54,6 +56,5 @@ reportTiming "${outputDir}/post_route_critpath.rpt"
 report_utilization -file "${::outputDir}/post_route_utilisation.rpt"
 report_utilization -hierarchical -file "${::outputDir}/post_route_hierarchical.rpt"
 report_timing -sort_by "slack" -delay_type "max" -max_paths 10 -nworst 1 -file "${outputDir}/post_route_timing.rpt"
-
 
 

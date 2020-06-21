@@ -1,7 +1,7 @@
 Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------
 | Tool Version      : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
-| Date              : Fri Jun 19 23:44:37 2020
+| Date              : Sun Jun 21 02:48:58 2020
 | Host              : tuna running 64-bit Ubuntu 16.04.6 LTS
 | Command           : report_timing -sort_by slack -delay_type max -max_paths 10 -nworst 1 -file ./outputs/post_route_timing.rpt
 | Design            : feeder
@@ -12,837 +12,1815 @@ Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 
 Timing Report
 
-Slack (VIOLATED) :        -0.290ns  (required time - arrival time)
-  Source:                 row_index_reg[4]/C
+Slack (VIOLATED) :        -5.822ns  (required time - arrival time)
+  Source:                 row_ctr_reg[4]/C
                             (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@0.680ns period=1.360ns})
-  Destination:            row_index_reg[6]/CE
+  Destination:            read_index_reg[8]/D
                             (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@0.680ns period=1.360ns})
   Path Group:             clk
   Path Type:              Setup (Max at Slow Process Corner)
   Requirement:            1.360ns  (clk rise@1.360ns - clk rise@0.000ns)
-  Data Path Delay:        1.438ns  (logic 0.588ns (40.890%)  route 0.850ns (59.110%))
-  Logic Levels:           5  (CARRY8=2 LUT5=1 LUT6=2)
-  Clock Path Skew:        -0.116ns (DCD - SCD + CPR)
-    Destination Clock Delay (DCD):    1.273ns = ( 2.633 - 1.360 ) 
-    Source Clock Delay      (SCD):    1.697ns
-    Clock Pessimism Removal (CPR):    0.308ns
+  Data Path Delay:        7.441ns  (logic 3.984ns (53.541%)  route 3.457ns (46.459%))
+  Logic Levels:           38  (CARRY8=19 LUT2=1 LUT3=8 LUT4=1 LUT5=1 LUT6=8)
+  Clock Path Skew:        0.269ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.964ns = ( 4.324 - 1.360 ) 
+    Source Clock Delay      (SCD):    3.094ns
+    Clock Pessimism Removal (CPR):    0.399ns
   Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
     Total System Jitter     (TSJ):    0.071ns
     Total Input Jitter      (TIJ):    0.000ns
     Discrete Jitter          (DJ):    0.000ns
     Phase Error              (PE):    0.000ns
-  Clock Net Delay (Source):      0.772ns (routing 0.001ns, distribution 0.771ns)
-  Clock Net Delay (Destination): 0.639ns (routing 0.001ns, distribution 0.638ns)
+  Clock Net Delay (Source):      2.208ns (routing 1.189ns, distribution 1.019ns)
+  Clock Net Delay (Destination): 2.368ns (routing 1.080ns, distribution 1.288ns)
 
     Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
   -------------------------------------------------------------------    -------------------
                          (clock clk rise edge)        0.000     0.000 r  
-    AM20                                              0.000     0.000 r  clk (IN)
+    AL16                                              0.000     0.000 r  clk (IN)
                          net (fo=0)                   0.000     0.000    clk_IBUF_inst/I
-    AM20                 INBUF (Prop_INBUF_HPIOB_M_PAD_O)
-                                                      0.574     0.574 r  clk_IBUF_inst/INBUF_INST/O
-                         net (fo=1, routed)           0.000     0.574    clk_IBUF_inst/OUT
-    AM20                 IBUFCTRL (Prop_IBUFCTRL_HPIOB_M_I_O)
-                                                      0.000     0.574 r  clk_IBUF_inst/IBUFCTRL_INST/O
-                         net (fo=1, routed)           0.323     0.897    clk_IBUF
-    BUFGCE_X0Y50         BUFGCE (Prop_BUFCE_BUFGCE_I_O)
-                                                      0.028     0.925 r  clk_IBUF_BUFG_inst/O
-    X4Y2 (CLOCK_ROOT)    net (fo=226, routed)         0.772     1.697    clk_IBUF_BUFG
-    SLICE_X84Y150        FDRE                                         r  row_index_reg[4]/C
+    AL16                 INBUF (Prop_INBUF_HPIOB_M_PAD_O)
+                                                      0.535     0.535 r  clk_IBUF_inst/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.535    clk_IBUF_inst/OUT
+    AL16                 IBUFCTRL (Prop_IBUFCTRL_HPIOB_M_I_O)
+                                                      0.000     0.535 r  clk_IBUF_inst/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.323     0.858    clk_IBUF
+    BUFGCE_X0Y2          BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.028     0.886 r  clk_IBUF_BUFG_inst/O
+    X3Y3 (CLOCK_ROOT)    net (fo=409, routed)         2.208     3.094    clk_IBUF_BUFG
+    SLICE_X77Y229        FDRE                                         r  row_ctr_reg[4]/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X84Y150        FDRE (Prop_AFF_SLICEL_C_Q)
-                                                      0.079     1.776 r  row_index_reg[4]/Q
-                         net (fo=12, routed)          0.276     2.052    counter_write_OBUF[4]
-    SLICE_X82Y146        LUT6 (Prop_B6LUT_SLICEM_I0_O)
-                                                      0.089     2.141 r  row_index[9]_i_59/O
-                         net (fo=1, routed)           0.016     2.157    row_index[9]_i_59_n_0
-    SLICE_X82Y146        CARRY8 (Prop_CARRY8_SLICEM_S[1]_CO[7])
-                                                      0.190     2.347 r  row_index_reg[9]_i_31/CO[7]
-                         net (fo=1, routed)           0.026     2.373    row_index_reg[9]_i_31_n_0
-    SLICE_X82Y147        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[2])
-                                                      0.057     2.430 r  row_index_reg[9]_i_12/CO[2]
-                         net (fo=14, routed)          0.175     2.605    row_index1
-    SLICE_X82Y149        LUT6 (Prop_D6LUT_SLICEM_I3_O)
-                                                      0.122     2.727 r  row_index[9]_i_3/O
-                         net (fo=2, routed)           0.102     2.829    row_index[9]_i_3_n_0
-    SLICE_X83Y149        LUT5 (Prop_D6LUT_SLICEM_I0_O)
-                                                      0.051     2.880 r  row_index[9]_i_1/O
-                         net (fo=10, routed)          0.255     3.135    row_index[9]_i_1_n_0
-    SLICE_X83Y146        FDRE                                         r  row_index_reg[6]/CE
+    SLICE_X77Y229        FDRE (Prop_EFF_SLICEL_C_Q)
+                                                      0.079     3.173 r  row_ctr_reg[4]/Q
+                         net (fo=10, routed)          0.191     3.364    row_ctr[4]
+    SLICE_X76Y230        LUT6 (Prop_E6LUT_SLICEM_I0_O)
+                                                      0.148     3.512 f  row_ctr[7]_i_2/O
+                         net (fo=10, routed)          0.112     3.624    row_ctr[7]_i_2_n_0
+    SLICE_X76Y228        LUT6 (Prop_D6LUT_SLICEM_I2_O)
+                                                      0.088     3.712 f  read_index[9]_i_355/O
+                         net (fo=6, routed)           0.055     3.767    read_index[9]_i_355_n_0
+    SLICE_X76Y228        LUT6 (Prop_H6LUT_SLICEM_I3_O)
+                                                      0.101     3.868 f  read_index[9]_i_352/O
+                         net (fo=6, routed)           0.048     3.916    read_index[9]_i_352_n_0
+    SLICE_X76Y228        LUT5 (Prop_G6LUT_SLICEM_I1_O)
+                                                      0.037     3.953 r  read_index[9]_i_336/O
+                         net (fo=16, routed)          0.171     4.124    read_index[9]_i_336_n_0
+    SLICE_X76Y227        LUT4 (Prop_B6LUT_SLICEM_I0_O)
+                                                      0.052     4.176 r  read_index[9]_i_350/O
+                         net (fo=1, routed)           0.016     4.192    read_index[9]_i_350_n_0
+    SLICE_X76Y227        CARRY8 (Prop_CARRY8_SLICEM_S[1]_CO[7])
+                                                      0.190     4.382 r  read_index_reg[9]_i_318/CO[7]
+                         net (fo=1, routed)           0.026     4.408    read_index_reg[9]_i_318_n_0
+    SLICE_X76Y228        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[2])
+                                                      0.057     4.465 r  read_index_reg[9]_i_317/CO[2]
+                         net (fo=13, routed)          0.150     4.615    read_index_reg[9]_i_317_n_5
+    SLICE_X77Y228        LUT3 (Prop_D6LUT_SLICEL_I0_O)
+                                                      0.122     4.737 r  read_index[9]_i_327/O
+                         net (fo=1, routed)           0.009     4.746    read_index[9]_i_327_n_0
+    SLICE_X77Y228        CARRY8 (Prop_CARRY8_SLICEL_S[3]_CO[7])
+                                                      0.154     4.900 r  read_index_reg[9]_i_304/CO[7]
+                         net (fo=1, routed)           0.026     4.926    read_index_reg[9]_i_304_n_0
+    SLICE_X77Y229        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[3])
+                                                      0.060     4.986 r  read_index_reg[9]_i_303/CO[3]
+                         net (fo=13, routed)          0.141     5.127    read_index_reg[9]_i_303_n_4
+    SLICE_X76Y229        LUT3 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.123     5.250 r  read_index[9]_i_312/O
+                         net (fo=1, routed)           0.022     5.272    read_index[9]_i_312_n_0
+    SLICE_X76Y229        CARRY8 (Prop_CARRY8_SLICEM_S[5]_CO[7])
+                                                      0.159     5.431 r  read_index_reg[9]_i_290/CO[7]
+                         net (fo=1, routed)           0.026     5.457    read_index_reg[9]_i_290_n_0
+    SLICE_X76Y230        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[3])
+                                                      0.060     5.517 r  read_index_reg[9]_i_289/CO[3]
+                         net (fo=13, routed)          0.148     5.665    read_index_reg[9]_i_289_n_4
+    SLICE_X76Y231        LUT3 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.123     5.788 r  read_index[9]_i_298/O
+                         net (fo=1, routed)           0.022     5.810    read_index[9]_i_298_n_0
+    SLICE_X76Y231        CARRY8 (Prop_CARRY8_SLICEM_S[5]_CO[7])
+                                                      0.159     5.969 r  read_index_reg[9]_i_277/CO[7]
+                         net (fo=1, routed)           0.026     5.995    read_index_reg[9]_i_277_n_0
+    SLICE_X76Y232        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[3])
+                                                      0.060     6.055 r  read_index_reg[9]_i_276/CO[3]
+                         net (fo=13, routed)          0.212     6.267    read_index_reg[9]_i_276_n_4
+    SLICE_X75Y230        LUT3 (Prop_E6LUT_SLICEM_I0_O)
+                                                      0.124     6.391 r  read_index[9]_i_285/O
+                         net (fo=1, routed)           0.014     6.405    read_index[9]_i_285_n_0
+    SLICE_X75Y230        CARRY8 (Prop_CARRY8_SLICEM_S[4]_CO[7])
+                                                      0.156     6.561 r  read_index_reg[9]_i_254/CO[7]
+                         net (fo=1, routed)           0.026     6.587    read_index_reg[9]_i_254_n_0
+    SLICE_X75Y231        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[3])
+                                                      0.060     6.647 r  read_index_reg[9]_i_253/CO[3]
+                         net (fo=13, routed)          0.195     6.842    read_index_reg[9]_i_253_n_4
+    SLICE_X75Y232        LUT3 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.051     6.893 r  read_index[9]_i_261/O
+                         net (fo=1, routed)           0.022     6.915    read_index[9]_i_261_n_0
+    SLICE_X75Y232        CARRY8 (Prop_CARRY8_SLICEM_S[5]_CO[7])
+                                                      0.159     7.074 r  read_index_reg[9]_i_175/CO[7]
+                         net (fo=1, routed)           0.026     7.100    read_index_reg[9]_i_175_n_0
+    SLICE_X75Y233        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[3])
+                                                      0.060     7.160 r  read_index_reg[9]_i_174/CO[3]
+                         net (fo=13, routed)          0.207     7.367    read_index_reg[9]_i_174_n_4
+    SLICE_X74Y231        LUT3 (Prop_F6LUT_SLICEL_I0_O)
+                                                      0.089     7.456 r  read_index[9]_i_182/O
+                         net (fo=1, routed)           0.011     7.467    read_index[9]_i_182_n_0
+    SLICE_X74Y231        CARRY8 (Prop_CARRY8_SLICEL_S[5]_CO[7])
+                                                      0.155     7.622 r  read_index_reg[9]_i_112/CO[7]
+                         net (fo=1, routed)           0.026     7.648    read_index_reg[9]_i_112_n_0
+    SLICE_X74Y232        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[3])
+                                                      0.060     7.708 r  read_index_reg[9]_i_111/CO[3]
+                         net (fo=13, routed)          0.141     7.849    read_index_reg[9]_i_111_n_4
+    SLICE_X74Y233        LUT3 (Prop_F6LUT_SLICEL_I0_O)
+                                                      0.123     7.972 r  read_index[9]_i_120/O
+                         net (fo=1, routed)           0.011     7.983    read_index[9]_i_120_n_0
+    SLICE_X74Y233        CARRY8 (Prop_CARRY8_SLICEL_S[5]_CO[7])
+                                                      0.155     8.138 r  read_index_reg[9]_i_74/CO[7]
+                         net (fo=1, routed)           0.026     8.164    read_index_reg[9]_i_74_n_0
+    SLICE_X74Y234        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[3])
+                                                      0.060     8.224 r  read_index_reg[9]_i_73/CO[3]
+                         net (fo=13, routed)          0.198     8.422    read_index_reg[9]_i_73_n_4
+    SLICE_X74Y235        LUT3 (Prop_F6LUT_SLICEL_I0_O)
+                                                      0.097     8.519 r  read_index[9]_i_82/O
+                         net (fo=1, routed)           0.011     8.530    read_index[9]_i_82_n_0
+    SLICE_X74Y235        CARRY8 (Prop_CARRY8_SLICEL_S[5]_CO[7])
+                                                      0.155     8.685 r  read_index_reg[9]_i_40/CO[7]
+                         net (fo=1, routed)           0.026     8.711    read_index_reg[9]_i_40_n_0
+    SLICE_X74Y236        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[3])
+                                                      0.060     8.771 r  read_index_reg[9]_i_39/CO[3]
+                         net (fo=13, routed)          0.230     9.001    read_index_reg[9]_i_39_n_4
+    SLICE_X74Y237        CARRY8 (Prop_CARRY8_SLICEL_CI_O[5])
+                                                      0.226     9.227 f  read_index_reg[9]_i_29/O[5]
+                         net (fo=7, routed)           0.219     9.446    read_index_reg[9]_i_29_n_10
+    SLICE_X73Y237        LUT2 (Prop_B6LUT_SLICEL_I1_O)
+                                                      0.090     9.536 r  read_index[9]_i_66/O
+                         net (fo=2, routed)           0.094     9.630    read_index[9]_i_66_n_0
+    SLICE_X73Y237        LUT6 (Prop_D6LUT_SLICEL_I5_O)
+                                                      0.036     9.666 r  read_index[9]_i_30/O
+                         net (fo=2, routed)           0.096     9.762    read_index[9]_i_30_n_0
+    SLICE_X73Y239        LUT6 (Prop_B6LUT_SLICEL_I0_O)
+                                                      0.098     9.860 f  read_index[9]_i_14/O
+                         net (fo=1, routed)           0.096     9.956    read_index[9]_i_14_n_0
+    SLICE_X73Y238        LUT6 (Prop_H6LUT_SLICEL_I1_O)
+                                                      0.124    10.080 r  read_index[9]_i_5/O
+                         net (fo=10, routed)          0.269    10.349    read_index[9]_i_5_n_0
+    SLICE_X75Y240        LUT6 (Prop_C6LUT_SLICEM_I2_O)
+                                                      0.037    10.386 r  read_index[8]_i_2/O
+                         net (fo=1, routed)           0.040    10.426    read_index[8]_i_2_n_0
+    SLICE_X75Y240        LUT6 (Prop_D6LUT_SLICEM_I1_O)
+                                                      0.037    10.463 r  read_index[8]_i_1/O
+                         net (fo=1, routed)           0.072    10.535    read_index[8]_i_1_n_0
+    SLICE_X75Y240        FDRE                                         r  read_index_reg[8]/D
   -------------------------------------------------------------------    -------------------
 
                          (clock clk rise edge)        1.360     1.360 r  
-    AM20                                              0.000     1.360 r  clk (IN)
+    AL16                                              0.000     1.360 r  clk (IN)
                          net (fo=0)                   0.000     1.360    clk_IBUF_inst/I
-    AM20                 INBUF (Prop_INBUF_HPIOB_M_PAD_O)
-                                                      0.323     1.683 r  clk_IBUF_inst/INBUF_INST/O
-                         net (fo=1, routed)           0.000     1.683    clk_IBUF_inst/OUT
-    AM20                 IBUFCTRL (Prop_IBUFCTRL_HPIOB_M_I_O)
-                                                      0.000     1.683 r  clk_IBUF_inst/IBUFCTRL_INST/O
-                         net (fo=1, routed)           0.287     1.970    clk_IBUF
-    BUFGCE_X0Y50         BUFGCE (Prop_BUFCE_BUFGCE_I_O)
-                                                      0.024     1.994 r  clk_IBUF_BUFG_inst/O
-    X4Y2 (CLOCK_ROOT)    net (fo=226, routed)         0.639     2.633    clk_IBUF_BUFG
-    SLICE_X83Y146        FDRE                                         r  row_index_reg[6]/C
-                         clock pessimism              0.308     2.941    
-                         clock uncertainty           -0.035     2.906    
-    SLICE_X83Y146        FDRE (Setup_HFF_SLICEM_C_CE)
-                                                     -0.061     2.845    row_index_reg[6]
+    AL16                 INBUF (Prop_INBUF_HPIOB_M_PAD_O)
+                                                      0.285     1.645 r  clk_IBUF_inst/INBUF_INST/O
+                         net (fo=1, routed)           0.000     1.645    clk_IBUF_inst/OUT
+    AL16                 IBUFCTRL (Prop_IBUFCTRL_HPIOB_M_I_O)
+                                                      0.000     1.645 r  clk_IBUF_inst/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.287     1.932    clk_IBUF
+    BUFGCE_X0Y2          BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.024     1.956 r  clk_IBUF_BUFG_inst/O
+    X3Y3 (CLOCK_ROOT)    net (fo=409, routed)         2.368     4.324    clk_IBUF_BUFG
+    SLICE_X75Y240        FDRE                                         r  read_index_reg[8]/C
+                         clock pessimism              0.399     4.723    
+                         clock uncertainty           -0.035     4.688    
+    SLICE_X75Y240        FDRE (Setup_DFF_SLICEM_C_D)
+                                                      0.025     4.713    read_index_reg[8]
   -------------------------------------------------------------------
-                         required time                          2.845    
-                         arrival time                          -3.135    
+                         required time                          4.713    
+                         arrival time                         -10.535    
   -------------------------------------------------------------------
-                         slack                                 -0.290    
+                         slack                                 -5.822    
 
-Slack (VIOLATED) :        -0.283ns  (required time - arrival time)
-  Source:                 row_index_reg[4]/C
+Slack (VIOLATED) :        -5.801ns  (required time - arrival time)
+  Source:                 row_ctr_reg[4]/C
                             (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@0.680ns period=1.360ns})
-  Destination:            row_index_reg[7]/D
+  Destination:            read_index_reg[2]/D
                             (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@0.680ns period=1.360ns})
   Path Group:             clk
   Path Type:              Setup (Max at Slow Process Corner)
   Requirement:            1.360ns  (clk rise@1.360ns - clk rise@0.000ns)
-  Data Path Delay:        1.512ns  (logic 0.724ns (47.884%)  route 0.788ns (52.116%))
-  Logic Levels:           6  (CARRY8=2 LUT3=1 LUT6=3)
-  Clock Path Skew:        -0.121ns (DCD - SCD + CPR)
-    Destination Clock Delay (DCD):    1.268ns = ( 2.628 - 1.360 ) 
-    Source Clock Delay      (SCD):    1.697ns
-    Clock Pessimism Removal (CPR):    0.308ns
+  Data Path Delay:        7.415ns  (logic 3.996ns (53.891%)  route 3.419ns (46.109%))
+  Logic Levels:           38  (CARRY8=19 LUT2=1 LUT3=8 LUT4=1 LUT5=1 LUT6=8)
+  Clock Path Skew:        0.264ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.959ns = ( 4.319 - 1.360 ) 
+    Source Clock Delay      (SCD):    3.094ns
+    Clock Pessimism Removal (CPR):    0.399ns
   Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
     Total System Jitter     (TSJ):    0.071ns
     Total Input Jitter      (TIJ):    0.000ns
     Discrete Jitter          (DJ):    0.000ns
     Phase Error              (PE):    0.000ns
-  Clock Net Delay (Source):      0.772ns (routing 0.001ns, distribution 0.771ns)
-  Clock Net Delay (Destination): 0.634ns (routing 0.001ns, distribution 0.633ns)
+  Clock Net Delay (Source):      2.208ns (routing 1.189ns, distribution 1.019ns)
+  Clock Net Delay (Destination): 2.363ns (routing 1.080ns, distribution 1.283ns)
 
     Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
   -------------------------------------------------------------------    -------------------
                          (clock clk rise edge)        0.000     0.000 r  
-    AM20                                              0.000     0.000 r  clk (IN)
+    AL16                                              0.000     0.000 r  clk (IN)
                          net (fo=0)                   0.000     0.000    clk_IBUF_inst/I
-    AM20                 INBUF (Prop_INBUF_HPIOB_M_PAD_O)
-                                                      0.574     0.574 r  clk_IBUF_inst/INBUF_INST/O
-                         net (fo=1, routed)           0.000     0.574    clk_IBUF_inst/OUT
-    AM20                 IBUFCTRL (Prop_IBUFCTRL_HPIOB_M_I_O)
-                                                      0.000     0.574 r  clk_IBUF_inst/IBUFCTRL_INST/O
-                         net (fo=1, routed)           0.323     0.897    clk_IBUF
-    BUFGCE_X0Y50         BUFGCE (Prop_BUFCE_BUFGCE_I_O)
-                                                      0.028     0.925 r  clk_IBUF_BUFG_inst/O
-    X4Y2 (CLOCK_ROOT)    net (fo=226, routed)         0.772     1.697    clk_IBUF_BUFG
-    SLICE_X84Y150        FDRE                                         r  row_index_reg[4]/C
+    AL16                 INBUF (Prop_INBUF_HPIOB_M_PAD_O)
+                                                      0.535     0.535 r  clk_IBUF_inst/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.535    clk_IBUF_inst/OUT
+    AL16                 IBUFCTRL (Prop_IBUFCTRL_HPIOB_M_I_O)
+                                                      0.000     0.535 r  clk_IBUF_inst/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.323     0.858    clk_IBUF
+    BUFGCE_X0Y2          BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.028     0.886 r  clk_IBUF_BUFG_inst/O
+    X3Y3 (CLOCK_ROOT)    net (fo=409, routed)         2.208     3.094    clk_IBUF_BUFG
+    SLICE_X77Y229        FDRE                                         r  row_ctr_reg[4]/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X84Y150        FDRE (Prop_AFF_SLICEL_C_Q)
-                                                      0.079     1.776 r  row_index_reg[4]/Q
-                         net (fo=12, routed)          0.246     2.022    counter_write_OBUF[4]
-    SLICE_X82Y148        LUT6 (Prop_B6LUT_SLICEM_I0_O)
-                                                      0.125     2.147 r  row_index[9]_i_50/O
-                         net (fo=1, routed)           0.016     2.163    row_index[9]_i_50_n_0
-    SLICE_X82Y148        CARRY8 (Prop_CARRY8_SLICEM_S[1]_CO[7])
-                                                      0.190     2.353 f  row_index_reg[9]_i_27/CO[7]
-                         net (fo=1, routed)           0.026     2.379    row_index_reg[9]_i_27_n_0
-    SLICE_X82Y149        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[2])
-                                                      0.057     2.436 f  row_index_reg[9]_i_11/CO[2]
-                         net (fo=4, routed)           0.204     2.640    row_index16_out
-    SLICE_X83Y147        LUT3 (Prop_E6LUT_SLICEM_I1_O)
-                                                      0.037     2.677 r  row_index[9]_i_19/O
-                         net (fo=1, routed)           0.059     2.736    row_index[9]_i_19_n_0
-    SLICE_X83Y147        LUT6 (Prop_F6LUT_SLICEM_I1_O)
-                                                      0.148     2.884 r  row_index[9]_i_7/O
-                         net (fo=10, routed)          0.187     3.071    row_index[9]_i_7_n_0
-    SLICE_X84Y145        LUT6 (Prop_C6LUT_SLICEL_I3_O)
-                                                      0.088     3.159 r  row_index[7]_i_1/O
-                         net (fo=1, routed)           0.050     3.209    row_index[7]_i_1_n_0
-    SLICE_X84Y145        FDRE                                         r  row_index_reg[7]/D
+    SLICE_X77Y229        FDRE (Prop_EFF_SLICEL_C_Q)
+                                                      0.079     3.173 r  row_ctr_reg[4]/Q
+                         net (fo=10, routed)          0.191     3.364    row_ctr[4]
+    SLICE_X76Y230        LUT6 (Prop_E6LUT_SLICEM_I0_O)
+                                                      0.148     3.512 f  row_ctr[7]_i_2/O
+                         net (fo=10, routed)          0.112     3.624    row_ctr[7]_i_2_n_0
+    SLICE_X76Y228        LUT6 (Prop_D6LUT_SLICEM_I2_O)
+                                                      0.088     3.712 f  read_index[9]_i_355/O
+                         net (fo=6, routed)           0.055     3.767    read_index[9]_i_355_n_0
+    SLICE_X76Y228        LUT6 (Prop_H6LUT_SLICEM_I3_O)
+                                                      0.101     3.868 f  read_index[9]_i_352/O
+                         net (fo=6, routed)           0.048     3.916    read_index[9]_i_352_n_0
+    SLICE_X76Y228        LUT5 (Prop_G6LUT_SLICEM_I1_O)
+                                                      0.037     3.953 r  read_index[9]_i_336/O
+                         net (fo=16, routed)          0.171     4.124    read_index[9]_i_336_n_0
+    SLICE_X76Y227        LUT4 (Prop_B6LUT_SLICEM_I0_O)
+                                                      0.052     4.176 r  read_index[9]_i_350/O
+                         net (fo=1, routed)           0.016     4.192    read_index[9]_i_350_n_0
+    SLICE_X76Y227        CARRY8 (Prop_CARRY8_SLICEM_S[1]_CO[7])
+                                                      0.190     4.382 r  read_index_reg[9]_i_318/CO[7]
+                         net (fo=1, routed)           0.026     4.408    read_index_reg[9]_i_318_n_0
+    SLICE_X76Y228        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[2])
+                                                      0.057     4.465 r  read_index_reg[9]_i_317/CO[2]
+                         net (fo=13, routed)          0.150     4.615    read_index_reg[9]_i_317_n_5
+    SLICE_X77Y228        LUT3 (Prop_D6LUT_SLICEL_I0_O)
+                                                      0.122     4.737 r  read_index[9]_i_327/O
+                         net (fo=1, routed)           0.009     4.746    read_index[9]_i_327_n_0
+    SLICE_X77Y228        CARRY8 (Prop_CARRY8_SLICEL_S[3]_CO[7])
+                                                      0.154     4.900 r  read_index_reg[9]_i_304/CO[7]
+                         net (fo=1, routed)           0.026     4.926    read_index_reg[9]_i_304_n_0
+    SLICE_X77Y229        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[3])
+                                                      0.060     4.986 r  read_index_reg[9]_i_303/CO[3]
+                         net (fo=13, routed)          0.141     5.127    read_index_reg[9]_i_303_n_4
+    SLICE_X76Y229        LUT3 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.123     5.250 r  read_index[9]_i_312/O
+                         net (fo=1, routed)           0.022     5.272    read_index[9]_i_312_n_0
+    SLICE_X76Y229        CARRY8 (Prop_CARRY8_SLICEM_S[5]_CO[7])
+                                                      0.159     5.431 r  read_index_reg[9]_i_290/CO[7]
+                         net (fo=1, routed)           0.026     5.457    read_index_reg[9]_i_290_n_0
+    SLICE_X76Y230        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[3])
+                                                      0.060     5.517 r  read_index_reg[9]_i_289/CO[3]
+                         net (fo=13, routed)          0.148     5.665    read_index_reg[9]_i_289_n_4
+    SLICE_X76Y231        LUT3 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.123     5.788 r  read_index[9]_i_298/O
+                         net (fo=1, routed)           0.022     5.810    read_index[9]_i_298_n_0
+    SLICE_X76Y231        CARRY8 (Prop_CARRY8_SLICEM_S[5]_CO[7])
+                                                      0.159     5.969 r  read_index_reg[9]_i_277/CO[7]
+                         net (fo=1, routed)           0.026     5.995    read_index_reg[9]_i_277_n_0
+    SLICE_X76Y232        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[3])
+                                                      0.060     6.055 r  read_index_reg[9]_i_276/CO[3]
+                         net (fo=13, routed)          0.212     6.267    read_index_reg[9]_i_276_n_4
+    SLICE_X75Y230        LUT3 (Prop_E6LUT_SLICEM_I0_O)
+                                                      0.124     6.391 r  read_index[9]_i_285/O
+                         net (fo=1, routed)           0.014     6.405    read_index[9]_i_285_n_0
+    SLICE_X75Y230        CARRY8 (Prop_CARRY8_SLICEM_S[4]_CO[7])
+                                                      0.156     6.561 r  read_index_reg[9]_i_254/CO[7]
+                         net (fo=1, routed)           0.026     6.587    read_index_reg[9]_i_254_n_0
+    SLICE_X75Y231        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[3])
+                                                      0.060     6.647 r  read_index_reg[9]_i_253/CO[3]
+                         net (fo=13, routed)          0.195     6.842    read_index_reg[9]_i_253_n_4
+    SLICE_X75Y232        LUT3 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.051     6.893 r  read_index[9]_i_261/O
+                         net (fo=1, routed)           0.022     6.915    read_index[9]_i_261_n_0
+    SLICE_X75Y232        CARRY8 (Prop_CARRY8_SLICEM_S[5]_CO[7])
+                                                      0.159     7.074 r  read_index_reg[9]_i_175/CO[7]
+                         net (fo=1, routed)           0.026     7.100    read_index_reg[9]_i_175_n_0
+    SLICE_X75Y233        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[3])
+                                                      0.060     7.160 r  read_index_reg[9]_i_174/CO[3]
+                         net (fo=13, routed)          0.207     7.367    read_index_reg[9]_i_174_n_4
+    SLICE_X74Y231        LUT3 (Prop_F6LUT_SLICEL_I0_O)
+                                                      0.089     7.456 r  read_index[9]_i_182/O
+                         net (fo=1, routed)           0.011     7.467    read_index[9]_i_182_n_0
+    SLICE_X74Y231        CARRY8 (Prop_CARRY8_SLICEL_S[5]_CO[7])
+                                                      0.155     7.622 r  read_index_reg[9]_i_112/CO[7]
+                         net (fo=1, routed)           0.026     7.648    read_index_reg[9]_i_112_n_0
+    SLICE_X74Y232        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[3])
+                                                      0.060     7.708 r  read_index_reg[9]_i_111/CO[3]
+                         net (fo=13, routed)          0.141     7.849    read_index_reg[9]_i_111_n_4
+    SLICE_X74Y233        LUT3 (Prop_F6LUT_SLICEL_I0_O)
+                                                      0.123     7.972 r  read_index[9]_i_120/O
+                         net (fo=1, routed)           0.011     7.983    read_index[9]_i_120_n_0
+    SLICE_X74Y233        CARRY8 (Prop_CARRY8_SLICEL_S[5]_CO[7])
+                                                      0.155     8.138 r  read_index_reg[9]_i_74/CO[7]
+                         net (fo=1, routed)           0.026     8.164    read_index_reg[9]_i_74_n_0
+    SLICE_X74Y234        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[3])
+                                                      0.060     8.224 r  read_index_reg[9]_i_73/CO[3]
+                         net (fo=13, routed)          0.198     8.422    read_index_reg[9]_i_73_n_4
+    SLICE_X74Y235        LUT3 (Prop_F6LUT_SLICEL_I0_O)
+                                                      0.097     8.519 r  read_index[9]_i_82/O
+                         net (fo=1, routed)           0.011     8.530    read_index[9]_i_82_n_0
+    SLICE_X74Y235        CARRY8 (Prop_CARRY8_SLICEL_S[5]_CO[7])
+                                                      0.155     8.685 r  read_index_reg[9]_i_40/CO[7]
+                         net (fo=1, routed)           0.026     8.711    read_index_reg[9]_i_40_n_0
+    SLICE_X74Y236        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[3])
+                                                      0.060     8.771 r  read_index_reg[9]_i_39/CO[3]
+                         net (fo=13, routed)          0.230     9.001    read_index_reg[9]_i_39_n_4
+    SLICE_X74Y237        CARRY8 (Prop_CARRY8_SLICEL_CI_O[5])
+                                                      0.226     9.227 f  read_index_reg[9]_i_29/O[5]
+                         net (fo=7, routed)           0.219     9.446    read_index_reg[9]_i_29_n_10
+    SLICE_X73Y237        LUT2 (Prop_B6LUT_SLICEL_I1_O)
+                                                      0.090     9.536 r  read_index[9]_i_66/O
+                         net (fo=2, routed)           0.094     9.630    read_index[9]_i_66_n_0
+    SLICE_X73Y237        LUT6 (Prop_D6LUT_SLICEL_I5_O)
+                                                      0.036     9.666 r  read_index[9]_i_30/O
+                         net (fo=2, routed)           0.096     9.762    read_index[9]_i_30_n_0
+    SLICE_X73Y239        LUT6 (Prop_B6LUT_SLICEL_I0_O)
+                                                      0.098     9.860 f  read_index[9]_i_14/O
+                         net (fo=1, routed)           0.096     9.956    read_index[9]_i_14_n_0
+    SLICE_X73Y238        LUT6 (Prop_H6LUT_SLICEL_I1_O)
+                                                      0.124    10.080 r  read_index[9]_i_5/O
+                         net (fo=10, routed)          0.211    10.291    read_index[9]_i_5_n_0
+    SLICE_X74Y239        LUT6 (Prop_B6LUT_SLICEL_I2_O)
+                                                      0.051    10.342 r  read_index[2]_i_2/O
+                         net (fo=1, routed)           0.086    10.428    read_index[2]_i_2_n_0
+    SLICE_X74Y240        LUT6 (Prop_E6LUT_SLICEL_I1_O)
+                                                      0.035    10.463 r  read_index[2]_i_1/O
+                         net (fo=1, routed)           0.046    10.509    read_index[2]_i_1_n_0
+    SLICE_X74Y240        FDRE                                         r  read_index_reg[2]/D
   -------------------------------------------------------------------    -------------------
 
                          (clock clk rise edge)        1.360     1.360 r  
-    AM20                                              0.000     1.360 r  clk (IN)
+    AL16                                              0.000     1.360 r  clk (IN)
                          net (fo=0)                   0.000     1.360    clk_IBUF_inst/I
-    AM20                 INBUF (Prop_INBUF_HPIOB_M_PAD_O)
-                                                      0.323     1.683 r  clk_IBUF_inst/INBUF_INST/O
-                         net (fo=1, routed)           0.000     1.683    clk_IBUF_inst/OUT
-    AM20                 IBUFCTRL (Prop_IBUFCTRL_HPIOB_M_I_O)
-                                                      0.000     1.683 r  clk_IBUF_inst/IBUFCTRL_INST/O
-                         net (fo=1, routed)           0.287     1.970    clk_IBUF
-    BUFGCE_X0Y50         BUFGCE (Prop_BUFCE_BUFGCE_I_O)
-                                                      0.024     1.994 r  clk_IBUF_BUFG_inst/O
-    X4Y2 (CLOCK_ROOT)    net (fo=226, routed)         0.634     2.628    clk_IBUF_BUFG
-    SLICE_X84Y145        FDRE                                         r  row_index_reg[7]/C
-                         clock pessimism              0.308     2.936    
-                         clock uncertainty           -0.035     2.901    
-    SLICE_X84Y145        FDRE (Setup_CFF_SLICEL_C_D)
-                                                      0.025     2.926    row_index_reg[7]
+    AL16                 INBUF (Prop_INBUF_HPIOB_M_PAD_O)
+                                                      0.285     1.645 r  clk_IBUF_inst/INBUF_INST/O
+                         net (fo=1, routed)           0.000     1.645    clk_IBUF_inst/OUT
+    AL16                 IBUFCTRL (Prop_IBUFCTRL_HPIOB_M_I_O)
+                                                      0.000     1.645 r  clk_IBUF_inst/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.287     1.932    clk_IBUF
+    BUFGCE_X0Y2          BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.024     1.956 r  clk_IBUF_BUFG_inst/O
+    X3Y3 (CLOCK_ROOT)    net (fo=409, routed)         2.363     4.319    clk_IBUF_BUFG
+    SLICE_X74Y240        FDRE                                         r  read_index_reg[2]/C
+                         clock pessimism              0.399     4.718    
+                         clock uncertainty           -0.035     4.683    
+    SLICE_X74Y240        FDRE (Setup_EFF_SLICEL_C_D)
+                                                      0.025     4.708    read_index_reg[2]
   -------------------------------------------------------------------
-                         required time                          2.926    
-                         arrival time                          -3.209    
+                         required time                          4.708    
+                         arrival time                         -10.509    
   -------------------------------------------------------------------
-                         slack                                 -0.283    
+                         slack                                 -5.801    
 
-Slack (VIOLATED) :        -0.259ns  (required time - arrival time)
-  Source:                 row_index_reg[4]/C
+Slack (VIOLATED) :        -5.800ns  (required time - arrival time)
+  Source:                 row_ctr_reg[4]/C
                             (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@0.680ns period=1.360ns})
-  Destination:            row_index_reg[1]/CE
+  Destination:            read_index_reg[3]/D
                             (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@0.680ns period=1.360ns})
   Path Group:             clk
   Path Type:              Setup (Max at Slow Process Corner)
   Requirement:            1.360ns  (clk rise@1.360ns - clk rise@0.000ns)
-  Data Path Delay:        1.410ns  (logic 0.588ns (41.702%)  route 0.822ns (58.298%))
-  Logic Levels:           5  (CARRY8=2 LUT5=1 LUT6=2)
-  Clock Path Skew:        -0.114ns (DCD - SCD + CPR)
-    Destination Clock Delay (DCD):    1.275ns = ( 2.635 - 1.360 ) 
-    Source Clock Delay      (SCD):    1.697ns
-    Clock Pessimism Removal (CPR):    0.308ns
+  Data Path Delay:        7.251ns  (logic 3.981ns (54.903%)  route 3.270ns (45.097%))
+  Logic Levels:           38  (CARRY8=19 LUT2=1 LUT3=8 LUT4=1 LUT5=1 LUT6=8)
+  Clock Path Skew:        0.101ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.796ns = ( 4.156 - 1.360 ) 
+    Source Clock Delay      (SCD):    3.094ns
+    Clock Pessimism Removal (CPR):    0.399ns
   Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
     Total System Jitter     (TSJ):    0.071ns
     Total Input Jitter      (TIJ):    0.000ns
     Discrete Jitter          (DJ):    0.000ns
     Phase Error              (PE):    0.000ns
-  Clock Net Delay (Source):      0.772ns (routing 0.001ns, distribution 0.771ns)
-  Clock Net Delay (Destination): 0.641ns (routing 0.001ns, distribution 0.640ns)
+  Clock Net Delay (Source):      2.208ns (routing 1.189ns, distribution 1.019ns)
+  Clock Net Delay (Destination): 2.200ns (routing 1.080ns, distribution 1.120ns)
 
     Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
   -------------------------------------------------------------------    -------------------
                          (clock clk rise edge)        0.000     0.000 r  
-    AM20                                              0.000     0.000 r  clk (IN)
+    AL16                                              0.000     0.000 r  clk (IN)
                          net (fo=0)                   0.000     0.000    clk_IBUF_inst/I
-    AM20                 INBUF (Prop_INBUF_HPIOB_M_PAD_O)
-                                                      0.574     0.574 r  clk_IBUF_inst/INBUF_INST/O
-                         net (fo=1, routed)           0.000     0.574    clk_IBUF_inst/OUT
-    AM20                 IBUFCTRL (Prop_IBUFCTRL_HPIOB_M_I_O)
-                                                      0.000     0.574 r  clk_IBUF_inst/IBUFCTRL_INST/O
-                         net (fo=1, routed)           0.323     0.897    clk_IBUF
-    BUFGCE_X0Y50         BUFGCE (Prop_BUFCE_BUFGCE_I_O)
-                                                      0.028     0.925 r  clk_IBUF_BUFG_inst/O
-    X4Y2 (CLOCK_ROOT)    net (fo=226, routed)         0.772     1.697    clk_IBUF_BUFG
-    SLICE_X84Y150        FDRE                                         r  row_index_reg[4]/C
+    AL16                 INBUF (Prop_INBUF_HPIOB_M_PAD_O)
+                                                      0.535     0.535 r  clk_IBUF_inst/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.535    clk_IBUF_inst/OUT
+    AL16                 IBUFCTRL (Prop_IBUFCTRL_HPIOB_M_I_O)
+                                                      0.000     0.535 r  clk_IBUF_inst/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.323     0.858    clk_IBUF
+    BUFGCE_X0Y2          BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.028     0.886 r  clk_IBUF_BUFG_inst/O
+    X3Y3 (CLOCK_ROOT)    net (fo=409, routed)         2.208     3.094    clk_IBUF_BUFG
+    SLICE_X77Y229        FDRE                                         r  row_ctr_reg[4]/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X84Y150        FDRE (Prop_AFF_SLICEL_C_Q)
-                                                      0.079     1.776 r  row_index_reg[4]/Q
-                         net (fo=12, routed)          0.276     2.052    counter_write_OBUF[4]
-    SLICE_X82Y146        LUT6 (Prop_B6LUT_SLICEM_I0_O)
-                                                      0.089     2.141 r  row_index[9]_i_59/O
-                         net (fo=1, routed)           0.016     2.157    row_index[9]_i_59_n_0
-    SLICE_X82Y146        CARRY8 (Prop_CARRY8_SLICEM_S[1]_CO[7])
-                                                      0.190     2.347 r  row_index_reg[9]_i_31/CO[7]
-                         net (fo=1, routed)           0.026     2.373    row_index_reg[9]_i_31_n_0
-    SLICE_X82Y147        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[2])
-                                                      0.057     2.430 r  row_index_reg[9]_i_12/CO[2]
-                         net (fo=14, routed)          0.175     2.605    row_index1
-    SLICE_X82Y149        LUT6 (Prop_D6LUT_SLICEM_I3_O)
-                                                      0.122     2.727 r  row_index[9]_i_3/O
-                         net (fo=2, routed)           0.102     2.829    row_index[9]_i_3_n_0
-    SLICE_X83Y149        LUT5 (Prop_D6LUT_SLICEM_I0_O)
-                                                      0.051     2.880 r  row_index[9]_i_1/O
-                         net (fo=10, routed)          0.227     3.107    row_index[9]_i_1_n_0
-    SLICE_X84Y147        FDRE                                         r  row_index_reg[1]/CE
+    SLICE_X77Y229        FDRE (Prop_EFF_SLICEL_C_Q)
+                                                      0.079     3.173 r  row_ctr_reg[4]/Q
+                         net (fo=10, routed)          0.191     3.364    row_ctr[4]
+    SLICE_X76Y230        LUT6 (Prop_E6LUT_SLICEM_I0_O)
+                                                      0.148     3.512 f  row_ctr[7]_i_2/O
+                         net (fo=10, routed)          0.112     3.624    row_ctr[7]_i_2_n_0
+    SLICE_X76Y228        LUT6 (Prop_D6LUT_SLICEM_I2_O)
+                                                      0.088     3.712 f  read_index[9]_i_355/O
+                         net (fo=6, routed)           0.055     3.767    read_index[9]_i_355_n_0
+    SLICE_X76Y228        LUT6 (Prop_H6LUT_SLICEM_I3_O)
+                                                      0.101     3.868 f  read_index[9]_i_352/O
+                         net (fo=6, routed)           0.048     3.916    read_index[9]_i_352_n_0
+    SLICE_X76Y228        LUT5 (Prop_G6LUT_SLICEM_I1_O)
+                                                      0.037     3.953 r  read_index[9]_i_336/O
+                         net (fo=16, routed)          0.171     4.124    read_index[9]_i_336_n_0
+    SLICE_X76Y227        LUT4 (Prop_B6LUT_SLICEM_I0_O)
+                                                      0.052     4.176 r  read_index[9]_i_350/O
+                         net (fo=1, routed)           0.016     4.192    read_index[9]_i_350_n_0
+    SLICE_X76Y227        CARRY8 (Prop_CARRY8_SLICEM_S[1]_CO[7])
+                                                      0.190     4.382 r  read_index_reg[9]_i_318/CO[7]
+                         net (fo=1, routed)           0.026     4.408    read_index_reg[9]_i_318_n_0
+    SLICE_X76Y228        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[2])
+                                                      0.057     4.465 r  read_index_reg[9]_i_317/CO[2]
+                         net (fo=13, routed)          0.150     4.615    read_index_reg[9]_i_317_n_5
+    SLICE_X77Y228        LUT3 (Prop_D6LUT_SLICEL_I0_O)
+                                                      0.122     4.737 r  read_index[9]_i_327/O
+                         net (fo=1, routed)           0.009     4.746    read_index[9]_i_327_n_0
+    SLICE_X77Y228        CARRY8 (Prop_CARRY8_SLICEL_S[3]_CO[7])
+                                                      0.154     4.900 r  read_index_reg[9]_i_304/CO[7]
+                         net (fo=1, routed)           0.026     4.926    read_index_reg[9]_i_304_n_0
+    SLICE_X77Y229        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[3])
+                                                      0.060     4.986 r  read_index_reg[9]_i_303/CO[3]
+                         net (fo=13, routed)          0.141     5.127    read_index_reg[9]_i_303_n_4
+    SLICE_X76Y229        LUT3 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.123     5.250 r  read_index[9]_i_312/O
+                         net (fo=1, routed)           0.022     5.272    read_index[9]_i_312_n_0
+    SLICE_X76Y229        CARRY8 (Prop_CARRY8_SLICEM_S[5]_CO[7])
+                                                      0.159     5.431 r  read_index_reg[9]_i_290/CO[7]
+                         net (fo=1, routed)           0.026     5.457    read_index_reg[9]_i_290_n_0
+    SLICE_X76Y230        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[3])
+                                                      0.060     5.517 r  read_index_reg[9]_i_289/CO[3]
+                         net (fo=13, routed)          0.148     5.665    read_index_reg[9]_i_289_n_4
+    SLICE_X76Y231        LUT3 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.123     5.788 r  read_index[9]_i_298/O
+                         net (fo=1, routed)           0.022     5.810    read_index[9]_i_298_n_0
+    SLICE_X76Y231        CARRY8 (Prop_CARRY8_SLICEM_S[5]_CO[7])
+                                                      0.159     5.969 r  read_index_reg[9]_i_277/CO[7]
+                         net (fo=1, routed)           0.026     5.995    read_index_reg[9]_i_277_n_0
+    SLICE_X76Y232        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[3])
+                                                      0.060     6.055 r  read_index_reg[9]_i_276/CO[3]
+                         net (fo=13, routed)          0.212     6.267    read_index_reg[9]_i_276_n_4
+    SLICE_X75Y230        LUT3 (Prop_E6LUT_SLICEM_I0_O)
+                                                      0.124     6.391 r  read_index[9]_i_285/O
+                         net (fo=1, routed)           0.014     6.405    read_index[9]_i_285_n_0
+    SLICE_X75Y230        CARRY8 (Prop_CARRY8_SLICEM_S[4]_CO[7])
+                                                      0.156     6.561 r  read_index_reg[9]_i_254/CO[7]
+                         net (fo=1, routed)           0.026     6.587    read_index_reg[9]_i_254_n_0
+    SLICE_X75Y231        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[3])
+                                                      0.060     6.647 r  read_index_reg[9]_i_253/CO[3]
+                         net (fo=13, routed)          0.195     6.842    read_index_reg[9]_i_253_n_4
+    SLICE_X75Y232        LUT3 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.051     6.893 r  read_index[9]_i_261/O
+                         net (fo=1, routed)           0.022     6.915    read_index[9]_i_261_n_0
+    SLICE_X75Y232        CARRY8 (Prop_CARRY8_SLICEM_S[5]_CO[7])
+                                                      0.159     7.074 r  read_index_reg[9]_i_175/CO[7]
+                         net (fo=1, routed)           0.026     7.100    read_index_reg[9]_i_175_n_0
+    SLICE_X75Y233        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[3])
+                                                      0.060     7.160 r  read_index_reg[9]_i_174/CO[3]
+                         net (fo=13, routed)          0.207     7.367    read_index_reg[9]_i_174_n_4
+    SLICE_X74Y231        LUT3 (Prop_F6LUT_SLICEL_I0_O)
+                                                      0.089     7.456 r  read_index[9]_i_182/O
+                         net (fo=1, routed)           0.011     7.467    read_index[9]_i_182_n_0
+    SLICE_X74Y231        CARRY8 (Prop_CARRY8_SLICEL_S[5]_CO[7])
+                                                      0.155     7.622 r  read_index_reg[9]_i_112/CO[7]
+                         net (fo=1, routed)           0.026     7.648    read_index_reg[9]_i_112_n_0
+    SLICE_X74Y232        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[3])
+                                                      0.060     7.708 r  read_index_reg[9]_i_111/CO[3]
+                         net (fo=13, routed)          0.141     7.849    read_index_reg[9]_i_111_n_4
+    SLICE_X74Y233        LUT3 (Prop_F6LUT_SLICEL_I0_O)
+                                                      0.123     7.972 r  read_index[9]_i_120/O
+                         net (fo=1, routed)           0.011     7.983    read_index[9]_i_120_n_0
+    SLICE_X74Y233        CARRY8 (Prop_CARRY8_SLICEL_S[5]_CO[7])
+                                                      0.155     8.138 r  read_index_reg[9]_i_74/CO[7]
+                         net (fo=1, routed)           0.026     8.164    read_index_reg[9]_i_74_n_0
+    SLICE_X74Y234        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[3])
+                                                      0.060     8.224 r  read_index_reg[9]_i_73/CO[3]
+                         net (fo=13, routed)          0.198     8.422    read_index_reg[9]_i_73_n_4
+    SLICE_X74Y235        LUT3 (Prop_F6LUT_SLICEL_I0_O)
+                                                      0.097     8.519 r  read_index[9]_i_82/O
+                         net (fo=1, routed)           0.011     8.530    read_index[9]_i_82_n_0
+    SLICE_X74Y235        CARRY8 (Prop_CARRY8_SLICEL_S[5]_CO[7])
+                                                      0.155     8.685 r  read_index_reg[9]_i_40/CO[7]
+                         net (fo=1, routed)           0.026     8.711    read_index_reg[9]_i_40_n_0
+    SLICE_X74Y236        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[3])
+                                                      0.060     8.771 r  read_index_reg[9]_i_39/CO[3]
+                         net (fo=13, routed)          0.230     9.001    read_index_reg[9]_i_39_n_4
+    SLICE_X74Y237        CARRY8 (Prop_CARRY8_SLICEL_CI_O[5])
+                                                      0.226     9.227 f  read_index_reg[9]_i_29/O[5]
+                         net (fo=7, routed)           0.219     9.446    read_index_reg[9]_i_29_n_10
+    SLICE_X73Y237        LUT2 (Prop_B6LUT_SLICEL_I1_O)
+                                                      0.090     9.536 r  read_index[9]_i_66/O
+                         net (fo=2, routed)           0.094     9.630    read_index[9]_i_66_n_0
+    SLICE_X73Y237        LUT6 (Prop_D6LUT_SLICEL_I5_O)
+                                                      0.036     9.666 r  read_index[9]_i_30/O
+                         net (fo=2, routed)           0.096     9.762    read_index[9]_i_30_n_0
+    SLICE_X73Y239        LUT6 (Prop_B6LUT_SLICEL_I0_O)
+                                                      0.098     9.860 f  read_index[9]_i_14/O
+                         net (fo=1, routed)           0.096     9.956    read_index[9]_i_14_n_0
+    SLICE_X73Y238        LUT6 (Prop_H6LUT_SLICEL_I1_O)
+                                                      0.124    10.080 r  read_index[9]_i_5/O
+                         net (fo=10, routed)          0.106    10.186    read_index[9]_i_5_n_0
+    SLICE_X73Y240        LUT6 (Prop_B6LUT_SLICEL_I2_O)
+                                                      0.036    10.222 r  read_index[3]_i_2/O
+                         net (fo=1, routed)           0.042    10.264    read_index[3]_i_2_n_0
+    SLICE_X73Y240        LUT6 (Prop_E6LUT_SLICEL_I1_O)
+                                                      0.035    10.299 r  read_index[3]_i_1/O
+                         net (fo=1, routed)           0.046    10.345    read_index[3]_i_1_n_0
+    SLICE_X73Y240        FDRE                                         r  read_index_reg[3]/D
   -------------------------------------------------------------------    -------------------
 
                          (clock clk rise edge)        1.360     1.360 r  
-    AM20                                              0.000     1.360 r  clk (IN)
+    AL16                                              0.000     1.360 r  clk (IN)
                          net (fo=0)                   0.000     1.360    clk_IBUF_inst/I
-    AM20                 INBUF (Prop_INBUF_HPIOB_M_PAD_O)
-                                                      0.323     1.683 r  clk_IBUF_inst/INBUF_INST/O
-                         net (fo=1, routed)           0.000     1.683    clk_IBUF_inst/OUT
-    AM20                 IBUFCTRL (Prop_IBUFCTRL_HPIOB_M_I_O)
-                                                      0.000     1.683 r  clk_IBUF_inst/IBUFCTRL_INST/O
-                         net (fo=1, routed)           0.287     1.970    clk_IBUF
-    BUFGCE_X0Y50         BUFGCE (Prop_BUFCE_BUFGCE_I_O)
-                                                      0.024     1.994 r  clk_IBUF_BUFG_inst/O
-    X4Y2 (CLOCK_ROOT)    net (fo=226, routed)         0.641     2.635    clk_IBUF_BUFG
-    SLICE_X84Y147        FDRE                                         r  row_index_reg[1]/C
-                         clock pessimism              0.308     2.943    
-                         clock uncertainty           -0.035     2.908    
-    SLICE_X84Y147        FDRE (Setup_DFF_SLICEL_C_CE)
-                                                     -0.060     2.848    row_index_reg[1]
+    AL16                 INBUF (Prop_INBUF_HPIOB_M_PAD_O)
+                                                      0.285     1.645 r  clk_IBUF_inst/INBUF_INST/O
+                         net (fo=1, routed)           0.000     1.645    clk_IBUF_inst/OUT
+    AL16                 IBUFCTRL (Prop_IBUFCTRL_HPIOB_M_I_O)
+                                                      0.000     1.645 r  clk_IBUF_inst/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.287     1.932    clk_IBUF
+    BUFGCE_X0Y2          BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.024     1.956 r  clk_IBUF_BUFG_inst/O
+    X3Y3 (CLOCK_ROOT)    net (fo=409, routed)         2.200     4.156    clk_IBUF_BUFG
+    SLICE_X73Y240        FDRE                                         r  read_index_reg[3]/C
+                         clock pessimism              0.399     4.555    
+                         clock uncertainty           -0.035     4.520    
+    SLICE_X73Y240        FDRE (Setup_EFF_SLICEL_C_D)
+                                                      0.025     4.545    read_index_reg[3]
   -------------------------------------------------------------------
-                         required time                          2.848    
-                         arrival time                          -3.107    
+                         required time                          4.545    
+                         arrival time                         -10.345    
   -------------------------------------------------------------------
-                         slack                                 -0.259    
+                         slack                                 -5.800    
 
-Slack (VIOLATED) :        -0.259ns  (required time - arrival time)
-  Source:                 row_index_reg[4]/C
+Slack (VIOLATED) :        -5.798ns  (required time - arrival time)
+  Source:                 row_ctr_reg[4]/C
                             (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@0.680ns period=1.360ns})
-  Destination:            row_index_reg[3]/CE
+  Destination:            read_index_reg[1]/D
                             (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@0.680ns period=1.360ns})
   Path Group:             clk
   Path Type:              Setup (Max at Slow Process Corner)
   Requirement:            1.360ns  (clk rise@1.360ns - clk rise@0.000ns)
-  Data Path Delay:        1.410ns  (logic 0.588ns (41.702%)  route 0.822ns (58.298%))
-  Logic Levels:           5  (CARRY8=2 LUT5=1 LUT6=2)
-  Clock Path Skew:        -0.114ns (DCD - SCD + CPR)
-    Destination Clock Delay (DCD):    1.275ns = ( 2.635 - 1.360 ) 
-    Source Clock Delay      (SCD):    1.697ns
-    Clock Pessimism Removal (CPR):    0.308ns
+  Data Path Delay:        7.412ns  (logic 3.980ns (53.697%)  route 3.432ns (46.303%))
+  Logic Levels:           38  (CARRY8=19 LUT2=1 LUT3=8 LUT4=1 LUT5=1 LUT6=8)
+  Clock Path Skew:        0.264ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.959ns = ( 4.319 - 1.360 ) 
+    Source Clock Delay      (SCD):    3.094ns
+    Clock Pessimism Removal (CPR):    0.399ns
   Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
     Total System Jitter     (TSJ):    0.071ns
     Total Input Jitter      (TIJ):    0.000ns
     Discrete Jitter          (DJ):    0.000ns
     Phase Error              (PE):    0.000ns
-  Clock Net Delay (Source):      0.772ns (routing 0.001ns, distribution 0.771ns)
-  Clock Net Delay (Destination): 0.641ns (routing 0.001ns, distribution 0.640ns)
+  Clock Net Delay (Source):      2.208ns (routing 1.189ns, distribution 1.019ns)
+  Clock Net Delay (Destination): 2.363ns (routing 1.080ns, distribution 1.283ns)
 
     Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
   -------------------------------------------------------------------    -------------------
                          (clock clk rise edge)        0.000     0.000 r  
-    AM20                                              0.000     0.000 r  clk (IN)
+    AL16                                              0.000     0.000 r  clk (IN)
                          net (fo=0)                   0.000     0.000    clk_IBUF_inst/I
-    AM20                 INBUF (Prop_INBUF_HPIOB_M_PAD_O)
-                                                      0.574     0.574 r  clk_IBUF_inst/INBUF_INST/O
-                         net (fo=1, routed)           0.000     0.574    clk_IBUF_inst/OUT
-    AM20                 IBUFCTRL (Prop_IBUFCTRL_HPIOB_M_I_O)
-                                                      0.000     0.574 r  clk_IBUF_inst/IBUFCTRL_INST/O
-                         net (fo=1, routed)           0.323     0.897    clk_IBUF
-    BUFGCE_X0Y50         BUFGCE (Prop_BUFCE_BUFGCE_I_O)
-                                                      0.028     0.925 r  clk_IBUF_BUFG_inst/O
-    X4Y2 (CLOCK_ROOT)    net (fo=226, routed)         0.772     1.697    clk_IBUF_BUFG
-    SLICE_X84Y150        FDRE                                         r  row_index_reg[4]/C
+    AL16                 INBUF (Prop_INBUF_HPIOB_M_PAD_O)
+                                                      0.535     0.535 r  clk_IBUF_inst/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.535    clk_IBUF_inst/OUT
+    AL16                 IBUFCTRL (Prop_IBUFCTRL_HPIOB_M_I_O)
+                                                      0.000     0.535 r  clk_IBUF_inst/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.323     0.858    clk_IBUF
+    BUFGCE_X0Y2          BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.028     0.886 r  clk_IBUF_BUFG_inst/O
+    X3Y3 (CLOCK_ROOT)    net (fo=409, routed)         2.208     3.094    clk_IBUF_BUFG
+    SLICE_X77Y229        FDRE                                         r  row_ctr_reg[4]/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X84Y150        FDRE (Prop_AFF_SLICEL_C_Q)
-                                                      0.079     1.776 r  row_index_reg[4]/Q
-                         net (fo=12, routed)          0.276     2.052    counter_write_OBUF[4]
-    SLICE_X82Y146        LUT6 (Prop_B6LUT_SLICEM_I0_O)
-                                                      0.089     2.141 r  row_index[9]_i_59/O
-                         net (fo=1, routed)           0.016     2.157    row_index[9]_i_59_n_0
-    SLICE_X82Y146        CARRY8 (Prop_CARRY8_SLICEM_S[1]_CO[7])
-                                                      0.190     2.347 r  row_index_reg[9]_i_31/CO[7]
-                         net (fo=1, routed)           0.026     2.373    row_index_reg[9]_i_31_n_0
-    SLICE_X82Y147        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[2])
-                                                      0.057     2.430 r  row_index_reg[9]_i_12/CO[2]
-                         net (fo=14, routed)          0.175     2.605    row_index1
-    SLICE_X82Y149        LUT6 (Prop_D6LUT_SLICEM_I3_O)
-                                                      0.122     2.727 r  row_index[9]_i_3/O
-                         net (fo=2, routed)           0.102     2.829    row_index[9]_i_3_n_0
-    SLICE_X83Y149        LUT5 (Prop_D6LUT_SLICEM_I0_O)
-                                                      0.051     2.880 r  row_index[9]_i_1/O
-                         net (fo=10, routed)          0.227     3.107    row_index[9]_i_1_n_0
-    SLICE_X84Y147        FDRE                                         r  row_index_reg[3]/CE
+    SLICE_X77Y229        FDRE (Prop_EFF_SLICEL_C_Q)
+                                                      0.079     3.173 r  row_ctr_reg[4]/Q
+                         net (fo=10, routed)          0.191     3.364    row_ctr[4]
+    SLICE_X76Y230        LUT6 (Prop_E6LUT_SLICEM_I0_O)
+                                                      0.148     3.512 f  row_ctr[7]_i_2/O
+                         net (fo=10, routed)          0.112     3.624    row_ctr[7]_i_2_n_0
+    SLICE_X76Y228        LUT6 (Prop_D6LUT_SLICEM_I2_O)
+                                                      0.088     3.712 f  read_index[9]_i_355/O
+                         net (fo=6, routed)           0.055     3.767    read_index[9]_i_355_n_0
+    SLICE_X76Y228        LUT6 (Prop_H6LUT_SLICEM_I3_O)
+                                                      0.101     3.868 f  read_index[9]_i_352/O
+                         net (fo=6, routed)           0.048     3.916    read_index[9]_i_352_n_0
+    SLICE_X76Y228        LUT5 (Prop_G6LUT_SLICEM_I1_O)
+                                                      0.037     3.953 r  read_index[9]_i_336/O
+                         net (fo=16, routed)          0.171     4.124    read_index[9]_i_336_n_0
+    SLICE_X76Y227        LUT4 (Prop_B6LUT_SLICEM_I0_O)
+                                                      0.052     4.176 r  read_index[9]_i_350/O
+                         net (fo=1, routed)           0.016     4.192    read_index[9]_i_350_n_0
+    SLICE_X76Y227        CARRY8 (Prop_CARRY8_SLICEM_S[1]_CO[7])
+                                                      0.190     4.382 r  read_index_reg[9]_i_318/CO[7]
+                         net (fo=1, routed)           0.026     4.408    read_index_reg[9]_i_318_n_0
+    SLICE_X76Y228        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[2])
+                                                      0.057     4.465 r  read_index_reg[9]_i_317/CO[2]
+                         net (fo=13, routed)          0.150     4.615    read_index_reg[9]_i_317_n_5
+    SLICE_X77Y228        LUT3 (Prop_D6LUT_SLICEL_I0_O)
+                                                      0.122     4.737 r  read_index[9]_i_327/O
+                         net (fo=1, routed)           0.009     4.746    read_index[9]_i_327_n_0
+    SLICE_X77Y228        CARRY8 (Prop_CARRY8_SLICEL_S[3]_CO[7])
+                                                      0.154     4.900 r  read_index_reg[9]_i_304/CO[7]
+                         net (fo=1, routed)           0.026     4.926    read_index_reg[9]_i_304_n_0
+    SLICE_X77Y229        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[3])
+                                                      0.060     4.986 r  read_index_reg[9]_i_303/CO[3]
+                         net (fo=13, routed)          0.141     5.127    read_index_reg[9]_i_303_n_4
+    SLICE_X76Y229        LUT3 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.123     5.250 r  read_index[9]_i_312/O
+                         net (fo=1, routed)           0.022     5.272    read_index[9]_i_312_n_0
+    SLICE_X76Y229        CARRY8 (Prop_CARRY8_SLICEM_S[5]_CO[7])
+                                                      0.159     5.431 r  read_index_reg[9]_i_290/CO[7]
+                         net (fo=1, routed)           0.026     5.457    read_index_reg[9]_i_290_n_0
+    SLICE_X76Y230        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[3])
+                                                      0.060     5.517 r  read_index_reg[9]_i_289/CO[3]
+                         net (fo=13, routed)          0.148     5.665    read_index_reg[9]_i_289_n_4
+    SLICE_X76Y231        LUT3 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.123     5.788 r  read_index[9]_i_298/O
+                         net (fo=1, routed)           0.022     5.810    read_index[9]_i_298_n_0
+    SLICE_X76Y231        CARRY8 (Prop_CARRY8_SLICEM_S[5]_CO[7])
+                                                      0.159     5.969 r  read_index_reg[9]_i_277/CO[7]
+                         net (fo=1, routed)           0.026     5.995    read_index_reg[9]_i_277_n_0
+    SLICE_X76Y232        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[3])
+                                                      0.060     6.055 r  read_index_reg[9]_i_276/CO[3]
+                         net (fo=13, routed)          0.212     6.267    read_index_reg[9]_i_276_n_4
+    SLICE_X75Y230        LUT3 (Prop_E6LUT_SLICEM_I0_O)
+                                                      0.124     6.391 r  read_index[9]_i_285/O
+                         net (fo=1, routed)           0.014     6.405    read_index[9]_i_285_n_0
+    SLICE_X75Y230        CARRY8 (Prop_CARRY8_SLICEM_S[4]_CO[7])
+                                                      0.156     6.561 r  read_index_reg[9]_i_254/CO[7]
+                         net (fo=1, routed)           0.026     6.587    read_index_reg[9]_i_254_n_0
+    SLICE_X75Y231        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[3])
+                                                      0.060     6.647 r  read_index_reg[9]_i_253/CO[3]
+                         net (fo=13, routed)          0.195     6.842    read_index_reg[9]_i_253_n_4
+    SLICE_X75Y232        LUT3 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.051     6.893 r  read_index[9]_i_261/O
+                         net (fo=1, routed)           0.022     6.915    read_index[9]_i_261_n_0
+    SLICE_X75Y232        CARRY8 (Prop_CARRY8_SLICEM_S[5]_CO[7])
+                                                      0.159     7.074 r  read_index_reg[9]_i_175/CO[7]
+                         net (fo=1, routed)           0.026     7.100    read_index_reg[9]_i_175_n_0
+    SLICE_X75Y233        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[3])
+                                                      0.060     7.160 r  read_index_reg[9]_i_174/CO[3]
+                         net (fo=13, routed)          0.207     7.367    read_index_reg[9]_i_174_n_4
+    SLICE_X74Y231        LUT3 (Prop_F6LUT_SLICEL_I0_O)
+                                                      0.089     7.456 r  read_index[9]_i_182/O
+                         net (fo=1, routed)           0.011     7.467    read_index[9]_i_182_n_0
+    SLICE_X74Y231        CARRY8 (Prop_CARRY8_SLICEL_S[5]_CO[7])
+                                                      0.155     7.622 r  read_index_reg[9]_i_112/CO[7]
+                         net (fo=1, routed)           0.026     7.648    read_index_reg[9]_i_112_n_0
+    SLICE_X74Y232        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[3])
+                                                      0.060     7.708 r  read_index_reg[9]_i_111/CO[3]
+                         net (fo=13, routed)          0.141     7.849    read_index_reg[9]_i_111_n_4
+    SLICE_X74Y233        LUT3 (Prop_F6LUT_SLICEL_I0_O)
+                                                      0.123     7.972 r  read_index[9]_i_120/O
+                         net (fo=1, routed)           0.011     7.983    read_index[9]_i_120_n_0
+    SLICE_X74Y233        CARRY8 (Prop_CARRY8_SLICEL_S[5]_CO[7])
+                                                      0.155     8.138 r  read_index_reg[9]_i_74/CO[7]
+                         net (fo=1, routed)           0.026     8.164    read_index_reg[9]_i_74_n_0
+    SLICE_X74Y234        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[3])
+                                                      0.060     8.224 r  read_index_reg[9]_i_73/CO[3]
+                         net (fo=13, routed)          0.198     8.422    read_index_reg[9]_i_73_n_4
+    SLICE_X74Y235        LUT3 (Prop_F6LUT_SLICEL_I0_O)
+                                                      0.097     8.519 r  read_index[9]_i_82/O
+                         net (fo=1, routed)           0.011     8.530    read_index[9]_i_82_n_0
+    SLICE_X74Y235        CARRY8 (Prop_CARRY8_SLICEL_S[5]_CO[7])
+                                                      0.155     8.685 r  read_index_reg[9]_i_40/CO[7]
+                         net (fo=1, routed)           0.026     8.711    read_index_reg[9]_i_40_n_0
+    SLICE_X74Y236        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[3])
+                                                      0.060     8.771 r  read_index_reg[9]_i_39/CO[3]
+                         net (fo=13, routed)          0.230     9.001    read_index_reg[9]_i_39_n_4
+    SLICE_X74Y237        CARRY8 (Prop_CARRY8_SLICEL_CI_O[5])
+                                                      0.226     9.227 f  read_index_reg[9]_i_29/O[5]
+                         net (fo=7, routed)           0.219     9.446    read_index_reg[9]_i_29_n_10
+    SLICE_X73Y237        LUT2 (Prop_B6LUT_SLICEL_I1_O)
+                                                      0.090     9.536 r  read_index[9]_i_66/O
+                         net (fo=2, routed)           0.094     9.630    read_index[9]_i_66_n_0
+    SLICE_X73Y237        LUT6 (Prop_D6LUT_SLICEL_I5_O)
+                                                      0.036     9.666 r  read_index[9]_i_30/O
+                         net (fo=2, routed)           0.096     9.762    read_index[9]_i_30_n_0
+    SLICE_X73Y239        LUT6 (Prop_B6LUT_SLICEL_I0_O)
+                                                      0.098     9.860 f  read_index[9]_i_14/O
+                         net (fo=1, routed)           0.096     9.956    read_index[9]_i_14_n_0
+    SLICE_X73Y238        LUT6 (Prop_H6LUT_SLICEL_I1_O)
+                                                      0.124    10.080 r  read_index[9]_i_5/O
+                         net (fo=10, routed)          0.260    10.340    read_index[9]_i_5_n_0
+    SLICE_X74Y241        LUT6 (Prop_A6LUT_SLICEL_I2_O)
+                                                      0.035    10.375 r  read_index[1]_i_2/O
+                         net (fo=1, routed)           0.048    10.423    read_index[1]_i_2_n_0
+    SLICE_X74Y240        LUT6 (Prop_G6LUT_SLICEL_I1_O)
+                                                      0.035    10.458 r  read_index[1]_i_1/O
+                         net (fo=1, routed)           0.048    10.506    read_index[1]_i_1_n_0
+    SLICE_X74Y240        FDRE                                         r  read_index_reg[1]/D
   -------------------------------------------------------------------    -------------------
 
                          (clock clk rise edge)        1.360     1.360 r  
-    AM20                                              0.000     1.360 r  clk (IN)
+    AL16                                              0.000     1.360 r  clk (IN)
                          net (fo=0)                   0.000     1.360    clk_IBUF_inst/I
-    AM20                 INBUF (Prop_INBUF_HPIOB_M_PAD_O)
-                                                      0.323     1.683 r  clk_IBUF_inst/INBUF_INST/O
-                         net (fo=1, routed)           0.000     1.683    clk_IBUF_inst/OUT
-    AM20                 IBUFCTRL (Prop_IBUFCTRL_HPIOB_M_I_O)
-                                                      0.000     1.683 r  clk_IBUF_inst/IBUFCTRL_INST/O
-                         net (fo=1, routed)           0.287     1.970    clk_IBUF
-    BUFGCE_X0Y50         BUFGCE (Prop_BUFCE_BUFGCE_I_O)
-                                                      0.024     1.994 r  clk_IBUF_BUFG_inst/O
-    X4Y2 (CLOCK_ROOT)    net (fo=226, routed)         0.641     2.635    clk_IBUF_BUFG
-    SLICE_X84Y147        FDRE                                         r  row_index_reg[3]/C
-                         clock pessimism              0.308     2.943    
-                         clock uncertainty           -0.035     2.908    
-    SLICE_X84Y147        FDRE (Setup_AFF_SLICEL_C_CE)
-                                                     -0.060     2.848    row_index_reg[3]
+    AL16                 INBUF (Prop_INBUF_HPIOB_M_PAD_O)
+                                                      0.285     1.645 r  clk_IBUF_inst/INBUF_INST/O
+                         net (fo=1, routed)           0.000     1.645    clk_IBUF_inst/OUT
+    AL16                 IBUFCTRL (Prop_IBUFCTRL_HPIOB_M_I_O)
+                                                      0.000     1.645 r  clk_IBUF_inst/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.287     1.932    clk_IBUF
+    BUFGCE_X0Y2          BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.024     1.956 r  clk_IBUF_BUFG_inst/O
+    X3Y3 (CLOCK_ROOT)    net (fo=409, routed)         2.363     4.319    clk_IBUF_BUFG
+    SLICE_X74Y240        FDRE                                         r  read_index_reg[1]/C
+                         clock pessimism              0.399     4.718    
+                         clock uncertainty           -0.035     4.683    
+    SLICE_X74Y240        FDRE (Setup_GFF_SLICEL_C_D)
+                                                      0.025     4.708    read_index_reg[1]
   -------------------------------------------------------------------
-                         required time                          2.848    
-                         arrival time                          -3.107    
+                         required time                          4.708    
+                         arrival time                         -10.506    
   -------------------------------------------------------------------
-                         slack                                 -0.259    
+                         slack                                 -5.798    
 
-Slack (VIOLATED) :        -0.258ns  (required time - arrival time)
-  Source:                 row_index_reg[4]/C
+Slack (VIOLATED) :        -5.798ns  (required time - arrival time)
+  Source:                 row_ctr_reg[4]/C
                             (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@0.680ns period=1.360ns})
-  Destination:            row_index_reg[5]/CE
+  Destination:            read_index_reg[0]/D
                             (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@0.680ns period=1.360ns})
   Path Group:             clk
   Path Type:              Setup (Max at Slow Process Corner)
   Requirement:            1.360ns  (clk rise@1.360ns - clk rise@0.000ns)
-  Data Path Delay:        1.415ns  (logic 0.588ns (41.555%)  route 0.827ns (58.445%))
-  Logic Levels:           5  (CARRY8=2 LUT5=1 LUT6=2)
-  Clock Path Skew:        -0.107ns (DCD - SCD + CPR)
-    Destination Clock Delay (DCD):    1.282ns = ( 2.642 - 1.360 ) 
-    Source Clock Delay      (SCD):    1.697ns
-    Clock Pessimism Removal (CPR):    0.308ns
+  Data Path Delay:        7.256ns  (logic 3.984ns (54.906%)  route 3.272ns (45.094%))
+  Logic Levels:           38  (CARRY8=19 LUT2=1 LUT3=8 LUT4=1 LUT5=1 LUT6=8)
+  Clock Path Skew:        0.108ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.755ns = ( 4.115 - 1.360 ) 
+    Source Clock Delay      (SCD):    3.094ns
+    Clock Pessimism Removal (CPR):    0.447ns
   Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
     Total System Jitter     (TSJ):    0.071ns
     Total Input Jitter      (TIJ):    0.000ns
     Discrete Jitter          (DJ):    0.000ns
     Phase Error              (PE):    0.000ns
-  Clock Net Delay (Source):      0.772ns (routing 0.001ns, distribution 0.771ns)
-  Clock Net Delay (Destination): 0.648ns (routing 0.001ns, distribution 0.647ns)
+  Clock Net Delay (Source):      2.208ns (routing 1.189ns, distribution 1.019ns)
+  Clock Net Delay (Destination): 2.159ns (routing 1.080ns, distribution 1.079ns)
 
     Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
   -------------------------------------------------------------------    -------------------
                          (clock clk rise edge)        0.000     0.000 r  
-    AM20                                              0.000     0.000 r  clk (IN)
+    AL16                                              0.000     0.000 r  clk (IN)
                          net (fo=0)                   0.000     0.000    clk_IBUF_inst/I
-    AM20                 INBUF (Prop_INBUF_HPIOB_M_PAD_O)
-                                                      0.574     0.574 r  clk_IBUF_inst/INBUF_INST/O
-                         net (fo=1, routed)           0.000     0.574    clk_IBUF_inst/OUT
-    AM20                 IBUFCTRL (Prop_IBUFCTRL_HPIOB_M_I_O)
-                                                      0.000     0.574 r  clk_IBUF_inst/IBUFCTRL_INST/O
-                         net (fo=1, routed)           0.323     0.897    clk_IBUF
-    BUFGCE_X0Y50         BUFGCE (Prop_BUFCE_BUFGCE_I_O)
-                                                      0.028     0.925 r  clk_IBUF_BUFG_inst/O
-    X4Y2 (CLOCK_ROOT)    net (fo=226, routed)         0.772     1.697    clk_IBUF_BUFG
-    SLICE_X84Y150        FDRE                                         r  row_index_reg[4]/C
+    AL16                 INBUF (Prop_INBUF_HPIOB_M_PAD_O)
+                                                      0.535     0.535 r  clk_IBUF_inst/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.535    clk_IBUF_inst/OUT
+    AL16                 IBUFCTRL (Prop_IBUFCTRL_HPIOB_M_I_O)
+                                                      0.000     0.535 r  clk_IBUF_inst/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.323     0.858    clk_IBUF
+    BUFGCE_X0Y2          BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.028     0.886 r  clk_IBUF_BUFG_inst/O
+    X3Y3 (CLOCK_ROOT)    net (fo=409, routed)         2.208     3.094    clk_IBUF_BUFG
+    SLICE_X77Y229        FDRE                                         r  row_ctr_reg[4]/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X84Y150        FDRE (Prop_AFF_SLICEL_C_Q)
-                                                      0.079     1.776 r  row_index_reg[4]/Q
-                         net (fo=12, routed)          0.276     2.052    counter_write_OBUF[4]
-    SLICE_X82Y146        LUT6 (Prop_B6LUT_SLICEM_I0_O)
-                                                      0.089     2.141 r  row_index[9]_i_59/O
-                         net (fo=1, routed)           0.016     2.157    row_index[9]_i_59_n_0
-    SLICE_X82Y146        CARRY8 (Prop_CARRY8_SLICEM_S[1]_CO[7])
-                                                      0.190     2.347 r  row_index_reg[9]_i_31/CO[7]
-                         net (fo=1, routed)           0.026     2.373    row_index_reg[9]_i_31_n_0
-    SLICE_X82Y147        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[2])
-                                                      0.057     2.430 r  row_index_reg[9]_i_12/CO[2]
-                         net (fo=14, routed)          0.175     2.605    row_index1
-    SLICE_X82Y149        LUT6 (Prop_D6LUT_SLICEM_I3_O)
-                                                      0.122     2.727 r  row_index[9]_i_3/O
-                         net (fo=2, routed)           0.102     2.829    row_index[9]_i_3_n_0
-    SLICE_X83Y149        LUT5 (Prop_D6LUT_SLICEM_I0_O)
-                                                      0.051     2.880 r  row_index[9]_i_1/O
-                         net (fo=10, routed)          0.232     3.112    row_index[9]_i_1_n_0
-    SLICE_X83Y147        FDRE                                         r  row_index_reg[5]/CE
+    SLICE_X77Y229        FDRE (Prop_EFF_SLICEL_C_Q)
+                                                      0.079     3.173 r  row_ctr_reg[4]/Q
+                         net (fo=10, routed)          0.191     3.364    row_ctr[4]
+    SLICE_X76Y230        LUT6 (Prop_E6LUT_SLICEM_I0_O)
+                                                      0.148     3.512 f  row_ctr[7]_i_2/O
+                         net (fo=10, routed)          0.112     3.624    row_ctr[7]_i_2_n_0
+    SLICE_X76Y228        LUT6 (Prop_D6LUT_SLICEM_I2_O)
+                                                      0.088     3.712 f  read_index[9]_i_355/O
+                         net (fo=6, routed)           0.055     3.767    read_index[9]_i_355_n_0
+    SLICE_X76Y228        LUT6 (Prop_H6LUT_SLICEM_I3_O)
+                                                      0.101     3.868 f  read_index[9]_i_352/O
+                         net (fo=6, routed)           0.048     3.916    read_index[9]_i_352_n_0
+    SLICE_X76Y228        LUT5 (Prop_G6LUT_SLICEM_I1_O)
+                                                      0.037     3.953 r  read_index[9]_i_336/O
+                         net (fo=16, routed)          0.171     4.124    read_index[9]_i_336_n_0
+    SLICE_X76Y227        LUT4 (Prop_B6LUT_SLICEM_I0_O)
+                                                      0.052     4.176 r  read_index[9]_i_350/O
+                         net (fo=1, routed)           0.016     4.192    read_index[9]_i_350_n_0
+    SLICE_X76Y227        CARRY8 (Prop_CARRY8_SLICEM_S[1]_CO[7])
+                                                      0.190     4.382 r  read_index_reg[9]_i_318/CO[7]
+                         net (fo=1, routed)           0.026     4.408    read_index_reg[9]_i_318_n_0
+    SLICE_X76Y228        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[2])
+                                                      0.057     4.465 r  read_index_reg[9]_i_317/CO[2]
+                         net (fo=13, routed)          0.150     4.615    read_index_reg[9]_i_317_n_5
+    SLICE_X77Y228        LUT3 (Prop_D6LUT_SLICEL_I0_O)
+                                                      0.122     4.737 r  read_index[9]_i_327/O
+                         net (fo=1, routed)           0.009     4.746    read_index[9]_i_327_n_0
+    SLICE_X77Y228        CARRY8 (Prop_CARRY8_SLICEL_S[3]_CO[7])
+                                                      0.154     4.900 r  read_index_reg[9]_i_304/CO[7]
+                         net (fo=1, routed)           0.026     4.926    read_index_reg[9]_i_304_n_0
+    SLICE_X77Y229        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[3])
+                                                      0.060     4.986 r  read_index_reg[9]_i_303/CO[3]
+                         net (fo=13, routed)          0.141     5.127    read_index_reg[9]_i_303_n_4
+    SLICE_X76Y229        LUT3 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.123     5.250 r  read_index[9]_i_312/O
+                         net (fo=1, routed)           0.022     5.272    read_index[9]_i_312_n_0
+    SLICE_X76Y229        CARRY8 (Prop_CARRY8_SLICEM_S[5]_CO[7])
+                                                      0.159     5.431 r  read_index_reg[9]_i_290/CO[7]
+                         net (fo=1, routed)           0.026     5.457    read_index_reg[9]_i_290_n_0
+    SLICE_X76Y230        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[3])
+                                                      0.060     5.517 r  read_index_reg[9]_i_289/CO[3]
+                         net (fo=13, routed)          0.148     5.665    read_index_reg[9]_i_289_n_4
+    SLICE_X76Y231        LUT3 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.123     5.788 r  read_index[9]_i_298/O
+                         net (fo=1, routed)           0.022     5.810    read_index[9]_i_298_n_0
+    SLICE_X76Y231        CARRY8 (Prop_CARRY8_SLICEM_S[5]_CO[7])
+                                                      0.159     5.969 r  read_index_reg[9]_i_277/CO[7]
+                         net (fo=1, routed)           0.026     5.995    read_index_reg[9]_i_277_n_0
+    SLICE_X76Y232        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[3])
+                                                      0.060     6.055 r  read_index_reg[9]_i_276/CO[3]
+                         net (fo=13, routed)          0.212     6.267    read_index_reg[9]_i_276_n_4
+    SLICE_X75Y230        LUT3 (Prop_E6LUT_SLICEM_I0_O)
+                                                      0.124     6.391 r  read_index[9]_i_285/O
+                         net (fo=1, routed)           0.014     6.405    read_index[9]_i_285_n_0
+    SLICE_X75Y230        CARRY8 (Prop_CARRY8_SLICEM_S[4]_CO[7])
+                                                      0.156     6.561 r  read_index_reg[9]_i_254/CO[7]
+                         net (fo=1, routed)           0.026     6.587    read_index_reg[9]_i_254_n_0
+    SLICE_X75Y231        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[3])
+                                                      0.060     6.647 r  read_index_reg[9]_i_253/CO[3]
+                         net (fo=13, routed)          0.195     6.842    read_index_reg[9]_i_253_n_4
+    SLICE_X75Y232        LUT3 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.051     6.893 r  read_index[9]_i_261/O
+                         net (fo=1, routed)           0.022     6.915    read_index[9]_i_261_n_0
+    SLICE_X75Y232        CARRY8 (Prop_CARRY8_SLICEM_S[5]_CO[7])
+                                                      0.159     7.074 r  read_index_reg[9]_i_175/CO[7]
+                         net (fo=1, routed)           0.026     7.100    read_index_reg[9]_i_175_n_0
+    SLICE_X75Y233        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[3])
+                                                      0.060     7.160 r  read_index_reg[9]_i_174/CO[3]
+                         net (fo=13, routed)          0.207     7.367    read_index_reg[9]_i_174_n_4
+    SLICE_X74Y231        LUT3 (Prop_F6LUT_SLICEL_I0_O)
+                                                      0.089     7.456 r  read_index[9]_i_182/O
+                         net (fo=1, routed)           0.011     7.467    read_index[9]_i_182_n_0
+    SLICE_X74Y231        CARRY8 (Prop_CARRY8_SLICEL_S[5]_CO[7])
+                                                      0.155     7.622 r  read_index_reg[9]_i_112/CO[7]
+                         net (fo=1, routed)           0.026     7.648    read_index_reg[9]_i_112_n_0
+    SLICE_X74Y232        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[3])
+                                                      0.060     7.708 r  read_index_reg[9]_i_111/CO[3]
+                         net (fo=13, routed)          0.141     7.849    read_index_reg[9]_i_111_n_4
+    SLICE_X74Y233        LUT3 (Prop_F6LUT_SLICEL_I0_O)
+                                                      0.123     7.972 r  read_index[9]_i_120/O
+                         net (fo=1, routed)           0.011     7.983    read_index[9]_i_120_n_0
+    SLICE_X74Y233        CARRY8 (Prop_CARRY8_SLICEL_S[5]_CO[7])
+                                                      0.155     8.138 r  read_index_reg[9]_i_74/CO[7]
+                         net (fo=1, routed)           0.026     8.164    read_index_reg[9]_i_74_n_0
+    SLICE_X74Y234        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[3])
+                                                      0.060     8.224 r  read_index_reg[9]_i_73/CO[3]
+                         net (fo=13, routed)          0.198     8.422    read_index_reg[9]_i_73_n_4
+    SLICE_X74Y235        LUT3 (Prop_F6LUT_SLICEL_I0_O)
+                                                      0.097     8.519 r  read_index[9]_i_82/O
+                         net (fo=1, routed)           0.011     8.530    read_index[9]_i_82_n_0
+    SLICE_X74Y235        CARRY8 (Prop_CARRY8_SLICEL_S[5]_CO[7])
+                                                      0.155     8.685 r  read_index_reg[9]_i_40/CO[7]
+                         net (fo=1, routed)           0.026     8.711    read_index_reg[9]_i_40_n_0
+    SLICE_X74Y236        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[3])
+                                                      0.060     8.771 r  read_index_reg[9]_i_39/CO[3]
+                         net (fo=13, routed)          0.230     9.001    read_index_reg[9]_i_39_n_4
+    SLICE_X74Y237        CARRY8 (Prop_CARRY8_SLICEL_CI_O[5])
+                                                      0.226     9.227 f  read_index_reg[9]_i_29/O[5]
+                         net (fo=7, routed)           0.219     9.446    read_index_reg[9]_i_29_n_10
+    SLICE_X73Y237        LUT2 (Prop_B6LUT_SLICEL_I1_O)
+                                                      0.090     9.536 r  read_index[9]_i_66/O
+                         net (fo=2, routed)           0.094     9.630    read_index[9]_i_66_n_0
+    SLICE_X73Y237        LUT6 (Prop_D6LUT_SLICEL_I5_O)
+                                                      0.036     9.666 r  read_index[9]_i_30/O
+                         net (fo=2, routed)           0.096     9.762    read_index[9]_i_30_n_0
+    SLICE_X73Y239        LUT6 (Prop_B6LUT_SLICEL_I0_O)
+                                                      0.098     9.860 f  read_index[9]_i_14/O
+                         net (fo=1, routed)           0.096     9.956    read_index[9]_i_14_n_0
+    SLICE_X73Y238        LUT6 (Prop_H6LUT_SLICEL_I1_O)
+                                                      0.124    10.080 r  read_index[9]_i_5/O
+                         net (fo=10, routed)          0.102    10.182    read_index[9]_i_5_n_0
+    SLICE_X72Y239        LUT6 (Prop_D6LUT_SLICEM_I0_O)
+                                                      0.037    10.219 r  read_index[0]_i_2/O
+                         net (fo=1, routed)           0.039    10.258    read_index[0]_i_2_n_0
+    SLICE_X72Y239        LUT6 (Prop_E6LUT_SLICEM_I1_O)
+                                                      0.037    10.295 r  read_index[0]_i_1/O
+                         net (fo=1, routed)           0.055    10.350    read_index[0]_i_1_n_0
+    SLICE_X72Y239        FDRE                                         r  read_index_reg[0]/D
   -------------------------------------------------------------------    -------------------
 
                          (clock clk rise edge)        1.360     1.360 r  
-    AM20                                              0.000     1.360 r  clk (IN)
+    AL16                                              0.000     1.360 r  clk (IN)
                          net (fo=0)                   0.000     1.360    clk_IBUF_inst/I
-    AM20                 INBUF (Prop_INBUF_HPIOB_M_PAD_O)
-                                                      0.323     1.683 r  clk_IBUF_inst/INBUF_INST/O
-                         net (fo=1, routed)           0.000     1.683    clk_IBUF_inst/OUT
-    AM20                 IBUFCTRL (Prop_IBUFCTRL_HPIOB_M_I_O)
-                                                      0.000     1.683 r  clk_IBUF_inst/IBUFCTRL_INST/O
-                         net (fo=1, routed)           0.287     1.970    clk_IBUF
-    BUFGCE_X0Y50         BUFGCE (Prop_BUFCE_BUFGCE_I_O)
-                                                      0.024     1.994 r  clk_IBUF_BUFG_inst/O
-    X4Y2 (CLOCK_ROOT)    net (fo=226, routed)         0.648     2.642    clk_IBUF_BUFG
-    SLICE_X83Y147        FDRE                                         r  row_index_reg[5]/C
-                         clock pessimism              0.308     2.950    
-                         clock uncertainty           -0.035     2.915    
-    SLICE_X83Y147        FDRE (Setup_AFF_SLICEM_C_CE)
-                                                     -0.061     2.854    row_index_reg[5]
+    AL16                 INBUF (Prop_INBUF_HPIOB_M_PAD_O)
+                                                      0.285     1.645 r  clk_IBUF_inst/INBUF_INST/O
+                         net (fo=1, routed)           0.000     1.645    clk_IBUF_inst/OUT
+    AL16                 IBUFCTRL (Prop_IBUFCTRL_HPIOB_M_I_O)
+                                                      0.000     1.645 r  clk_IBUF_inst/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.287     1.932    clk_IBUF
+    BUFGCE_X0Y2          BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.024     1.956 r  clk_IBUF_BUFG_inst/O
+    X3Y3 (CLOCK_ROOT)    net (fo=409, routed)         2.159     4.115    clk_IBUF_BUFG
+    SLICE_X72Y239        FDRE                                         r  read_index_reg[0]/C
+                         clock pessimism              0.447     4.563    
+                         clock uncertainty           -0.035     4.527    
+    SLICE_X72Y239        FDRE (Setup_EFF_SLICEM_C_D)
+                                                      0.025     4.552    read_index_reg[0]
   -------------------------------------------------------------------
-                         required time                          2.854    
-                         arrival time                          -3.112    
+                         required time                          4.552    
+                         arrival time                         -10.350    
   -------------------------------------------------------------------
-                         slack                                 -0.258    
+                         slack                                 -5.798    
 
-Slack (VIOLATED) :        -0.257ns  (required time - arrival time)
-  Source:                 row_index_reg[5]/C
+Slack (VIOLATED) :        -5.798ns  (required time - arrival time)
+  Source:                 row_ctr_reg[4]/C
                             (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@0.680ns period=1.360ns})
-  Destination:            row_index_reg[4]/D
+  Destination:            read_index_reg[9]/D
                             (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@0.680ns period=1.360ns})
   Path Group:             clk
   Path Type:              Setup (Max at Slow Process Corner)
   Requirement:            1.360ns  (clk rise@1.360ns - clk rise@0.000ns)
-  Data Path Delay:        1.540ns  (logic 0.588ns (38.182%)  route 0.952ns (61.818%))
-  Logic Levels:           6  (CARRY8=2 LUT4=1 LUT6=3)
-  Clock Path Skew:        -0.067ns (DCD - SCD + CPR)
-    Destination Clock Delay (DCD):    1.308ns = ( 2.668 - 1.360 ) 
-    Source Clock Delay      (SCD):    1.683ns
-    Clock Pessimism Removal (CPR):    0.308ns
+  Data Path Delay:        7.255ns  (logic 3.980ns (54.859%)  route 3.275ns (45.141%))
+  Logic Levels:           38  (CARRY8=19 LUT2=1 LUT3=8 LUT4=1 LUT5=1 LUT6=8)
+  Clock Path Skew:        0.107ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.754ns = ( 4.114 - 1.360 ) 
+    Source Clock Delay      (SCD):    3.094ns
+    Clock Pessimism Removal (CPR):    0.447ns
   Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
     Total System Jitter     (TSJ):    0.071ns
     Total Input Jitter      (TIJ):    0.000ns
     Discrete Jitter          (DJ):    0.000ns
     Phase Error              (PE):    0.000ns
-  Clock Net Delay (Source):      0.758ns (routing 0.001ns, distribution 0.757ns)
-  Clock Net Delay (Destination): 0.674ns (routing 0.001ns, distribution 0.673ns)
+  Clock Net Delay (Source):      2.208ns (routing 1.189ns, distribution 1.019ns)
+  Clock Net Delay (Destination): 2.158ns (routing 1.080ns, distribution 1.078ns)
 
     Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
   -------------------------------------------------------------------    -------------------
                          (clock clk rise edge)        0.000     0.000 r  
-    AM20                                              0.000     0.000 r  clk (IN)
+    AL16                                              0.000     0.000 r  clk (IN)
                          net (fo=0)                   0.000     0.000    clk_IBUF_inst/I
-    AM20                 INBUF (Prop_INBUF_HPIOB_M_PAD_O)
-                                                      0.574     0.574 r  clk_IBUF_inst/INBUF_INST/O
-                         net (fo=1, routed)           0.000     0.574    clk_IBUF_inst/OUT
-    AM20                 IBUFCTRL (Prop_IBUFCTRL_HPIOB_M_I_O)
-                                                      0.000     0.574 r  clk_IBUF_inst/IBUFCTRL_INST/O
-                         net (fo=1, routed)           0.323     0.897    clk_IBUF
-    BUFGCE_X0Y50         BUFGCE (Prop_BUFCE_BUFGCE_I_O)
-                                                      0.028     0.925 r  clk_IBUF_BUFG_inst/O
-    X4Y2 (CLOCK_ROOT)    net (fo=226, routed)         0.758     1.683    clk_IBUF_BUFG
-    SLICE_X83Y147        FDRE                                         r  row_index_reg[5]/C
+    AL16                 INBUF (Prop_INBUF_HPIOB_M_PAD_O)
+                                                      0.535     0.535 r  clk_IBUF_inst/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.535    clk_IBUF_inst/OUT
+    AL16                 IBUFCTRL (Prop_IBUFCTRL_HPIOB_M_I_O)
+                                                      0.000     0.535 r  clk_IBUF_inst/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.323     0.858    clk_IBUF
+    BUFGCE_X0Y2          BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.028     0.886 r  clk_IBUF_BUFG_inst/O
+    X3Y3 (CLOCK_ROOT)    net (fo=409, routed)         2.208     3.094    clk_IBUF_BUFG
+    SLICE_X77Y229        FDRE                                         r  row_ctr_reg[4]/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X83Y147        FDRE (Prop_AFF_SLICEM_C_Q)
-                                                      0.077     1.760 r  row_index_reg[5]/Q
-                         net (fo=11, routed)          0.272     2.032    counter_write_OBUF[5]
-    SLICE_X81Y146        LUT6 (Prop_B6LUT_SLICEL_I2_O)
-                                                      0.090     2.122 r  row_index[9]_i_68/O
-                         net (fo=1, routed)           0.009     2.131    row_index[9]_i_68_n_0
-    SLICE_X81Y146        CARRY8 (Prop_CARRY8_SLICEL_S[1]_CO[7])
-                                                      0.186     2.317 f  row_index_reg[9]_i_35/CO[7]
-                         net (fo=1, routed)           0.026     2.343    row_index_reg[9]_i_35_n_0
-    SLICE_X81Y147        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[2])
-                                                      0.057     2.400 f  row_index_reg[9]_i_13/CO[2]
-                         net (fo=15, routed)          0.290     2.690    row_index19_out
-    SLICE_X83Y146        LUT4 (Prop_F6LUT_SLICEM_I1_O)
-                                                      0.037     2.727 r  row_index[9]_i_20/O
-                         net (fo=1, routed)           0.082     2.809    row_index[9]_i_20_n_0
-    SLICE_X83Y147        LUT6 (Prop_F6LUT_SLICEM_I5_O)
-                                                      0.051     2.860 r  row_index[9]_i_7/O
-                         net (fo=10, routed)          0.225     3.085    row_index[9]_i_7_n_0
-    SLICE_X84Y150        LUT6 (Prop_A6LUT_SLICEL_I3_O)
-                                                      0.090     3.175 r  row_index[4]_i_1/O
-                         net (fo=1, routed)           0.048     3.223    row_index[4]_i_1_n_0
-    SLICE_X84Y150        FDRE                                         r  row_index_reg[4]/D
+    SLICE_X77Y229        FDRE (Prop_EFF_SLICEL_C_Q)
+                                                      0.079     3.173 r  row_ctr_reg[4]/Q
+                         net (fo=10, routed)          0.191     3.364    row_ctr[4]
+    SLICE_X76Y230        LUT6 (Prop_E6LUT_SLICEM_I0_O)
+                                                      0.148     3.512 f  row_ctr[7]_i_2/O
+                         net (fo=10, routed)          0.112     3.624    row_ctr[7]_i_2_n_0
+    SLICE_X76Y228        LUT6 (Prop_D6LUT_SLICEM_I2_O)
+                                                      0.088     3.712 f  read_index[9]_i_355/O
+                         net (fo=6, routed)           0.055     3.767    read_index[9]_i_355_n_0
+    SLICE_X76Y228        LUT6 (Prop_H6LUT_SLICEM_I3_O)
+                                                      0.101     3.868 f  read_index[9]_i_352/O
+                         net (fo=6, routed)           0.048     3.916    read_index[9]_i_352_n_0
+    SLICE_X76Y228        LUT5 (Prop_G6LUT_SLICEM_I1_O)
+                                                      0.037     3.953 r  read_index[9]_i_336/O
+                         net (fo=16, routed)          0.171     4.124    read_index[9]_i_336_n_0
+    SLICE_X76Y227        LUT4 (Prop_B6LUT_SLICEM_I0_O)
+                                                      0.052     4.176 r  read_index[9]_i_350/O
+                         net (fo=1, routed)           0.016     4.192    read_index[9]_i_350_n_0
+    SLICE_X76Y227        CARRY8 (Prop_CARRY8_SLICEM_S[1]_CO[7])
+                                                      0.190     4.382 r  read_index_reg[9]_i_318/CO[7]
+                         net (fo=1, routed)           0.026     4.408    read_index_reg[9]_i_318_n_0
+    SLICE_X76Y228        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[2])
+                                                      0.057     4.465 r  read_index_reg[9]_i_317/CO[2]
+                         net (fo=13, routed)          0.150     4.615    read_index_reg[9]_i_317_n_5
+    SLICE_X77Y228        LUT3 (Prop_D6LUT_SLICEL_I0_O)
+                                                      0.122     4.737 r  read_index[9]_i_327/O
+                         net (fo=1, routed)           0.009     4.746    read_index[9]_i_327_n_0
+    SLICE_X77Y228        CARRY8 (Prop_CARRY8_SLICEL_S[3]_CO[7])
+                                                      0.154     4.900 r  read_index_reg[9]_i_304/CO[7]
+                         net (fo=1, routed)           0.026     4.926    read_index_reg[9]_i_304_n_0
+    SLICE_X77Y229        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[3])
+                                                      0.060     4.986 r  read_index_reg[9]_i_303/CO[3]
+                         net (fo=13, routed)          0.141     5.127    read_index_reg[9]_i_303_n_4
+    SLICE_X76Y229        LUT3 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.123     5.250 r  read_index[9]_i_312/O
+                         net (fo=1, routed)           0.022     5.272    read_index[9]_i_312_n_0
+    SLICE_X76Y229        CARRY8 (Prop_CARRY8_SLICEM_S[5]_CO[7])
+                                                      0.159     5.431 r  read_index_reg[9]_i_290/CO[7]
+                         net (fo=1, routed)           0.026     5.457    read_index_reg[9]_i_290_n_0
+    SLICE_X76Y230        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[3])
+                                                      0.060     5.517 r  read_index_reg[9]_i_289/CO[3]
+                         net (fo=13, routed)          0.148     5.665    read_index_reg[9]_i_289_n_4
+    SLICE_X76Y231        LUT3 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.123     5.788 r  read_index[9]_i_298/O
+                         net (fo=1, routed)           0.022     5.810    read_index[9]_i_298_n_0
+    SLICE_X76Y231        CARRY8 (Prop_CARRY8_SLICEM_S[5]_CO[7])
+                                                      0.159     5.969 r  read_index_reg[9]_i_277/CO[7]
+                         net (fo=1, routed)           0.026     5.995    read_index_reg[9]_i_277_n_0
+    SLICE_X76Y232        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[3])
+                                                      0.060     6.055 r  read_index_reg[9]_i_276/CO[3]
+                         net (fo=13, routed)          0.212     6.267    read_index_reg[9]_i_276_n_4
+    SLICE_X75Y230        LUT3 (Prop_E6LUT_SLICEM_I0_O)
+                                                      0.124     6.391 r  read_index[9]_i_285/O
+                         net (fo=1, routed)           0.014     6.405    read_index[9]_i_285_n_0
+    SLICE_X75Y230        CARRY8 (Prop_CARRY8_SLICEM_S[4]_CO[7])
+                                                      0.156     6.561 r  read_index_reg[9]_i_254/CO[7]
+                         net (fo=1, routed)           0.026     6.587    read_index_reg[9]_i_254_n_0
+    SLICE_X75Y231        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[3])
+                                                      0.060     6.647 r  read_index_reg[9]_i_253/CO[3]
+                         net (fo=13, routed)          0.195     6.842    read_index_reg[9]_i_253_n_4
+    SLICE_X75Y232        LUT3 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.051     6.893 r  read_index[9]_i_261/O
+                         net (fo=1, routed)           0.022     6.915    read_index[9]_i_261_n_0
+    SLICE_X75Y232        CARRY8 (Prop_CARRY8_SLICEM_S[5]_CO[7])
+                                                      0.159     7.074 r  read_index_reg[9]_i_175/CO[7]
+                         net (fo=1, routed)           0.026     7.100    read_index_reg[9]_i_175_n_0
+    SLICE_X75Y233        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[3])
+                                                      0.060     7.160 r  read_index_reg[9]_i_174/CO[3]
+                         net (fo=13, routed)          0.207     7.367    read_index_reg[9]_i_174_n_4
+    SLICE_X74Y231        LUT3 (Prop_F6LUT_SLICEL_I0_O)
+                                                      0.089     7.456 r  read_index[9]_i_182/O
+                         net (fo=1, routed)           0.011     7.467    read_index[9]_i_182_n_0
+    SLICE_X74Y231        CARRY8 (Prop_CARRY8_SLICEL_S[5]_CO[7])
+                                                      0.155     7.622 r  read_index_reg[9]_i_112/CO[7]
+                         net (fo=1, routed)           0.026     7.648    read_index_reg[9]_i_112_n_0
+    SLICE_X74Y232        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[3])
+                                                      0.060     7.708 r  read_index_reg[9]_i_111/CO[3]
+                         net (fo=13, routed)          0.141     7.849    read_index_reg[9]_i_111_n_4
+    SLICE_X74Y233        LUT3 (Prop_F6LUT_SLICEL_I0_O)
+                                                      0.123     7.972 r  read_index[9]_i_120/O
+                         net (fo=1, routed)           0.011     7.983    read_index[9]_i_120_n_0
+    SLICE_X74Y233        CARRY8 (Prop_CARRY8_SLICEL_S[5]_CO[7])
+                                                      0.155     8.138 r  read_index_reg[9]_i_74/CO[7]
+                         net (fo=1, routed)           0.026     8.164    read_index_reg[9]_i_74_n_0
+    SLICE_X74Y234        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[3])
+                                                      0.060     8.224 r  read_index_reg[9]_i_73/CO[3]
+                         net (fo=13, routed)          0.198     8.422    read_index_reg[9]_i_73_n_4
+    SLICE_X74Y235        LUT3 (Prop_F6LUT_SLICEL_I0_O)
+                                                      0.097     8.519 r  read_index[9]_i_82/O
+                         net (fo=1, routed)           0.011     8.530    read_index[9]_i_82_n_0
+    SLICE_X74Y235        CARRY8 (Prop_CARRY8_SLICEL_S[5]_CO[7])
+                                                      0.155     8.685 r  read_index_reg[9]_i_40/CO[7]
+                         net (fo=1, routed)           0.026     8.711    read_index_reg[9]_i_40_n_0
+    SLICE_X74Y236        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[3])
+                                                      0.060     8.771 r  read_index_reg[9]_i_39/CO[3]
+                         net (fo=13, routed)          0.230     9.001    read_index_reg[9]_i_39_n_4
+    SLICE_X74Y237        CARRY8 (Prop_CARRY8_SLICEL_CI_O[5])
+                                                      0.226     9.227 f  read_index_reg[9]_i_29/O[5]
+                         net (fo=7, routed)           0.219     9.446    read_index_reg[9]_i_29_n_10
+    SLICE_X73Y237        LUT2 (Prop_B6LUT_SLICEL_I1_O)
+                                                      0.090     9.536 r  read_index[9]_i_66/O
+                         net (fo=2, routed)           0.094     9.630    read_index[9]_i_66_n_0
+    SLICE_X73Y237        LUT6 (Prop_D6LUT_SLICEL_I5_O)
+                                                      0.036     9.666 r  read_index[9]_i_30/O
+                         net (fo=2, routed)           0.096     9.762    read_index[9]_i_30_n_0
+    SLICE_X73Y239        LUT6 (Prop_B6LUT_SLICEL_I0_O)
+                                                      0.098     9.860 f  read_index[9]_i_14/O
+                         net (fo=1, routed)           0.096     9.956    read_index[9]_i_14_n_0
+    SLICE_X73Y238        LUT6 (Prop_H6LUT_SLICEL_I1_O)
+                                                      0.124    10.080 r  read_index[9]_i_5/O
+                         net (fo=10, routed)          0.065    10.145    read_index[9]_i_5_n_0
+    SLICE_X73Y238        LUT6 (Prop_G6LUT_SLICEL_I1_O)
+                                                      0.035    10.180 r  read_index[9]_i_2/O
+                         net (fo=1, routed)           0.088    10.268    read_index[9]_i_2_n_0
+    SLICE_X73Y239        LUT6 (Prop_E6LUT_SLICEL_I1_O)
+                                                      0.035    10.303 r  read_index[9]_i_1/O
+                         net (fo=1, routed)           0.046    10.349    read_index[9]_i_1_n_0
+    SLICE_X73Y239        FDRE                                         r  read_index_reg[9]/D
   -------------------------------------------------------------------    -------------------
 
                          (clock clk rise edge)        1.360     1.360 r  
-    AM20                                              0.000     1.360 r  clk (IN)
+    AL16                                              0.000     1.360 r  clk (IN)
                          net (fo=0)                   0.000     1.360    clk_IBUF_inst/I
-    AM20                 INBUF (Prop_INBUF_HPIOB_M_PAD_O)
-                                                      0.323     1.683 r  clk_IBUF_inst/INBUF_INST/O
-                         net (fo=1, routed)           0.000     1.683    clk_IBUF_inst/OUT
-    AM20                 IBUFCTRL (Prop_IBUFCTRL_HPIOB_M_I_O)
-                                                      0.000     1.683 r  clk_IBUF_inst/IBUFCTRL_INST/O
-                         net (fo=1, routed)           0.287     1.970    clk_IBUF
-    BUFGCE_X0Y50         BUFGCE (Prop_BUFCE_BUFGCE_I_O)
-                                                      0.024     1.994 r  clk_IBUF_BUFG_inst/O
-    X4Y2 (CLOCK_ROOT)    net (fo=226, routed)         0.674     2.668    clk_IBUF_BUFG
-    SLICE_X84Y150        FDRE                                         r  row_index_reg[4]/C
-                         clock pessimism              0.308     2.976    
-                         clock uncertainty           -0.035     2.941    
-    SLICE_X84Y150        FDRE (Setup_AFF_SLICEL_C_D)
-                                                      0.025     2.966    row_index_reg[4]
+    AL16                 INBUF (Prop_INBUF_HPIOB_M_PAD_O)
+                                                      0.285     1.645 r  clk_IBUF_inst/INBUF_INST/O
+                         net (fo=1, routed)           0.000     1.645    clk_IBUF_inst/OUT
+    AL16                 IBUFCTRL (Prop_IBUFCTRL_HPIOB_M_I_O)
+                                                      0.000     1.645 r  clk_IBUF_inst/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.287     1.932    clk_IBUF
+    BUFGCE_X0Y2          BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.024     1.956 r  clk_IBUF_BUFG_inst/O
+    X3Y3 (CLOCK_ROOT)    net (fo=409, routed)         2.158     4.114    clk_IBUF_BUFG
+    SLICE_X73Y239        FDRE                                         r  read_index_reg[9]/C
+                         clock pessimism              0.447     4.562    
+                         clock uncertainty           -0.035     4.526    
+    SLICE_X73Y239        FDRE (Setup_EFF_SLICEL_C_D)
+                                                      0.025     4.551    read_index_reg[9]
   -------------------------------------------------------------------
-                         required time                          2.966    
-                         arrival time                          -3.223    
+                         required time                          4.551    
+                         arrival time                         -10.349    
   -------------------------------------------------------------------
-                         slack                                 -0.257    
+                         slack                                 -5.798    
 
-Slack (VIOLATED) :        -0.253ns  (required time - arrival time)
-  Source:                 row_index_reg[4]/C
+Slack (VIOLATED) :        -5.777ns  (required time - arrival time)
+  Source:                 row_ctr_reg[4]/C
                             (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@0.680ns period=1.360ns})
-  Destination:            row_index_reg[1]/D
+  Destination:            read_index_reg[7]/D
                             (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@0.680ns period=1.360ns})
   Path Group:             clk
   Path Type:              Setup (Max at Slow Process Corner)
   Requirement:            1.360ns  (clk rise@1.360ns - clk rise@0.000ns)
-  Data Path Delay:        1.489ns  (logic 0.655ns (43.989%)  route 0.834ns (56.011%))
-  Logic Levels:           6  (CARRY8=2 LUT4=1 LUT5=1 LUT6=2)
-  Clock Path Skew:        -0.114ns (DCD - SCD + CPR)
-    Destination Clock Delay (DCD):    1.275ns = ( 2.635 - 1.360 ) 
-    Source Clock Delay      (SCD):    1.697ns
-    Clock Pessimism Removal (CPR):    0.308ns
+  Data Path Delay:        7.400ns  (logic 4.034ns (54.514%)  route 3.366ns (45.487%))
+  Logic Levels:           38  (CARRY8=19 LUT2=1 LUT3=8 LUT4=1 LUT5=1 LUT6=8)
+  Clock Path Skew:        0.273ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.917ns = ( 4.277 - 1.360 ) 
+    Source Clock Delay      (SCD):    3.094ns
+    Clock Pessimism Removal (CPR):    0.451ns
   Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
     Total System Jitter     (TSJ):    0.071ns
     Total Input Jitter      (TIJ):    0.000ns
     Discrete Jitter          (DJ):    0.000ns
     Phase Error              (PE):    0.000ns
-  Clock Net Delay (Source):      0.772ns (routing 0.001ns, distribution 0.771ns)
-  Clock Net Delay (Destination): 0.641ns (routing 0.001ns, distribution 0.640ns)
+  Clock Net Delay (Source):      2.208ns (routing 1.189ns, distribution 1.019ns)
+  Clock Net Delay (Destination): 2.321ns (routing 1.080ns, distribution 1.241ns)
 
     Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
   -------------------------------------------------------------------    -------------------
                          (clock clk rise edge)        0.000     0.000 r  
-    AM20                                              0.000     0.000 r  clk (IN)
+    AL16                                              0.000     0.000 r  clk (IN)
                          net (fo=0)                   0.000     0.000    clk_IBUF_inst/I
-    AM20                 INBUF (Prop_INBUF_HPIOB_M_PAD_O)
-                                                      0.574     0.574 r  clk_IBUF_inst/INBUF_INST/O
-                         net (fo=1, routed)           0.000     0.574    clk_IBUF_inst/OUT
-    AM20                 IBUFCTRL (Prop_IBUFCTRL_HPIOB_M_I_O)
-                                                      0.000     0.574 r  clk_IBUF_inst/IBUFCTRL_INST/O
-                         net (fo=1, routed)           0.323     0.897    clk_IBUF
-    BUFGCE_X0Y50         BUFGCE (Prop_BUFCE_BUFGCE_I_O)
-                                                      0.028     0.925 r  clk_IBUF_BUFG_inst/O
-    X4Y2 (CLOCK_ROOT)    net (fo=226, routed)         0.772     1.697    clk_IBUF_BUFG
-    SLICE_X84Y150        FDRE                                         r  row_index_reg[4]/C
+    AL16                 INBUF (Prop_INBUF_HPIOB_M_PAD_O)
+                                                      0.535     0.535 r  clk_IBUF_inst/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.535    clk_IBUF_inst/OUT
+    AL16                 IBUFCTRL (Prop_IBUFCTRL_HPIOB_M_I_O)
+                                                      0.000     0.535 r  clk_IBUF_inst/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.323     0.858    clk_IBUF
+    BUFGCE_X0Y2          BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.028     0.886 r  clk_IBUF_BUFG_inst/O
+    X3Y3 (CLOCK_ROOT)    net (fo=409, routed)         2.208     3.094    clk_IBUF_BUFG
+    SLICE_X77Y229        FDRE                                         r  row_ctr_reg[4]/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X84Y150        FDRE (Prop_AFF_SLICEL_C_Q)
-                                                      0.079     1.776 r  row_index_reg[4]/Q
-                         net (fo=12, routed)          0.285     2.061    counter_write_OBUF[4]
-    SLICE_X83Y145        LUT6 (Prop_B6LUT_SLICEM_I0_O)
-                                                      0.052     2.113 r  write_full__0_i_18/O
-                         net (fo=1, routed)           0.016     2.129    write_full__0_i_18_n_0
-    SLICE_X83Y145        CARRY8 (Prop_CARRY8_SLICEM_S[1]_CO[7])
-                                                      0.190     2.319 f  write_full_reg__0_i_4/CO[7]
-                         net (fo=1, routed)           0.026     2.345    write_full_reg__0_i_4_n_0
-    SLICE_X83Y146        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[2])
-                                                      0.057     2.402 f  write_full_reg__0_i_2/CO[2]
-                         net (fo=11, routed)          0.199     2.601    row_index18_out
-    SLICE_X83Y149        LUT5 (Prop_E6LUT_SLICEM_I0_O)
-                                                      0.091     2.692 r  row_index[9]_i_17/O
-                         net (fo=10, routed)          0.168     2.860    row_index[9]_i_17_n_0
-    SLICE_X84Y145        LUT4 (Prop_G6LUT_SLICEL_I3_O)
-                                                      0.097     2.957 r  row_index[1]_i_2/O
-                         net (fo=1, routed)           0.091     3.048    row_index[1]_i_2_n_0
-    SLICE_X84Y147        LUT6 (Prop_D6LUT_SLICEL_I2_O)
-                                                      0.089     3.137 r  row_index[1]_i_1/O
-                         net (fo=1, routed)           0.049     3.186    row_index[1]_i_1_n_0
-    SLICE_X84Y147        FDRE                                         r  row_index_reg[1]/D
+    SLICE_X77Y229        FDRE (Prop_EFF_SLICEL_C_Q)
+                                                      0.079     3.173 r  row_ctr_reg[4]/Q
+                         net (fo=10, routed)          0.191     3.364    row_ctr[4]
+    SLICE_X76Y230        LUT6 (Prop_E6LUT_SLICEM_I0_O)
+                                                      0.148     3.512 f  row_ctr[7]_i_2/O
+                         net (fo=10, routed)          0.112     3.624    row_ctr[7]_i_2_n_0
+    SLICE_X76Y228        LUT6 (Prop_D6LUT_SLICEM_I2_O)
+                                                      0.088     3.712 f  read_index[9]_i_355/O
+                         net (fo=6, routed)           0.055     3.767    read_index[9]_i_355_n_0
+    SLICE_X76Y228        LUT6 (Prop_H6LUT_SLICEM_I3_O)
+                                                      0.101     3.868 f  read_index[9]_i_352/O
+                         net (fo=6, routed)           0.048     3.916    read_index[9]_i_352_n_0
+    SLICE_X76Y228        LUT5 (Prop_G6LUT_SLICEM_I1_O)
+                                                      0.037     3.953 r  read_index[9]_i_336/O
+                         net (fo=16, routed)          0.171     4.124    read_index[9]_i_336_n_0
+    SLICE_X76Y227        LUT4 (Prop_B6LUT_SLICEM_I0_O)
+                                                      0.052     4.176 r  read_index[9]_i_350/O
+                         net (fo=1, routed)           0.016     4.192    read_index[9]_i_350_n_0
+    SLICE_X76Y227        CARRY8 (Prop_CARRY8_SLICEM_S[1]_CO[7])
+                                                      0.190     4.382 r  read_index_reg[9]_i_318/CO[7]
+                         net (fo=1, routed)           0.026     4.408    read_index_reg[9]_i_318_n_0
+    SLICE_X76Y228        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[2])
+                                                      0.057     4.465 r  read_index_reg[9]_i_317/CO[2]
+                         net (fo=13, routed)          0.150     4.615    read_index_reg[9]_i_317_n_5
+    SLICE_X77Y228        LUT3 (Prop_D6LUT_SLICEL_I0_O)
+                                                      0.122     4.737 r  read_index[9]_i_327/O
+                         net (fo=1, routed)           0.009     4.746    read_index[9]_i_327_n_0
+    SLICE_X77Y228        CARRY8 (Prop_CARRY8_SLICEL_S[3]_CO[7])
+                                                      0.154     4.900 r  read_index_reg[9]_i_304/CO[7]
+                         net (fo=1, routed)           0.026     4.926    read_index_reg[9]_i_304_n_0
+    SLICE_X77Y229        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[3])
+                                                      0.060     4.986 r  read_index_reg[9]_i_303/CO[3]
+                         net (fo=13, routed)          0.141     5.127    read_index_reg[9]_i_303_n_4
+    SLICE_X76Y229        LUT3 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.123     5.250 r  read_index[9]_i_312/O
+                         net (fo=1, routed)           0.022     5.272    read_index[9]_i_312_n_0
+    SLICE_X76Y229        CARRY8 (Prop_CARRY8_SLICEM_S[5]_CO[7])
+                                                      0.159     5.431 r  read_index_reg[9]_i_290/CO[7]
+                         net (fo=1, routed)           0.026     5.457    read_index_reg[9]_i_290_n_0
+    SLICE_X76Y230        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[3])
+                                                      0.060     5.517 r  read_index_reg[9]_i_289/CO[3]
+                         net (fo=13, routed)          0.148     5.665    read_index_reg[9]_i_289_n_4
+    SLICE_X76Y231        LUT3 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.123     5.788 r  read_index[9]_i_298/O
+                         net (fo=1, routed)           0.022     5.810    read_index[9]_i_298_n_0
+    SLICE_X76Y231        CARRY8 (Prop_CARRY8_SLICEM_S[5]_CO[7])
+                                                      0.159     5.969 r  read_index_reg[9]_i_277/CO[7]
+                         net (fo=1, routed)           0.026     5.995    read_index_reg[9]_i_277_n_0
+    SLICE_X76Y232        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[3])
+                                                      0.060     6.055 r  read_index_reg[9]_i_276/CO[3]
+                         net (fo=13, routed)          0.212     6.267    read_index_reg[9]_i_276_n_4
+    SLICE_X75Y230        LUT3 (Prop_E6LUT_SLICEM_I0_O)
+                                                      0.124     6.391 r  read_index[9]_i_285/O
+                         net (fo=1, routed)           0.014     6.405    read_index[9]_i_285_n_0
+    SLICE_X75Y230        CARRY8 (Prop_CARRY8_SLICEM_S[4]_CO[7])
+                                                      0.156     6.561 r  read_index_reg[9]_i_254/CO[7]
+                         net (fo=1, routed)           0.026     6.587    read_index_reg[9]_i_254_n_0
+    SLICE_X75Y231        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[3])
+                                                      0.060     6.647 r  read_index_reg[9]_i_253/CO[3]
+                         net (fo=13, routed)          0.195     6.842    read_index_reg[9]_i_253_n_4
+    SLICE_X75Y232        LUT3 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.051     6.893 r  read_index[9]_i_261/O
+                         net (fo=1, routed)           0.022     6.915    read_index[9]_i_261_n_0
+    SLICE_X75Y232        CARRY8 (Prop_CARRY8_SLICEM_S[5]_CO[7])
+                                                      0.159     7.074 r  read_index_reg[9]_i_175/CO[7]
+                         net (fo=1, routed)           0.026     7.100    read_index_reg[9]_i_175_n_0
+    SLICE_X75Y233        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[3])
+                                                      0.060     7.160 r  read_index_reg[9]_i_174/CO[3]
+                         net (fo=13, routed)          0.207     7.367    read_index_reg[9]_i_174_n_4
+    SLICE_X74Y231        LUT3 (Prop_F6LUT_SLICEL_I0_O)
+                                                      0.089     7.456 r  read_index[9]_i_182/O
+                         net (fo=1, routed)           0.011     7.467    read_index[9]_i_182_n_0
+    SLICE_X74Y231        CARRY8 (Prop_CARRY8_SLICEL_S[5]_CO[7])
+                                                      0.155     7.622 r  read_index_reg[9]_i_112/CO[7]
+                         net (fo=1, routed)           0.026     7.648    read_index_reg[9]_i_112_n_0
+    SLICE_X74Y232        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[3])
+                                                      0.060     7.708 r  read_index_reg[9]_i_111/CO[3]
+                         net (fo=13, routed)          0.141     7.849    read_index_reg[9]_i_111_n_4
+    SLICE_X74Y233        LUT3 (Prop_F6LUT_SLICEL_I0_O)
+                                                      0.123     7.972 r  read_index[9]_i_120/O
+                         net (fo=1, routed)           0.011     7.983    read_index[9]_i_120_n_0
+    SLICE_X74Y233        CARRY8 (Prop_CARRY8_SLICEL_S[5]_CO[7])
+                                                      0.155     8.138 r  read_index_reg[9]_i_74/CO[7]
+                         net (fo=1, routed)           0.026     8.164    read_index_reg[9]_i_74_n_0
+    SLICE_X74Y234        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[3])
+                                                      0.060     8.224 r  read_index_reg[9]_i_73/CO[3]
+                         net (fo=13, routed)          0.198     8.422    read_index_reg[9]_i_73_n_4
+    SLICE_X74Y235        LUT3 (Prop_F6LUT_SLICEL_I0_O)
+                                                      0.097     8.519 r  read_index[9]_i_82/O
+                         net (fo=1, routed)           0.011     8.530    read_index[9]_i_82_n_0
+    SLICE_X74Y235        CARRY8 (Prop_CARRY8_SLICEL_S[5]_CO[7])
+                                                      0.155     8.685 r  read_index_reg[9]_i_40/CO[7]
+                         net (fo=1, routed)           0.026     8.711    read_index_reg[9]_i_40_n_0
+    SLICE_X74Y236        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[3])
+                                                      0.060     8.771 r  read_index_reg[9]_i_39/CO[3]
+                         net (fo=13, routed)          0.230     9.001    read_index_reg[9]_i_39_n_4
+    SLICE_X74Y237        CARRY8 (Prop_CARRY8_SLICEL_CI_O[5])
+                                                      0.226     9.227 f  read_index_reg[9]_i_29/O[5]
+                         net (fo=7, routed)           0.219     9.446    read_index_reg[9]_i_29_n_10
+    SLICE_X73Y237        LUT2 (Prop_B6LUT_SLICEL_I1_O)
+                                                      0.090     9.536 r  read_index[9]_i_66/O
+                         net (fo=2, routed)           0.094     9.630    read_index[9]_i_66_n_0
+    SLICE_X73Y237        LUT6 (Prop_D6LUT_SLICEL_I5_O)
+                                                      0.036     9.666 r  read_index[9]_i_30/O
+                         net (fo=2, routed)           0.096     9.762    read_index[9]_i_30_n_0
+    SLICE_X73Y239        LUT6 (Prop_B6LUT_SLICEL_I0_O)
+                                                      0.098     9.860 f  read_index[9]_i_14/O
+                         net (fo=1, routed)           0.096     9.956    read_index[9]_i_14_n_0
+    SLICE_X73Y238        LUT6 (Prop_H6LUT_SLICEL_I1_O)
+                                                      0.124    10.080 r  read_index[9]_i_5/O
+                         net (fo=10, routed)          0.158    10.238    read_index[9]_i_5_n_0
+    SLICE_X74Y238        LUT6 (Prop_F6LUT_SLICEL_I2_O)
+                                                      0.089    10.327 r  read_index[7]_i_2/O
+                         net (fo=1, routed)           0.081    10.408    read_index[7]_i_2_n_0
+    SLICE_X74Y239        LUT6 (Prop_F6LUT_SLICEL_I1_O)
+                                                      0.035    10.443 r  read_index[7]_i_1/O
+                         net (fo=1, routed)           0.051    10.494    read_index[7]_i_1_n_0
+    SLICE_X74Y239        FDRE                                         r  read_index_reg[7]/D
   -------------------------------------------------------------------    -------------------
 
                          (clock clk rise edge)        1.360     1.360 r  
-    AM20                                              0.000     1.360 r  clk (IN)
+    AL16                                              0.000     1.360 r  clk (IN)
                          net (fo=0)                   0.000     1.360    clk_IBUF_inst/I
-    AM20                 INBUF (Prop_INBUF_HPIOB_M_PAD_O)
-                                                      0.323     1.683 r  clk_IBUF_inst/INBUF_INST/O
-                         net (fo=1, routed)           0.000     1.683    clk_IBUF_inst/OUT
-    AM20                 IBUFCTRL (Prop_IBUFCTRL_HPIOB_M_I_O)
-                                                      0.000     1.683 r  clk_IBUF_inst/IBUFCTRL_INST/O
-                         net (fo=1, routed)           0.287     1.970    clk_IBUF
-    BUFGCE_X0Y50         BUFGCE (Prop_BUFCE_BUFGCE_I_O)
-                                                      0.024     1.994 r  clk_IBUF_BUFG_inst/O
-    X4Y2 (CLOCK_ROOT)    net (fo=226, routed)         0.641     2.635    clk_IBUF_BUFG
-    SLICE_X84Y147        FDRE                                         r  row_index_reg[1]/C
-                         clock pessimism              0.308     2.943    
-                         clock uncertainty           -0.035     2.908    
-    SLICE_X84Y147        FDRE (Setup_DFF_SLICEL_C_D)
-                                                      0.025     2.933    row_index_reg[1]
+    AL16                 INBUF (Prop_INBUF_HPIOB_M_PAD_O)
+                                                      0.285     1.645 r  clk_IBUF_inst/INBUF_INST/O
+                         net (fo=1, routed)           0.000     1.645    clk_IBUF_inst/OUT
+    AL16                 IBUFCTRL (Prop_IBUFCTRL_HPIOB_M_I_O)
+                                                      0.000     1.645 r  clk_IBUF_inst/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.287     1.932    clk_IBUF
+    BUFGCE_X0Y2          BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.024     1.956 r  clk_IBUF_BUFG_inst/O
+    X3Y3 (CLOCK_ROOT)    net (fo=409, routed)         2.321     4.277    clk_IBUF_BUFG
+    SLICE_X74Y239        FDRE                                         r  read_index_reg[7]/C
+                         clock pessimism              0.451     4.728    
+                         clock uncertainty           -0.035     4.693    
+    SLICE_X74Y239        FDRE (Setup_FFF_SLICEL_C_D)
+                                                      0.025     4.718    read_index_reg[7]
   -------------------------------------------------------------------
-                         required time                          2.933    
-                         arrival time                          -3.186    
+                         required time                          4.718    
+                         arrival time                         -10.494    
   -------------------------------------------------------------------
-                         slack                                 -0.253    
+                         slack                                 -5.777    
 
-Slack (VIOLATED) :        -0.251ns  (required time - arrival time)
-  Source:                 row_index_reg[4]/C
+Slack (VIOLATED) :        -5.752ns  (required time - arrival time)
+  Source:                 row_ctr_reg[4]/C
                             (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@0.680ns period=1.360ns})
-  Destination:            row_index_reg[6]/D
+  Destination:            read_index_reg[6]/D
                             (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@0.680ns period=1.360ns})
   Path Group:             clk
   Path Type:              Setup (Max at Slow Process Corner)
   Requirement:            1.360ns  (clk rise@1.360ns - clk rise@0.000ns)
-  Data Path Delay:        1.485ns  (logic 0.761ns (51.246%)  route 0.724ns (48.754%))
-  Logic Levels:           6  (CARRY8=2 LUT3=1 LUT6=3)
-  Clock Path Skew:        -0.116ns (DCD - SCD + CPR)
-    Destination Clock Delay (DCD):    1.273ns = ( 2.633 - 1.360 ) 
-    Source Clock Delay      (SCD):    1.697ns
-    Clock Pessimism Removal (CPR):    0.308ns
+  Data Path Delay:        7.373ns  (logic 3.996ns (54.198%)  route 3.377ns (45.802%))
+  Logic Levels:           38  (CARRY8=19 LUT2=1 LUT3=8 LUT4=1 LUT5=1 LUT6=8)
+  Clock Path Skew:        0.271ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.915ns = ( 4.275 - 1.360 ) 
+    Source Clock Delay      (SCD):    3.094ns
+    Clock Pessimism Removal (CPR):    0.451ns
   Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
     Total System Jitter     (TSJ):    0.071ns
     Total Input Jitter      (TIJ):    0.000ns
     Discrete Jitter          (DJ):    0.000ns
     Phase Error              (PE):    0.000ns
-  Clock Net Delay (Source):      0.772ns (routing 0.001ns, distribution 0.771ns)
-  Clock Net Delay (Destination): 0.639ns (routing 0.001ns, distribution 0.638ns)
+  Clock Net Delay (Source):      2.208ns (routing 1.189ns, distribution 1.019ns)
+  Clock Net Delay (Destination): 2.319ns (routing 1.080ns, distribution 1.239ns)
 
     Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
   -------------------------------------------------------------------    -------------------
                          (clock clk rise edge)        0.000     0.000 r  
-    AM20                                              0.000     0.000 r  clk (IN)
+    AL16                                              0.000     0.000 r  clk (IN)
                          net (fo=0)                   0.000     0.000    clk_IBUF_inst/I
-    AM20                 INBUF (Prop_INBUF_HPIOB_M_PAD_O)
-                                                      0.574     0.574 r  clk_IBUF_inst/INBUF_INST/O
-                         net (fo=1, routed)           0.000     0.574    clk_IBUF_inst/OUT
-    AM20                 IBUFCTRL (Prop_IBUFCTRL_HPIOB_M_I_O)
-                                                      0.000     0.574 r  clk_IBUF_inst/IBUFCTRL_INST/O
-                         net (fo=1, routed)           0.323     0.897    clk_IBUF
-    BUFGCE_X0Y50         BUFGCE (Prop_BUFCE_BUFGCE_I_O)
-                                                      0.028     0.925 r  clk_IBUF_BUFG_inst/O
-    X4Y2 (CLOCK_ROOT)    net (fo=226, routed)         0.772     1.697    clk_IBUF_BUFG
-    SLICE_X84Y150        FDRE                                         r  row_index_reg[4]/C
+    AL16                 INBUF (Prop_INBUF_HPIOB_M_PAD_O)
+                                                      0.535     0.535 r  clk_IBUF_inst/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.535    clk_IBUF_inst/OUT
+    AL16                 IBUFCTRL (Prop_IBUFCTRL_HPIOB_M_I_O)
+                                                      0.000     0.535 r  clk_IBUF_inst/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.323     0.858    clk_IBUF
+    BUFGCE_X0Y2          BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.028     0.886 r  clk_IBUF_BUFG_inst/O
+    X3Y3 (CLOCK_ROOT)    net (fo=409, routed)         2.208     3.094    clk_IBUF_BUFG
+    SLICE_X77Y229        FDRE                                         r  row_ctr_reg[4]/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X84Y150        FDRE (Prop_AFF_SLICEL_C_Q)
-                                                      0.079     1.776 r  row_index_reg[4]/Q
-                         net (fo=12, routed)          0.246     2.022    counter_write_OBUF[4]
-    SLICE_X82Y148        LUT6 (Prop_B6LUT_SLICEM_I0_O)
-                                                      0.125     2.147 r  row_index[9]_i_50/O
-                         net (fo=1, routed)           0.016     2.163    row_index[9]_i_50_n_0
-    SLICE_X82Y148        CARRY8 (Prop_CARRY8_SLICEM_S[1]_CO[7])
-                                                      0.190     2.353 f  row_index_reg[9]_i_27/CO[7]
-                         net (fo=1, routed)           0.026     2.379    row_index_reg[9]_i_27_n_0
-    SLICE_X82Y149        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[2])
-                                                      0.057     2.436 f  row_index_reg[9]_i_11/CO[2]
-                         net (fo=4, routed)           0.204     2.640    row_index16_out
-    SLICE_X83Y147        LUT3 (Prop_E6LUT_SLICEM_I1_O)
-                                                      0.037     2.677 r  row_index[9]_i_19/O
-                         net (fo=1, routed)           0.059     2.736    row_index[9]_i_19_n_0
-    SLICE_X83Y147        LUT6 (Prop_F6LUT_SLICEM_I1_O)
-                                                      0.148     2.884 r  row_index[9]_i_7/O
-                         net (fo=10, routed)          0.115     2.999    row_index[9]_i_7_n_0
-    SLICE_X83Y146        LUT6 (Prop_H6LUT_SLICEM_I3_O)
-                                                      0.125     3.124 r  row_index[6]_i_1/O
-                         net (fo=1, routed)           0.058     3.182    row_index[6]_i_1_n_0
-    SLICE_X83Y146        FDRE                                         r  row_index_reg[6]/D
+    SLICE_X77Y229        FDRE (Prop_EFF_SLICEL_C_Q)
+                                                      0.079     3.173 r  row_ctr_reg[4]/Q
+                         net (fo=10, routed)          0.191     3.364    row_ctr[4]
+    SLICE_X76Y230        LUT6 (Prop_E6LUT_SLICEM_I0_O)
+                                                      0.148     3.512 f  row_ctr[7]_i_2/O
+                         net (fo=10, routed)          0.112     3.624    row_ctr[7]_i_2_n_0
+    SLICE_X76Y228        LUT6 (Prop_D6LUT_SLICEM_I2_O)
+                                                      0.088     3.712 f  read_index[9]_i_355/O
+                         net (fo=6, routed)           0.055     3.767    read_index[9]_i_355_n_0
+    SLICE_X76Y228        LUT6 (Prop_H6LUT_SLICEM_I3_O)
+                                                      0.101     3.868 f  read_index[9]_i_352/O
+                         net (fo=6, routed)           0.048     3.916    read_index[9]_i_352_n_0
+    SLICE_X76Y228        LUT5 (Prop_G6LUT_SLICEM_I1_O)
+                                                      0.037     3.953 r  read_index[9]_i_336/O
+                         net (fo=16, routed)          0.171     4.124    read_index[9]_i_336_n_0
+    SLICE_X76Y227        LUT4 (Prop_B6LUT_SLICEM_I0_O)
+                                                      0.052     4.176 r  read_index[9]_i_350/O
+                         net (fo=1, routed)           0.016     4.192    read_index[9]_i_350_n_0
+    SLICE_X76Y227        CARRY8 (Prop_CARRY8_SLICEM_S[1]_CO[7])
+                                                      0.190     4.382 r  read_index_reg[9]_i_318/CO[7]
+                         net (fo=1, routed)           0.026     4.408    read_index_reg[9]_i_318_n_0
+    SLICE_X76Y228        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[2])
+                                                      0.057     4.465 r  read_index_reg[9]_i_317/CO[2]
+                         net (fo=13, routed)          0.150     4.615    read_index_reg[9]_i_317_n_5
+    SLICE_X77Y228        LUT3 (Prop_D6LUT_SLICEL_I0_O)
+                                                      0.122     4.737 r  read_index[9]_i_327/O
+                         net (fo=1, routed)           0.009     4.746    read_index[9]_i_327_n_0
+    SLICE_X77Y228        CARRY8 (Prop_CARRY8_SLICEL_S[3]_CO[7])
+                                                      0.154     4.900 r  read_index_reg[9]_i_304/CO[7]
+                         net (fo=1, routed)           0.026     4.926    read_index_reg[9]_i_304_n_0
+    SLICE_X77Y229        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[3])
+                                                      0.060     4.986 r  read_index_reg[9]_i_303/CO[3]
+                         net (fo=13, routed)          0.141     5.127    read_index_reg[9]_i_303_n_4
+    SLICE_X76Y229        LUT3 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.123     5.250 r  read_index[9]_i_312/O
+                         net (fo=1, routed)           0.022     5.272    read_index[9]_i_312_n_0
+    SLICE_X76Y229        CARRY8 (Prop_CARRY8_SLICEM_S[5]_CO[7])
+                                                      0.159     5.431 r  read_index_reg[9]_i_290/CO[7]
+                         net (fo=1, routed)           0.026     5.457    read_index_reg[9]_i_290_n_0
+    SLICE_X76Y230        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[3])
+                                                      0.060     5.517 r  read_index_reg[9]_i_289/CO[3]
+                         net (fo=13, routed)          0.148     5.665    read_index_reg[9]_i_289_n_4
+    SLICE_X76Y231        LUT3 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.123     5.788 r  read_index[9]_i_298/O
+                         net (fo=1, routed)           0.022     5.810    read_index[9]_i_298_n_0
+    SLICE_X76Y231        CARRY8 (Prop_CARRY8_SLICEM_S[5]_CO[7])
+                                                      0.159     5.969 r  read_index_reg[9]_i_277/CO[7]
+                         net (fo=1, routed)           0.026     5.995    read_index_reg[9]_i_277_n_0
+    SLICE_X76Y232        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[3])
+                                                      0.060     6.055 r  read_index_reg[9]_i_276/CO[3]
+                         net (fo=13, routed)          0.212     6.267    read_index_reg[9]_i_276_n_4
+    SLICE_X75Y230        LUT3 (Prop_E6LUT_SLICEM_I0_O)
+                                                      0.124     6.391 r  read_index[9]_i_285/O
+                         net (fo=1, routed)           0.014     6.405    read_index[9]_i_285_n_0
+    SLICE_X75Y230        CARRY8 (Prop_CARRY8_SLICEM_S[4]_CO[7])
+                                                      0.156     6.561 r  read_index_reg[9]_i_254/CO[7]
+                         net (fo=1, routed)           0.026     6.587    read_index_reg[9]_i_254_n_0
+    SLICE_X75Y231        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[3])
+                                                      0.060     6.647 r  read_index_reg[9]_i_253/CO[3]
+                         net (fo=13, routed)          0.195     6.842    read_index_reg[9]_i_253_n_4
+    SLICE_X75Y232        LUT3 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.051     6.893 r  read_index[9]_i_261/O
+                         net (fo=1, routed)           0.022     6.915    read_index[9]_i_261_n_0
+    SLICE_X75Y232        CARRY8 (Prop_CARRY8_SLICEM_S[5]_CO[7])
+                                                      0.159     7.074 r  read_index_reg[9]_i_175/CO[7]
+                         net (fo=1, routed)           0.026     7.100    read_index_reg[9]_i_175_n_0
+    SLICE_X75Y233        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[3])
+                                                      0.060     7.160 r  read_index_reg[9]_i_174/CO[3]
+                         net (fo=13, routed)          0.207     7.367    read_index_reg[9]_i_174_n_4
+    SLICE_X74Y231        LUT3 (Prop_F6LUT_SLICEL_I0_O)
+                                                      0.089     7.456 r  read_index[9]_i_182/O
+                         net (fo=1, routed)           0.011     7.467    read_index[9]_i_182_n_0
+    SLICE_X74Y231        CARRY8 (Prop_CARRY8_SLICEL_S[5]_CO[7])
+                                                      0.155     7.622 r  read_index_reg[9]_i_112/CO[7]
+                         net (fo=1, routed)           0.026     7.648    read_index_reg[9]_i_112_n_0
+    SLICE_X74Y232        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[3])
+                                                      0.060     7.708 r  read_index_reg[9]_i_111/CO[3]
+                         net (fo=13, routed)          0.141     7.849    read_index_reg[9]_i_111_n_4
+    SLICE_X74Y233        LUT3 (Prop_F6LUT_SLICEL_I0_O)
+                                                      0.123     7.972 r  read_index[9]_i_120/O
+                         net (fo=1, routed)           0.011     7.983    read_index[9]_i_120_n_0
+    SLICE_X74Y233        CARRY8 (Prop_CARRY8_SLICEL_S[5]_CO[7])
+                                                      0.155     8.138 r  read_index_reg[9]_i_74/CO[7]
+                         net (fo=1, routed)           0.026     8.164    read_index_reg[9]_i_74_n_0
+    SLICE_X74Y234        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[3])
+                                                      0.060     8.224 r  read_index_reg[9]_i_73/CO[3]
+                         net (fo=13, routed)          0.198     8.422    read_index_reg[9]_i_73_n_4
+    SLICE_X74Y235        LUT3 (Prop_F6LUT_SLICEL_I0_O)
+                                                      0.097     8.519 r  read_index[9]_i_82/O
+                         net (fo=1, routed)           0.011     8.530    read_index[9]_i_82_n_0
+    SLICE_X74Y235        CARRY8 (Prop_CARRY8_SLICEL_S[5]_CO[7])
+                                                      0.155     8.685 r  read_index_reg[9]_i_40/CO[7]
+                         net (fo=1, routed)           0.026     8.711    read_index_reg[9]_i_40_n_0
+    SLICE_X74Y236        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[3])
+                                                      0.060     8.771 r  read_index_reg[9]_i_39/CO[3]
+                         net (fo=13, routed)          0.230     9.001    read_index_reg[9]_i_39_n_4
+    SLICE_X74Y237        CARRY8 (Prop_CARRY8_SLICEL_CI_O[5])
+                                                      0.226     9.227 f  read_index_reg[9]_i_29/O[5]
+                         net (fo=7, routed)           0.219     9.446    read_index_reg[9]_i_29_n_10
+    SLICE_X73Y237        LUT2 (Prop_B6LUT_SLICEL_I1_O)
+                                                      0.090     9.536 r  read_index[9]_i_66/O
+                         net (fo=2, routed)           0.094     9.630    read_index[9]_i_66_n_0
+    SLICE_X73Y237        LUT6 (Prop_D6LUT_SLICEL_I5_O)
+                                                      0.036     9.666 r  read_index[9]_i_30/O
+                         net (fo=2, routed)           0.096     9.762    read_index[9]_i_30_n_0
+    SLICE_X73Y239        LUT6 (Prop_B6LUT_SLICEL_I0_O)
+                                                      0.098     9.860 f  read_index[9]_i_14/O
+                         net (fo=1, routed)           0.096     9.956    read_index[9]_i_14_n_0
+    SLICE_X73Y238        LUT6 (Prop_H6LUT_SLICEL_I1_O)
+                                                      0.124    10.080 r  read_index[9]_i_5/O
+                         net (fo=10, routed)          0.211    10.291    read_index[9]_i_5_n_0
+    SLICE_X74Y239        LUT6 (Prop_C6LUT_SLICEL_I3_O)
+                                                      0.050    10.341 r  read_index[6]_i_2/O
+                         net (fo=1, routed)           0.041    10.382    read_index[6]_i_2_n_0
+    SLICE_X74Y239        LUT6 (Prop_D6LUT_SLICEL_I1_O)
+                                                      0.036    10.418 r  read_index[6]_i_1/O
+                         net (fo=1, routed)           0.049    10.467    read_index[6]_i_1_n_0
+    SLICE_X74Y239        FDRE                                         r  read_index_reg[6]/D
   -------------------------------------------------------------------    -------------------
 
                          (clock clk rise edge)        1.360     1.360 r  
-    AM20                                              0.000     1.360 r  clk (IN)
+    AL16                                              0.000     1.360 r  clk (IN)
                          net (fo=0)                   0.000     1.360    clk_IBUF_inst/I
-    AM20                 INBUF (Prop_INBUF_HPIOB_M_PAD_O)
-                                                      0.323     1.683 r  clk_IBUF_inst/INBUF_INST/O
-                         net (fo=1, routed)           0.000     1.683    clk_IBUF_inst/OUT
-    AM20                 IBUFCTRL (Prop_IBUFCTRL_HPIOB_M_I_O)
-                                                      0.000     1.683 r  clk_IBUF_inst/IBUFCTRL_INST/O
-                         net (fo=1, routed)           0.287     1.970    clk_IBUF
-    BUFGCE_X0Y50         BUFGCE (Prop_BUFCE_BUFGCE_I_O)
-                                                      0.024     1.994 r  clk_IBUF_BUFG_inst/O
-    X4Y2 (CLOCK_ROOT)    net (fo=226, routed)         0.639     2.633    clk_IBUF_BUFG
-    SLICE_X83Y146        FDRE                                         r  row_index_reg[6]/C
-                         clock pessimism              0.308     2.941    
-                         clock uncertainty           -0.035     2.906    
-    SLICE_X83Y146        FDRE (Setup_HFF_SLICEM_C_D)
-                                                      0.025     2.931    row_index_reg[6]
+    AL16                 INBUF (Prop_INBUF_HPIOB_M_PAD_O)
+                                                      0.285     1.645 r  clk_IBUF_inst/INBUF_INST/O
+                         net (fo=1, routed)           0.000     1.645    clk_IBUF_inst/OUT
+    AL16                 IBUFCTRL (Prop_IBUFCTRL_HPIOB_M_I_O)
+                                                      0.000     1.645 r  clk_IBUF_inst/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.287     1.932    clk_IBUF
+    BUFGCE_X0Y2          BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.024     1.956 r  clk_IBUF_BUFG_inst/O
+    X3Y3 (CLOCK_ROOT)    net (fo=409, routed)         2.319     4.275    clk_IBUF_BUFG
+    SLICE_X74Y239        FDRE                                         r  read_index_reg[6]/C
+                         clock pessimism              0.451     4.726    
+                         clock uncertainty           -0.035     4.691    
+    SLICE_X74Y239        FDRE (Setup_DFF_SLICEL_C_D)
+                                                      0.025     4.716    read_index_reg[6]
   -------------------------------------------------------------------
-                         required time                          2.931    
-                         arrival time                          -3.182    
+                         required time                          4.716    
+                         arrival time                         -10.467    
   -------------------------------------------------------------------
-                         slack                                 -0.251    
+                         slack                                 -5.752    
 
-Slack (VIOLATED) :        -0.250ns  (required time - arrival time)
-  Source:                 row_index_reg[4]/C
+Slack (VIOLATED) :        -5.703ns  (required time - arrival time)
+  Source:                 row_ctr_reg[4]/C
                             (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@0.680ns period=1.360ns})
-  Destination:            row_index_reg[7]/CE
+  Destination:            read_index_reg[4]/D
                             (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@0.680ns period=1.360ns})
   Path Group:             clk
   Path Type:              Setup (Max at Slow Process Corner)
   Requirement:            1.360ns  (clk rise@1.360ns - clk rise@0.000ns)
-  Data Path Delay:        1.394ns  (logic 0.588ns (42.181%)  route 0.806ns (57.819%))
-  Logic Levels:           5  (CARRY8=2 LUT5=1 LUT6=2)
-  Clock Path Skew:        -0.121ns (DCD - SCD + CPR)
-    Destination Clock Delay (DCD):    1.268ns = ( 2.628 - 1.360 ) 
-    Source Clock Delay      (SCD):    1.697ns
-    Clock Pessimism Removal (CPR):    0.308ns
+  Data Path Delay:        7.305ns  (logic 3.980ns (54.483%)  route 3.325ns (45.517%))
+  Logic Levels:           38  (CARRY8=19 LUT2=1 LUT3=8 LUT4=1 LUT5=1 LUT6=8)
+  Clock Path Skew:        0.252ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.947ns = ( 4.307 - 1.360 ) 
+    Source Clock Delay      (SCD):    3.094ns
+    Clock Pessimism Removal (CPR):    0.399ns
   Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
     Total System Jitter     (TSJ):    0.071ns
     Total Input Jitter      (TIJ):    0.000ns
     Discrete Jitter          (DJ):    0.000ns
     Phase Error              (PE):    0.000ns
-  Clock Net Delay (Source):      0.772ns (routing 0.001ns, distribution 0.771ns)
-  Clock Net Delay (Destination): 0.634ns (routing 0.001ns, distribution 0.633ns)
+  Clock Net Delay (Source):      2.208ns (routing 1.189ns, distribution 1.019ns)
+  Clock Net Delay (Destination): 2.351ns (routing 1.080ns, distribution 1.271ns)
 
     Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
   -------------------------------------------------------------------    -------------------
                          (clock clk rise edge)        0.000     0.000 r  
-    AM20                                              0.000     0.000 r  clk (IN)
+    AL16                                              0.000     0.000 r  clk (IN)
                          net (fo=0)                   0.000     0.000    clk_IBUF_inst/I
-    AM20                 INBUF (Prop_INBUF_HPIOB_M_PAD_O)
-                                                      0.574     0.574 r  clk_IBUF_inst/INBUF_INST/O
-                         net (fo=1, routed)           0.000     0.574    clk_IBUF_inst/OUT
-    AM20                 IBUFCTRL (Prop_IBUFCTRL_HPIOB_M_I_O)
-                                                      0.000     0.574 r  clk_IBUF_inst/IBUFCTRL_INST/O
-                         net (fo=1, routed)           0.323     0.897    clk_IBUF
-    BUFGCE_X0Y50         BUFGCE (Prop_BUFCE_BUFGCE_I_O)
-                                                      0.028     0.925 r  clk_IBUF_BUFG_inst/O
-    X4Y2 (CLOCK_ROOT)    net (fo=226, routed)         0.772     1.697    clk_IBUF_BUFG
-    SLICE_X84Y150        FDRE                                         r  row_index_reg[4]/C
+    AL16                 INBUF (Prop_INBUF_HPIOB_M_PAD_O)
+                                                      0.535     0.535 r  clk_IBUF_inst/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.535    clk_IBUF_inst/OUT
+    AL16                 IBUFCTRL (Prop_IBUFCTRL_HPIOB_M_I_O)
+                                                      0.000     0.535 r  clk_IBUF_inst/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.323     0.858    clk_IBUF
+    BUFGCE_X0Y2          BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.028     0.886 r  clk_IBUF_BUFG_inst/O
+    X3Y3 (CLOCK_ROOT)    net (fo=409, routed)         2.208     3.094    clk_IBUF_BUFG
+    SLICE_X77Y229        FDRE                                         r  row_ctr_reg[4]/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X84Y150        FDRE (Prop_AFF_SLICEL_C_Q)
-                                                      0.079     1.776 r  row_index_reg[4]/Q
-                         net (fo=12, routed)          0.276     2.052    counter_write_OBUF[4]
-    SLICE_X82Y146        LUT6 (Prop_B6LUT_SLICEM_I0_O)
-                                                      0.089     2.141 r  row_index[9]_i_59/O
-                         net (fo=1, routed)           0.016     2.157    row_index[9]_i_59_n_0
-    SLICE_X82Y146        CARRY8 (Prop_CARRY8_SLICEM_S[1]_CO[7])
-                                                      0.190     2.347 r  row_index_reg[9]_i_31/CO[7]
-                         net (fo=1, routed)           0.026     2.373    row_index_reg[9]_i_31_n_0
-    SLICE_X82Y147        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[2])
-                                                      0.057     2.430 r  row_index_reg[9]_i_12/CO[2]
-                         net (fo=14, routed)          0.175     2.605    row_index1
-    SLICE_X82Y149        LUT6 (Prop_D6LUT_SLICEM_I3_O)
-                                                      0.122     2.727 r  row_index[9]_i_3/O
-                         net (fo=2, routed)           0.102     2.829    row_index[9]_i_3_n_0
-    SLICE_X83Y149        LUT5 (Prop_D6LUT_SLICEM_I0_O)
-                                                      0.051     2.880 r  row_index[9]_i_1/O
-                         net (fo=10, routed)          0.211     3.091    row_index[9]_i_1_n_0
-    SLICE_X84Y145        FDRE                                         r  row_index_reg[7]/CE
+    SLICE_X77Y229        FDRE (Prop_EFF_SLICEL_C_Q)
+                                                      0.079     3.173 r  row_ctr_reg[4]/Q
+                         net (fo=10, routed)          0.191     3.364    row_ctr[4]
+    SLICE_X76Y230        LUT6 (Prop_E6LUT_SLICEM_I0_O)
+                                                      0.148     3.512 f  row_ctr[7]_i_2/O
+                         net (fo=10, routed)          0.112     3.624    row_ctr[7]_i_2_n_0
+    SLICE_X76Y228        LUT6 (Prop_D6LUT_SLICEM_I2_O)
+                                                      0.088     3.712 f  read_index[9]_i_355/O
+                         net (fo=6, routed)           0.055     3.767    read_index[9]_i_355_n_0
+    SLICE_X76Y228        LUT6 (Prop_H6LUT_SLICEM_I3_O)
+                                                      0.101     3.868 f  read_index[9]_i_352/O
+                         net (fo=6, routed)           0.048     3.916    read_index[9]_i_352_n_0
+    SLICE_X76Y228        LUT5 (Prop_G6LUT_SLICEM_I1_O)
+                                                      0.037     3.953 r  read_index[9]_i_336/O
+                         net (fo=16, routed)          0.171     4.124    read_index[9]_i_336_n_0
+    SLICE_X76Y227        LUT4 (Prop_B6LUT_SLICEM_I0_O)
+                                                      0.052     4.176 r  read_index[9]_i_350/O
+                         net (fo=1, routed)           0.016     4.192    read_index[9]_i_350_n_0
+    SLICE_X76Y227        CARRY8 (Prop_CARRY8_SLICEM_S[1]_CO[7])
+                                                      0.190     4.382 r  read_index_reg[9]_i_318/CO[7]
+                         net (fo=1, routed)           0.026     4.408    read_index_reg[9]_i_318_n_0
+    SLICE_X76Y228        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[2])
+                                                      0.057     4.465 r  read_index_reg[9]_i_317/CO[2]
+                         net (fo=13, routed)          0.150     4.615    read_index_reg[9]_i_317_n_5
+    SLICE_X77Y228        LUT3 (Prop_D6LUT_SLICEL_I0_O)
+                                                      0.122     4.737 r  read_index[9]_i_327/O
+                         net (fo=1, routed)           0.009     4.746    read_index[9]_i_327_n_0
+    SLICE_X77Y228        CARRY8 (Prop_CARRY8_SLICEL_S[3]_CO[7])
+                                                      0.154     4.900 r  read_index_reg[9]_i_304/CO[7]
+                         net (fo=1, routed)           0.026     4.926    read_index_reg[9]_i_304_n_0
+    SLICE_X77Y229        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[3])
+                                                      0.060     4.986 r  read_index_reg[9]_i_303/CO[3]
+                         net (fo=13, routed)          0.141     5.127    read_index_reg[9]_i_303_n_4
+    SLICE_X76Y229        LUT3 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.123     5.250 r  read_index[9]_i_312/O
+                         net (fo=1, routed)           0.022     5.272    read_index[9]_i_312_n_0
+    SLICE_X76Y229        CARRY8 (Prop_CARRY8_SLICEM_S[5]_CO[7])
+                                                      0.159     5.431 r  read_index_reg[9]_i_290/CO[7]
+                         net (fo=1, routed)           0.026     5.457    read_index_reg[9]_i_290_n_0
+    SLICE_X76Y230        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[3])
+                                                      0.060     5.517 r  read_index_reg[9]_i_289/CO[3]
+                         net (fo=13, routed)          0.148     5.665    read_index_reg[9]_i_289_n_4
+    SLICE_X76Y231        LUT3 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.123     5.788 r  read_index[9]_i_298/O
+                         net (fo=1, routed)           0.022     5.810    read_index[9]_i_298_n_0
+    SLICE_X76Y231        CARRY8 (Prop_CARRY8_SLICEM_S[5]_CO[7])
+                                                      0.159     5.969 r  read_index_reg[9]_i_277/CO[7]
+                         net (fo=1, routed)           0.026     5.995    read_index_reg[9]_i_277_n_0
+    SLICE_X76Y232        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[3])
+                                                      0.060     6.055 r  read_index_reg[9]_i_276/CO[3]
+                         net (fo=13, routed)          0.212     6.267    read_index_reg[9]_i_276_n_4
+    SLICE_X75Y230        LUT3 (Prop_E6LUT_SLICEM_I0_O)
+                                                      0.124     6.391 r  read_index[9]_i_285/O
+                         net (fo=1, routed)           0.014     6.405    read_index[9]_i_285_n_0
+    SLICE_X75Y230        CARRY8 (Prop_CARRY8_SLICEM_S[4]_CO[7])
+                                                      0.156     6.561 r  read_index_reg[9]_i_254/CO[7]
+                         net (fo=1, routed)           0.026     6.587    read_index_reg[9]_i_254_n_0
+    SLICE_X75Y231        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[3])
+                                                      0.060     6.647 r  read_index_reg[9]_i_253/CO[3]
+                         net (fo=13, routed)          0.195     6.842    read_index_reg[9]_i_253_n_4
+    SLICE_X75Y232        LUT3 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.051     6.893 r  read_index[9]_i_261/O
+                         net (fo=1, routed)           0.022     6.915    read_index[9]_i_261_n_0
+    SLICE_X75Y232        CARRY8 (Prop_CARRY8_SLICEM_S[5]_CO[7])
+                                                      0.159     7.074 r  read_index_reg[9]_i_175/CO[7]
+                         net (fo=1, routed)           0.026     7.100    read_index_reg[9]_i_175_n_0
+    SLICE_X75Y233        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[3])
+                                                      0.060     7.160 r  read_index_reg[9]_i_174/CO[3]
+                         net (fo=13, routed)          0.207     7.367    read_index_reg[9]_i_174_n_4
+    SLICE_X74Y231        LUT3 (Prop_F6LUT_SLICEL_I0_O)
+                                                      0.089     7.456 r  read_index[9]_i_182/O
+                         net (fo=1, routed)           0.011     7.467    read_index[9]_i_182_n_0
+    SLICE_X74Y231        CARRY8 (Prop_CARRY8_SLICEL_S[5]_CO[7])
+                                                      0.155     7.622 r  read_index_reg[9]_i_112/CO[7]
+                         net (fo=1, routed)           0.026     7.648    read_index_reg[9]_i_112_n_0
+    SLICE_X74Y232        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[3])
+                                                      0.060     7.708 r  read_index_reg[9]_i_111/CO[3]
+                         net (fo=13, routed)          0.141     7.849    read_index_reg[9]_i_111_n_4
+    SLICE_X74Y233        LUT3 (Prop_F6LUT_SLICEL_I0_O)
+                                                      0.123     7.972 r  read_index[9]_i_120/O
+                         net (fo=1, routed)           0.011     7.983    read_index[9]_i_120_n_0
+    SLICE_X74Y233        CARRY8 (Prop_CARRY8_SLICEL_S[5]_CO[7])
+                                                      0.155     8.138 r  read_index_reg[9]_i_74/CO[7]
+                         net (fo=1, routed)           0.026     8.164    read_index_reg[9]_i_74_n_0
+    SLICE_X74Y234        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[3])
+                                                      0.060     8.224 r  read_index_reg[9]_i_73/CO[3]
+                         net (fo=13, routed)          0.198     8.422    read_index_reg[9]_i_73_n_4
+    SLICE_X74Y235        LUT3 (Prop_F6LUT_SLICEL_I0_O)
+                                                      0.097     8.519 r  read_index[9]_i_82/O
+                         net (fo=1, routed)           0.011     8.530    read_index[9]_i_82_n_0
+    SLICE_X74Y235        CARRY8 (Prop_CARRY8_SLICEL_S[5]_CO[7])
+                                                      0.155     8.685 r  read_index_reg[9]_i_40/CO[7]
+                         net (fo=1, routed)           0.026     8.711    read_index_reg[9]_i_40_n_0
+    SLICE_X74Y236        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[3])
+                                                      0.060     8.771 r  read_index_reg[9]_i_39/CO[3]
+                         net (fo=13, routed)          0.230     9.001    read_index_reg[9]_i_39_n_4
+    SLICE_X74Y237        CARRY8 (Prop_CARRY8_SLICEL_CI_O[5])
+                                                      0.226     9.227 f  read_index_reg[9]_i_29/O[5]
+                         net (fo=7, routed)           0.219     9.446    read_index_reg[9]_i_29_n_10
+    SLICE_X73Y237        LUT2 (Prop_B6LUT_SLICEL_I1_O)
+                                                      0.090     9.536 r  read_index[9]_i_66/O
+                         net (fo=2, routed)           0.094     9.630    read_index[9]_i_66_n_0
+    SLICE_X73Y237        LUT6 (Prop_D6LUT_SLICEL_I5_O)
+                                                      0.036     9.666 r  read_index[9]_i_30/O
+                         net (fo=2, routed)           0.096     9.762    read_index[9]_i_30_n_0
+    SLICE_X73Y239        LUT6 (Prop_B6LUT_SLICEL_I0_O)
+                                                      0.098     9.860 f  read_index[9]_i_14/O
+                         net (fo=1, routed)           0.096     9.956    read_index[9]_i_14_n_0
+    SLICE_X73Y238        LUT6 (Prop_H6LUT_SLICEL_I1_O)
+                                                      0.124    10.080 r  read_index[9]_i_5/O
+                         net (fo=10, routed)          0.115    10.195    read_index[9]_i_5_n_0
+    SLICE_X73Y239        LUT6 (Prop_C6LUT_SLICEL_I2_O)
+                                                      0.035    10.230 r  read_index[4]_i_2/O
+                         net (fo=1, routed)           0.084    10.314    read_index[4]_i_2_n_0
+    SLICE_X73Y240        LUT6 (Prop_C6LUT_SLICEL_I1_O)
+                                                      0.035    10.349 r  read_index[4]_i_1/O
+                         net (fo=1, routed)           0.050    10.399    read_index[4]_i_1_n_0
+    SLICE_X73Y240        FDRE                                         r  read_index_reg[4]/D
   -------------------------------------------------------------------    -------------------
 
                          (clock clk rise edge)        1.360     1.360 r  
-    AM20                                              0.000     1.360 r  clk (IN)
+    AL16                                              0.000     1.360 r  clk (IN)
                          net (fo=0)                   0.000     1.360    clk_IBUF_inst/I
-    AM20                 INBUF (Prop_INBUF_HPIOB_M_PAD_O)
-                                                      0.323     1.683 r  clk_IBUF_inst/INBUF_INST/O
-                         net (fo=1, routed)           0.000     1.683    clk_IBUF_inst/OUT
-    AM20                 IBUFCTRL (Prop_IBUFCTRL_HPIOB_M_I_O)
-                                                      0.000     1.683 r  clk_IBUF_inst/IBUFCTRL_INST/O
-                         net (fo=1, routed)           0.287     1.970    clk_IBUF
-    BUFGCE_X0Y50         BUFGCE (Prop_BUFCE_BUFGCE_I_O)
-                                                      0.024     1.994 r  clk_IBUF_BUFG_inst/O
-    X4Y2 (CLOCK_ROOT)    net (fo=226, routed)         0.634     2.628    clk_IBUF_BUFG
-    SLICE_X84Y145        FDRE                                         r  row_index_reg[7]/C
-                         clock pessimism              0.308     2.936    
-                         clock uncertainty           -0.035     2.901    
-    SLICE_X84Y145        FDRE (Setup_CFF_SLICEL_C_CE)
-                                                     -0.060     2.841    row_index_reg[7]
+    AL16                 INBUF (Prop_INBUF_HPIOB_M_PAD_O)
+                                                      0.285     1.645 r  clk_IBUF_inst/INBUF_INST/O
+                         net (fo=1, routed)           0.000     1.645    clk_IBUF_inst/OUT
+    AL16                 IBUFCTRL (Prop_IBUFCTRL_HPIOB_M_I_O)
+                                                      0.000     1.645 r  clk_IBUF_inst/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.287     1.932    clk_IBUF
+    BUFGCE_X0Y2          BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.024     1.956 r  clk_IBUF_BUFG_inst/O
+    X3Y3 (CLOCK_ROOT)    net (fo=409, routed)         2.351     4.307    clk_IBUF_BUFG
+    SLICE_X73Y240        FDRE                                         r  read_index_reg[4]/C
+                         clock pessimism              0.399     4.706    
+                         clock uncertainty           -0.035     4.671    
+    SLICE_X73Y240        FDRE (Setup_CFF_SLICEL_C_D)
+                                                      0.025     4.696    read_index_reg[4]
   -------------------------------------------------------------------
-                         required time                          2.841    
-                         arrival time                          -3.091    
+                         required time                          4.696    
+                         arrival time                         -10.399    
   -------------------------------------------------------------------
-                         slack                                 -0.250    
+                         slack                                 -5.703    
 
-Slack (VIOLATED) :        -0.238ns  (required time - arrival time)
-  Source:                 row_index_reg[4]/C
+Slack (VIOLATED) :        -5.654ns  (required time - arrival time)
+  Source:                 row_ctr_reg[4]/C
                             (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@0.680ns period=1.360ns})
-  Destination:            row_index_reg[0]/CE
+  Destination:            read_index_reg[5]/D
                             (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@0.680ns period=1.360ns})
   Path Group:             clk
   Path Type:              Setup (Max at Slow Process Corner)
   Requirement:            1.360ns  (clk rise@1.360ns - clk rise@0.000ns)
-  Data Path Delay:        1.394ns  (logic 0.588ns (42.181%)  route 0.806ns (57.819%))
-  Logic Levels:           5  (CARRY8=2 LUT5=1 LUT6=2)
-  Clock Path Skew:        -0.108ns (DCD - SCD + CPR)
-    Destination Clock Delay (DCD):    1.281ns = ( 2.641 - 1.360 ) 
-    Source Clock Delay      (SCD):    1.697ns
-    Clock Pessimism Removal (CPR):    0.308ns
+  Data Path Delay:        7.256ns  (logic 3.980ns (54.851%)  route 3.276ns (45.149%))
+  Logic Levels:           38  (CARRY8=19 LUT2=1 LUT3=8 LUT4=1 LUT5=1 LUT6=8)
+  Clock Path Skew:        0.252ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.947ns = ( 4.307 - 1.360 ) 
+    Source Clock Delay      (SCD):    3.094ns
+    Clock Pessimism Removal (CPR):    0.399ns
   Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
     Total System Jitter     (TSJ):    0.071ns
     Total Input Jitter      (TIJ):    0.000ns
     Discrete Jitter          (DJ):    0.000ns
     Phase Error              (PE):    0.000ns
-  Clock Net Delay (Source):      0.772ns (routing 0.001ns, distribution 0.771ns)
-  Clock Net Delay (Destination): 0.647ns (routing 0.001ns, distribution 0.646ns)
+  Clock Net Delay (Source):      2.208ns (routing 1.189ns, distribution 1.019ns)
+  Clock Net Delay (Destination): 2.351ns (routing 1.080ns, distribution 1.271ns)
 
     Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
   -------------------------------------------------------------------    -------------------
                          (clock clk rise edge)        0.000     0.000 r  
-    AM20                                              0.000     0.000 r  clk (IN)
+    AL16                                              0.000     0.000 r  clk (IN)
                          net (fo=0)                   0.000     0.000    clk_IBUF_inst/I
-    AM20                 INBUF (Prop_INBUF_HPIOB_M_PAD_O)
-                                                      0.574     0.574 r  clk_IBUF_inst/INBUF_INST/O
-                         net (fo=1, routed)           0.000     0.574    clk_IBUF_inst/OUT
-    AM20                 IBUFCTRL (Prop_IBUFCTRL_HPIOB_M_I_O)
-                                                      0.000     0.574 r  clk_IBUF_inst/IBUFCTRL_INST/O
-                         net (fo=1, routed)           0.323     0.897    clk_IBUF
-    BUFGCE_X0Y50         BUFGCE (Prop_BUFCE_BUFGCE_I_O)
-                                                      0.028     0.925 r  clk_IBUF_BUFG_inst/O
-    X4Y2 (CLOCK_ROOT)    net (fo=226, routed)         0.772     1.697    clk_IBUF_BUFG
-    SLICE_X84Y150        FDRE                                         r  row_index_reg[4]/C
+    AL16                 INBUF (Prop_INBUF_HPIOB_M_PAD_O)
+                                                      0.535     0.535 r  clk_IBUF_inst/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.535    clk_IBUF_inst/OUT
+    AL16                 IBUFCTRL (Prop_IBUFCTRL_HPIOB_M_I_O)
+                                                      0.000     0.535 r  clk_IBUF_inst/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.323     0.858    clk_IBUF
+    BUFGCE_X0Y2          BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.028     0.886 r  clk_IBUF_BUFG_inst/O
+    X3Y3 (CLOCK_ROOT)    net (fo=409, routed)         2.208     3.094    clk_IBUF_BUFG
+    SLICE_X77Y229        FDRE                                         r  row_ctr_reg[4]/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X84Y150        FDRE (Prop_AFF_SLICEL_C_Q)
-                                                      0.079     1.776 r  row_index_reg[4]/Q
-                         net (fo=12, routed)          0.276     2.052    counter_write_OBUF[4]
-    SLICE_X82Y146        LUT6 (Prop_B6LUT_SLICEM_I0_O)
-                                                      0.089     2.141 r  row_index[9]_i_59/O
-                         net (fo=1, routed)           0.016     2.157    row_index[9]_i_59_n_0
-    SLICE_X82Y146        CARRY8 (Prop_CARRY8_SLICEM_S[1]_CO[7])
-                                                      0.190     2.347 r  row_index_reg[9]_i_31/CO[7]
-                         net (fo=1, routed)           0.026     2.373    row_index_reg[9]_i_31_n_0
-    SLICE_X82Y147        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[2])
-                                                      0.057     2.430 r  row_index_reg[9]_i_12/CO[2]
-                         net (fo=14, routed)          0.175     2.605    row_index1
-    SLICE_X82Y149        LUT6 (Prop_D6LUT_SLICEM_I3_O)
-                                                      0.122     2.727 r  row_index[9]_i_3/O
-                         net (fo=2, routed)           0.102     2.829    row_index[9]_i_3_n_0
-    SLICE_X83Y149        LUT5 (Prop_D6LUT_SLICEM_I0_O)
-                                                      0.051     2.880 r  row_index[9]_i_1/O
-                         net (fo=10, routed)          0.211     3.091    row_index[9]_i_1_n_0
-    SLICE_X83Y147        FDRE                                         r  row_index_reg[0]/CE
+    SLICE_X77Y229        FDRE (Prop_EFF_SLICEL_C_Q)
+                                                      0.079     3.173 r  row_ctr_reg[4]/Q
+                         net (fo=10, routed)          0.191     3.364    row_ctr[4]
+    SLICE_X76Y230        LUT6 (Prop_E6LUT_SLICEM_I0_O)
+                                                      0.148     3.512 f  row_ctr[7]_i_2/O
+                         net (fo=10, routed)          0.112     3.624    row_ctr[7]_i_2_n_0
+    SLICE_X76Y228        LUT6 (Prop_D6LUT_SLICEM_I2_O)
+                                                      0.088     3.712 f  read_index[9]_i_355/O
+                         net (fo=6, routed)           0.055     3.767    read_index[9]_i_355_n_0
+    SLICE_X76Y228        LUT6 (Prop_H6LUT_SLICEM_I3_O)
+                                                      0.101     3.868 f  read_index[9]_i_352/O
+                         net (fo=6, routed)           0.048     3.916    read_index[9]_i_352_n_0
+    SLICE_X76Y228        LUT5 (Prop_G6LUT_SLICEM_I1_O)
+                                                      0.037     3.953 r  read_index[9]_i_336/O
+                         net (fo=16, routed)          0.171     4.124    read_index[9]_i_336_n_0
+    SLICE_X76Y227        LUT4 (Prop_B6LUT_SLICEM_I0_O)
+                                                      0.052     4.176 r  read_index[9]_i_350/O
+                         net (fo=1, routed)           0.016     4.192    read_index[9]_i_350_n_0
+    SLICE_X76Y227        CARRY8 (Prop_CARRY8_SLICEM_S[1]_CO[7])
+                                                      0.190     4.382 r  read_index_reg[9]_i_318/CO[7]
+                         net (fo=1, routed)           0.026     4.408    read_index_reg[9]_i_318_n_0
+    SLICE_X76Y228        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[2])
+                                                      0.057     4.465 r  read_index_reg[9]_i_317/CO[2]
+                         net (fo=13, routed)          0.150     4.615    read_index_reg[9]_i_317_n_5
+    SLICE_X77Y228        LUT3 (Prop_D6LUT_SLICEL_I0_O)
+                                                      0.122     4.737 r  read_index[9]_i_327/O
+                         net (fo=1, routed)           0.009     4.746    read_index[9]_i_327_n_0
+    SLICE_X77Y228        CARRY8 (Prop_CARRY8_SLICEL_S[3]_CO[7])
+                                                      0.154     4.900 r  read_index_reg[9]_i_304/CO[7]
+                         net (fo=1, routed)           0.026     4.926    read_index_reg[9]_i_304_n_0
+    SLICE_X77Y229        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[3])
+                                                      0.060     4.986 r  read_index_reg[9]_i_303/CO[3]
+                         net (fo=13, routed)          0.141     5.127    read_index_reg[9]_i_303_n_4
+    SLICE_X76Y229        LUT3 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.123     5.250 r  read_index[9]_i_312/O
+                         net (fo=1, routed)           0.022     5.272    read_index[9]_i_312_n_0
+    SLICE_X76Y229        CARRY8 (Prop_CARRY8_SLICEM_S[5]_CO[7])
+                                                      0.159     5.431 r  read_index_reg[9]_i_290/CO[7]
+                         net (fo=1, routed)           0.026     5.457    read_index_reg[9]_i_290_n_0
+    SLICE_X76Y230        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[3])
+                                                      0.060     5.517 r  read_index_reg[9]_i_289/CO[3]
+                         net (fo=13, routed)          0.148     5.665    read_index_reg[9]_i_289_n_4
+    SLICE_X76Y231        LUT3 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.123     5.788 r  read_index[9]_i_298/O
+                         net (fo=1, routed)           0.022     5.810    read_index[9]_i_298_n_0
+    SLICE_X76Y231        CARRY8 (Prop_CARRY8_SLICEM_S[5]_CO[7])
+                                                      0.159     5.969 r  read_index_reg[9]_i_277/CO[7]
+                         net (fo=1, routed)           0.026     5.995    read_index_reg[9]_i_277_n_0
+    SLICE_X76Y232        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[3])
+                                                      0.060     6.055 r  read_index_reg[9]_i_276/CO[3]
+                         net (fo=13, routed)          0.212     6.267    read_index_reg[9]_i_276_n_4
+    SLICE_X75Y230        LUT3 (Prop_E6LUT_SLICEM_I0_O)
+                                                      0.124     6.391 r  read_index[9]_i_285/O
+                         net (fo=1, routed)           0.014     6.405    read_index[9]_i_285_n_0
+    SLICE_X75Y230        CARRY8 (Prop_CARRY8_SLICEM_S[4]_CO[7])
+                                                      0.156     6.561 r  read_index_reg[9]_i_254/CO[7]
+                         net (fo=1, routed)           0.026     6.587    read_index_reg[9]_i_254_n_0
+    SLICE_X75Y231        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[3])
+                                                      0.060     6.647 r  read_index_reg[9]_i_253/CO[3]
+                         net (fo=13, routed)          0.195     6.842    read_index_reg[9]_i_253_n_4
+    SLICE_X75Y232        LUT3 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.051     6.893 r  read_index[9]_i_261/O
+                         net (fo=1, routed)           0.022     6.915    read_index[9]_i_261_n_0
+    SLICE_X75Y232        CARRY8 (Prop_CARRY8_SLICEM_S[5]_CO[7])
+                                                      0.159     7.074 r  read_index_reg[9]_i_175/CO[7]
+                         net (fo=1, routed)           0.026     7.100    read_index_reg[9]_i_175_n_0
+    SLICE_X75Y233        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[3])
+                                                      0.060     7.160 r  read_index_reg[9]_i_174/CO[3]
+                         net (fo=13, routed)          0.207     7.367    read_index_reg[9]_i_174_n_4
+    SLICE_X74Y231        LUT3 (Prop_F6LUT_SLICEL_I0_O)
+                                                      0.089     7.456 r  read_index[9]_i_182/O
+                         net (fo=1, routed)           0.011     7.467    read_index[9]_i_182_n_0
+    SLICE_X74Y231        CARRY8 (Prop_CARRY8_SLICEL_S[5]_CO[7])
+                                                      0.155     7.622 r  read_index_reg[9]_i_112/CO[7]
+                         net (fo=1, routed)           0.026     7.648    read_index_reg[9]_i_112_n_0
+    SLICE_X74Y232        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[3])
+                                                      0.060     7.708 r  read_index_reg[9]_i_111/CO[3]
+                         net (fo=13, routed)          0.141     7.849    read_index_reg[9]_i_111_n_4
+    SLICE_X74Y233        LUT3 (Prop_F6LUT_SLICEL_I0_O)
+                                                      0.123     7.972 r  read_index[9]_i_120/O
+                         net (fo=1, routed)           0.011     7.983    read_index[9]_i_120_n_0
+    SLICE_X74Y233        CARRY8 (Prop_CARRY8_SLICEL_S[5]_CO[7])
+                                                      0.155     8.138 r  read_index_reg[9]_i_74/CO[7]
+                         net (fo=1, routed)           0.026     8.164    read_index_reg[9]_i_74_n_0
+    SLICE_X74Y234        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[3])
+                                                      0.060     8.224 r  read_index_reg[9]_i_73/CO[3]
+                         net (fo=13, routed)          0.198     8.422    read_index_reg[9]_i_73_n_4
+    SLICE_X74Y235        LUT3 (Prop_F6LUT_SLICEL_I0_O)
+                                                      0.097     8.519 r  read_index[9]_i_82/O
+                         net (fo=1, routed)           0.011     8.530    read_index[9]_i_82_n_0
+    SLICE_X74Y235        CARRY8 (Prop_CARRY8_SLICEL_S[5]_CO[7])
+                                                      0.155     8.685 r  read_index_reg[9]_i_40/CO[7]
+                         net (fo=1, routed)           0.026     8.711    read_index_reg[9]_i_40_n_0
+    SLICE_X74Y236        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[3])
+                                                      0.060     8.771 r  read_index_reg[9]_i_39/CO[3]
+                         net (fo=13, routed)          0.230     9.001    read_index_reg[9]_i_39_n_4
+    SLICE_X74Y237        CARRY8 (Prop_CARRY8_SLICEL_CI_O[5])
+                                                      0.226     9.227 f  read_index_reg[9]_i_29/O[5]
+                         net (fo=7, routed)           0.219     9.446    read_index_reg[9]_i_29_n_10
+    SLICE_X73Y237        LUT2 (Prop_B6LUT_SLICEL_I1_O)
+                                                      0.090     9.536 r  read_index[9]_i_66/O
+                         net (fo=2, routed)           0.094     9.630    read_index[9]_i_66_n_0
+    SLICE_X73Y237        LUT6 (Prop_D6LUT_SLICEL_I5_O)
+                                                      0.036     9.666 r  read_index[9]_i_30/O
+                         net (fo=2, routed)           0.096     9.762    read_index[9]_i_30_n_0
+    SLICE_X73Y239        LUT6 (Prop_B6LUT_SLICEL_I0_O)
+                                                      0.098     9.860 f  read_index[9]_i_14/O
+                         net (fo=1, routed)           0.096     9.956    read_index[9]_i_14_n_0
+    SLICE_X73Y238        LUT6 (Prop_H6LUT_SLICEL_I1_O)
+                                                      0.124    10.080 r  read_index[9]_i_5/O
+                         net (fo=10, routed)          0.110    10.190    read_index[9]_i_5_n_0
+    SLICE_X73Y241        LUT6 (Prop_A6LUT_SLICEL_I1_O)
+                                                      0.035    10.225 r  read_index[5]_i_2/O
+                         net (fo=1, routed)           0.040    10.265    read_index[5]_i_2_n_0
+    SLICE_X73Y241        LUT6 (Prop_C6LUT_SLICEL_I1_O)
+                                                      0.035    10.300 r  read_index[5]_i_1/O
+                         net (fo=1, routed)           0.050    10.350    read_index[5]_i_1_n_0
+    SLICE_X73Y241        FDRE                                         r  read_index_reg[5]/D
   -------------------------------------------------------------------    -------------------
 
                          (clock clk rise edge)        1.360     1.360 r  
-    AM20                                              0.000     1.360 r  clk (IN)
+    AL16                                              0.000     1.360 r  clk (IN)
                          net (fo=0)                   0.000     1.360    clk_IBUF_inst/I
-    AM20                 INBUF (Prop_INBUF_HPIOB_M_PAD_O)
-                                                      0.323     1.683 r  clk_IBUF_inst/INBUF_INST/O
-                         net (fo=1, routed)           0.000     1.683    clk_IBUF_inst/OUT
-    AM20                 IBUFCTRL (Prop_IBUFCTRL_HPIOB_M_I_O)
-                                                      0.000     1.683 r  clk_IBUF_inst/IBUFCTRL_INST/O
-                         net (fo=1, routed)           0.287     1.970    clk_IBUF
-    BUFGCE_X0Y50         BUFGCE (Prop_BUFCE_BUFGCE_I_O)
-                                                      0.024     1.994 r  clk_IBUF_BUFG_inst/O
-    X4Y2 (CLOCK_ROOT)    net (fo=226, routed)         0.647     2.641    clk_IBUF_BUFG
-    SLICE_X83Y147        FDRE                                         r  row_index_reg[0]/C
-                         clock pessimism              0.308     2.949    
-                         clock uncertainty           -0.035     2.914    
-    SLICE_X83Y147        FDRE (Setup_GFF_SLICEM_C_CE)
-                                                     -0.061     2.853    row_index_reg[0]
+    AL16                 INBUF (Prop_INBUF_HPIOB_M_PAD_O)
+                                                      0.285     1.645 r  clk_IBUF_inst/INBUF_INST/O
+                         net (fo=1, routed)           0.000     1.645    clk_IBUF_inst/OUT
+    AL16                 IBUFCTRL (Prop_IBUFCTRL_HPIOB_M_I_O)
+                                                      0.000     1.645 r  clk_IBUF_inst/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.287     1.932    clk_IBUF
+    BUFGCE_X0Y2          BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.024     1.956 r  clk_IBUF_BUFG_inst/O
+    X3Y3 (CLOCK_ROOT)    net (fo=409, routed)         2.351     4.307    clk_IBUF_BUFG
+    SLICE_X73Y241        FDRE                                         r  read_index_reg[5]/C
+                         clock pessimism              0.399     4.706    
+                         clock uncertainty           -0.035     4.671    
+    SLICE_X73Y241        FDRE (Setup_CFF_SLICEL_C_D)
+                                                      0.025     4.696    read_index_reg[5]
   -------------------------------------------------------------------
-                         required time                          2.853    
-                         arrival time                          -3.091    
+                         required time                          4.696    
+                         arrival time                         -10.350    
   -------------------------------------------------------------------
-                         slack                                 -0.238    
+                         slack                                 -5.654    
 
 
 
