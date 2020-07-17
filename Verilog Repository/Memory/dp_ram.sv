@@ -29,29 +29,20 @@ module sync_dp_ram  #(DATA_WIDTH=16, ADDR_WIDTH=8, MEM_INIT="C:/Users/Admin/Desk
 
 	// Declare the RAM variable
 	reg [DATA_WIDTH - 1 :0] ram[RAM_DEPTH - 1 : 0];	
-	reg [DATA_WIDTH-1:0] doA, doB;
 
 	initial begin
 		for (int i=0; i<RAM_DEPTH; i++) begin
-			ram[i] = i; //0
+			ram[i] = 0;
 		end
 	end
 
-	//initial begin
-	//   	$readmemh(MEM_INIT, ram);
-	//end
+	initial begin
+	   	$readmemh(MEM_INIT, ram);
+	end
 
 	// Port A
- 	always @ (posedge clk) begin
-
- 		if (we_a) begin
- 			ram[addr_a] <= data_a;
- 		end
- 		doA <= ram[addr_a];
- 		q_a <= doA;
-
-
- 		/*
+ 	always @ (posedge clk)
+	begin
 		if (we_a) 
 		begin
 			ram[addr_a] <= data_a;
@@ -61,20 +52,11 @@ module sync_dp_ram  #(DATA_WIDTH=16, ADDR_WIDTH=8, MEM_INIT="C:/Users/Admin/Desk
 		begin
 			q_a <= ram[addr_a];
 		end
-		*/
-
 	end
 	
 	// Port B
-	always @ (posedge clk) begin
-		
-		if (we_b) begin
-			ram[addr_b] <= data_b;
-		end
-		doB <= ram[addr_b];
-		q_b <= doB;
-
-		/*
+	always @ (posedge clk)
+	begin
 		if (we_b)
 		begin
 			ram[addr_b] <= data_b;
@@ -84,7 +66,6 @@ module sync_dp_ram  #(DATA_WIDTH=16, ADDR_WIDTH=8, MEM_INIT="C:/Users/Admin/Desk
 		begin
 			q_b <= ram[addr_b];
 		end
-		*/
 	end
 	
 endmodule
